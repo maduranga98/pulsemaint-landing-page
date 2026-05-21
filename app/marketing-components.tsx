@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { BlogPost } from "./blog-data";
@@ -20,29 +21,14 @@ const toneClasses: Record<Tone, string> = {
 export function PulseLogo() {
   return (
     <div className="flex items-center gap-2.5">
-      <svg viewBox="0 0 64 32" width="48" height="28" aria-hidden="true">
-        <defs>
-          <linearGradient id="pulse-logo" x1="0" x2="1">
-            <stop offset="0" stopColor="#00C2FF" />
-            <stop offset="1" stopColor="#1A56DB" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M2 16h10l4-9 5 18 5-12 5 7 7-4h5"
-          fill="none"
-          stroke="url(#pulse-logo)"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2.5"
-        />
-        <g transform="translate(52 16)">
-          <circle r="7" fill="none" stroke="url(#pulse-logo)" strokeWidth="2" />
-          <circle r="2.3" fill="#00C2FF" />
-          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-            <rect key={angle} x="-1" y="-10" width="2" height="3" fill="#00C2FF" transform={`rotate(${angle})`} />
-          ))}
-        </g>
-      </svg>
+      <Image
+        src="/logo.png"
+        alt=""
+        width={44}
+        height={44}
+        className="h-10 w-10 rounded-lg object-contain shadow-[0_0_18px_rgba(0,194,255,0.22)]"
+        priority
+      />
       <span className="font-sora text-lg font-bold tracking-normal text-ink">
         Pulse<span className="text-pulse">Maint</span>
       </span>

@@ -28,6 +28,14 @@ export const metadata: Metadata = {
   description:
     "PulseMaint is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
   metadataBase: new URL("https://pulsemaint.com"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "PulseMaint - Keep the pulse of your plant",
     description:
