@@ -33,7 +33,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="absolute inset-0 bg-[radial-gradient(800px_500px_at_80%_-10%,rgba(0,194,255,0.18),transparent_60%)]" />
           <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
             <nav className="mb-8 flex items-center gap-2 font-mono text-[12px] text-ink-mute">
-              <Link href="/" className="hover:text-pulse">PulseMaint</Link>
+              <Link href="/" className="hover:text-pulse">Firmicore</Link>
               <span>/</span>
               <Link href="/blog" className="hover:text-pulse">Blog</Link>
               <span>/</span>
@@ -118,7 +118,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </ul>
 
             <div className="my-10 rounded-xl border border-pulse/35 bg-pulse/5 p-6">
-              <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">PulseMaint note</div>
+              <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">Firmicore note</div>
               <p className="mb-0 text-ink">
                 The goal is not more forms. The goal is a lightweight operating loop where every breakdown makes the next response faster.
               </p>
@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <h2 id="sample-post-structure">Sample post structure</h2>
             <p>
               This article is intentionally structured as a reusable template: hero metadata, author block, figure, sticky table of contents,
-              lede, H2 sections, stat grid, callout, visual flow, CTA, author bio, and related posts. Future PulseMaint posts can follow the
+              lede, H2 sections, stat grid, callout, visual flow, CTA, author bio, and related posts. Future Firmicore posts can follow the
               same rhythm while swapping the data and body copy.
             </p>
 
@@ -155,7 +155,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <div className="relative">
                 <SectionLabel>Stop guessing</SectionLabel>
                 <h3 className="mt-3 font-sora text-3xl font-bold">Measure your real downtime cost.</h3>
-                <p className="mt-2 max-w-lg text-ink-dim">PulseMaint tracks reported and hidden maintenance drag from day one.</p>
+                <p className="mt-2 max-w-lg text-ink-dim">Firmicore tracks reported and hidden maintenance drag from day one.</p>
                 <Link href="/#cta-final" className="btn-glow mt-6 inline-block rounded-lg bg-power px-5 py-3 font-medium text-white">
                   Start Free
                 </Link>

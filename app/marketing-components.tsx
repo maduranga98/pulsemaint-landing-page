@@ -18,7 +18,7 @@ const toneClasses: Record<Tone, string> = {
   mute: "bg-white/5 text-ink-dim ring-white/10",
 };
 
-export function PulseLogo() {
+export function Logo() {
   return (
     <div className="flex items-center gap-2.5">
       <Image
@@ -30,7 +30,7 @@ export function PulseLogo() {
         priority
       />
       <span className="font-sora text-lg font-bold tracking-normal text-ink">
-        Pulse<span className="text-pulse">Maint</span>
+        Firmi<span className="text-pulse">core</span>
       </span>
     </div>
   );
@@ -86,8 +86,8 @@ export function Navbar() {
   return (
     <header className="nav-blur fixed inset-x-0 top-0 z-50">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <Link href="/" aria-label="PulseMaint home">
-          <PulseLogo />
+        <Link href="/" aria-label="Firmicore home">
+          <Logo />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {links.map(([label, href]) => (
@@ -145,7 +145,7 @@ export function Footer() {
     <footer className="border-t border-white/8 bg-navy-950">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <PulseLogo />
+          <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-dim">
             The mobile-first maintenance platform for factory floors. Built by Lumora Ventures in Colombo, Sri Lanka.
           </p>
@@ -172,7 +172,7 @@ export function Footer() {
         </div>
       </div>
       <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-white/8 px-5 py-6 font-mono text-xs text-ink-mute sm:flex-row sm:items-center sm:justify-between sm:px-8">
-        <span>© 2026 Lumora Ventures Pvt Ltd · pulsemaint.com</span>
+        <span>© 2026 Lumora Ventures Pvt Ltd · firmicore.com</span>
         <span>v1.0 · shipping Q3 2026</span>
       </div>
     </footer>

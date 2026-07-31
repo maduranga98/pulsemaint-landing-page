@@ -22,12 +22,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PulseMaint - Keep the pulse of your plant",
-    template: "%s | PulseMaint",
+    default: "Firmicore - Strength at the core of every machine.",
+    template: "%s | Firmicore",
   },
   description:
-    "PulseMaint is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
-  metadataBase: new URL("https://pulsemaint.com"),
+    "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
+  metadataBase: new URL("https://firmicore.com"),
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -37,11 +37,11 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "PulseMaint - Keep the pulse of your plant",
+    title: "Firmicore - Strength at the core of every machine.",
     description:
       "Real-time breakdown tracking, guided operator triage, and maintenance history for manufacturing factories.",
-    url: "https://pulsemaint.com",
-    siteName: "PulseMaint",
+    url: "https://firmicore.com",
+    siteName: "Firmicore",
     type: "website",
   },
 };

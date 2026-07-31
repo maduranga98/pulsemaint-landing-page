@@ -5,7 +5,7 @@ import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, Section
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "PulseMaint field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+  description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
 };
 
 export default function BlogPage() {
@@ -21,7 +21,7 @@ export default function BlogPage() {
           <div className="absolute inset-0 bg-[radial-gradient(800px_500px_at_85%_-10%,rgba(0,194,255,0.2),transparent_60%)]" />
           <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
             <div className="max-w-3xl">
-              <SectionLabel>The PulseMaint Journal</SectionLabel>
+              <SectionLabel>The Firmicore Journal</SectionLabel>
               <h1 className="mt-5 font-sora text-[44px] font-bold leading-[1.04] sm:text-[60px]">
                 Insights from the <span className="text-pulse">factory floor.</span>
               </h1>

@@ -72,7 +72,7 @@ function Hero() {
             <span className="bg-gradient-to-r from-pulse via-pulse-400 to-power-400 bg-clip-text text-transparent">Under Control.</span>
           </h1>
           <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-dim sm:text-lg">
-            PulseMaint is the mobile-first maintenance platform built for factory floors: real-time breakdown tracking,
+            Firmicore is the mobile-first maintenance platform built for factory floors: real-time breakdown tracking,
             guided triage, and full repair history in one place.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -116,7 +116,7 @@ function DashboardMock() {
             <span className="h-2.5 w-2.5 rounded-full bg-crit/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-warn/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-uptime/70" />
-            <span className="ml-3 font-mono text-[11px] text-ink-mute">pulsemaint.app / dashboard / live</span>
+            <span className="ml-3 font-mono text-[11px] text-ink-mute">firmicore.com / dashboard / live</span>
           </div>
           <span className="hidden font-mono text-[11px] text-uptime sm:inline">LIVE</span>
         </div>
@@ -168,7 +168,7 @@ function Problem() {
             </h2>
           </div>
           <p className="text-base leading-relaxed text-ink-dim lg:col-span-5">
-            Six pain points we hear in every walkthrough. PulseMaint turns each one into a structured, visible workflow.
+            Six pain points we hear in every walkthrough. Firmicore turns each one into a structured, visible workflow.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -253,13 +253,13 @@ function Triage() {
             The only CMMS with <span className="text-pulse">guided operator triage.</span>
           </h2>
           <p className="mt-6 leading-relaxed text-ink-dim">
-            PulseMaint walks operators through exact safe steps: check this gauge, shut down this way, document this evidence.
+            Firmicore walks operators through exact safe steps: check this gauge, shut down this way, document this evidence.
             Every action logged. Zero guesswork.
           </p>
         </div>
         <div className="lg:col-span-7">
           <div className="shadow-glow rounded-2xl border border-white/10 bg-navy-950/75">
-            <div className="border-b border-white/8 px-5 py-4 font-mono text-xs text-ink-mute">pulsemaint.app / triage / CNC-04</div>
+            <div className="border-b border-white/8 px-5 py-4 font-mono text-xs text-ink-mute">firmicore.com / triage / CNC-04</div>
             <div className="space-y-3 p-5">
               {stages.map((stage, index) => (
                 <div key={stage} className={`flex items-center gap-4 rounded-lg border p-4 ${index === 2 ? "border-pulse/40 bg-pulse/5" : "border-white/8 bg-navy-800/40"}`}>
@@ -337,7 +337,7 @@ function Pricing() {
         <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-[52px]">
           Per machine. <span className="text-pulse">Not per user.</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-ink-dim">A factory with 200 machines and 10 staff pays $42/mo on PulseMaint vs far more on per-seat competitors.</p>
+        <p className="mx-auto mt-4 max-w-2xl text-ink-dim">A factory with 200 machines and 10 staff pays $42/mo on Firmicore vs far more on per-seat competitors.</p>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {plans.map(([name, price, machines, users]) => (
             <div key={name} className={`relative rounded-2xl p-6 text-left lift ${name === "Factory" ? "border-2 border-power bg-power/15 shadow-glow" : "border border-white/8 bg-navy-800/40"}`}>
@@ -384,10 +384,10 @@ function FinalCTA() {
         <ECGLine height={190} />
       </div>
       <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
-        <SectionLabel>The pulse of your plant</SectionLabel>
+        <SectionLabel>Strength at the core</SectionLabel>
         <h2 className="mt-5 font-sora text-[44px] font-bold leading-[1.02] sm:text-[68px]">
-          Keep the pulse <br />
-          <span className="text-pulse">of your plant.</span>
+          Strength at the core <br />
+          <span className="text-pulse">of every machine.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-ink-dim">Start free with 10 machines. No credit card required. Set up in under an hour.</p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
