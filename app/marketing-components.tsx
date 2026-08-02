@@ -73,13 +73,24 @@ export function StatusPill({ children, tone = "pulse" }: { children: React.React
   return <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider ring-1 ${toneClasses[tone]}`}>{children}</span>;
 }
 
+export function Corners() {
+  return (
+    <>
+      <span className="pointer-events-none absolute -left-px -top-px h-2.5 w-2.5 border-l border-t border-pulse/30" />
+      <span className="pointer-events-none absolute -right-px -top-px h-2.5 w-2.5 border-r border-t border-pulse/30" />
+      <span className="pointer-events-none absolute -bottom-px -left-px h-2.5 w-2.5 border-b border-l border-pulse/30" />
+      <span className="pointer-events-none absolute -bottom-px -right-px h-2.5 w-2.5 border-b border-r border-pulse/30" />
+    </>
+  );
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const links = [
-    ["Features", "/#features"],
+    ["Modules", "/#modules"],
+    ["Roles", "/#roles"],
     ["Pricing", "/#pricing"],
-    ["Industries", "/#industries"],
-    ["Roadmap", "/#roadmap"],
+    ["Security", "/#security"],
     ["Blog", "/blog"],
   ];
 
@@ -97,11 +108,8 @@ export function Navbar() {
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <a href="#" className="text-sm text-ink-dim transition hover:text-ink">
-            Sign in
-          </a>
           <Link href="/#cta-final" className="btn-glow rounded-lg bg-power px-4 py-2 text-sm font-medium text-white">
-            Start Free
+            Book a demo
           </Link>
         </div>
         <button
@@ -124,7 +132,7 @@ export function Navbar() {
               </Link>
             ))}
             <Link href="/#cta-final" onClick={() => setOpen(false)} className="btn-glow mt-2 rounded-lg bg-power py-2.5 text-center text-sm font-medium text-white">
-              Start Free
+              Book a demo
             </Link>
           </div>
         </div>
@@ -135,9 +143,9 @@ export function Navbar() {
 
 export function Footer() {
   const columns = [
-    { title: "Product", links: [["Features", "/#features"], ["Pricing", "/#pricing"], ["Roadmap", "/#roadmap"], ["Blog", "/blog"]] },
+    { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ["LinkedIn", "#"]] },
-    { title: "Markets", links: [["Sri Lanka", "/#industries"], ["Bangladesh", "/#industries"], ["UAE", "/#industries"], ["Malaysia", "/#industries"]] },
+    { title: "Resources", links: [["Blog", "/blog"], ["Guided demo", "/#cta-final"], ["Talk to sales", "/#cta-final"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 
@@ -147,11 +155,11 @@ export function Footer() {
         <div className="lg:col-span-4">
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-dim">
-            The mobile-first maintenance platform for factory floors. Built by Lumora Ventures in Colombo, Sri Lanka.
+            FirmiCore, a product of Lumora Ventures Pvt Ltd, Kuliyapitiya, Sri Lanka. Multi-tenant CMMS for process plants.
           </p>
-          <div className="mt-5 flex items-center gap-2 font-mono text-xs text-ink-mute">
-            <span className="h-1.5 w-1.5 rounded-full bg-uptime dot-pulse" />
-            All systems operational
+          <div className="mt-5 space-y-1 font-mono text-xs text-ink-mute">
+            <div>info@lumoraventures.com · +94 71 999 8500</div>
+            <div>Kurunegala Road, Kuliyapitiya 60200, Sri Lanka</div>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-8">
