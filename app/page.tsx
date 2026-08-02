@@ -1,33 +1,85 @@
 import Link from "next/link";
-import { ECGLine, Footer, Navbar, SectionLabel, StatusPill } from "./marketing-components";
+import { posts } from "./blog-data";
+import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
 
-const problems = [
-  ["No real-time tracking", "Breakdowns disappear into paper logs, calls, and floor chatter."],
-  ["Repair team arrives blind", "Technicians reach machines without history, manuals, or parts context."],
-  ["Operators stand idle", "Between report and response, production time burns without guidance."],
-  ["Trainees operate unguided", "New staff handle complex equipment without safe-action support."],
-  ["Phone bans break adoption", "Standard mobile-only apps fail where personal devices are restricted."],
-  ["No prevention data", "Without structured history, every failure feels like the first one."],
+const heroStats = [
+  ["9", "Role-based workspaces"],
+  ["20+", "Feature modules"],
+  ["0-100", "Machine health score"],
+  ["Real-time", "Firebase-backed sync"],
 ];
 
-const features = [
-  ["Breakdown Management", "10-state lifecycle tracking with QR, WhatsApp, browser, mobile, and supervisor reporting.", "crit"],
-  ["Work Order Management", "Team assignment, CAD uploads, parts pre-request, and digital sign-off with audit trails.", "power"],
-  ["Operator Triage Engine", "Step-by-step safe-action guidance for operators during breakdowns.", "pulse"],
-  ["Contractor Management", "Profiles, document expiry, job history, and invoice comparison.", "warn"],
-  ["Inventory & Store Keeper", "Role-based parts control with approval workflows and Excel import.", "uptime"],
-  ["Analytics & Reports", "Live KPIs, PDF and Excel exports, heatmaps, MTTR, and MTBF trends.", "pulse"],
-] as const;
+const painPoints = [
+  ["Scattered records", "Notebooks, Excel sheets, and group chats hold the plant's maintenance history, nowhere connected."],
+  ["Reactive maintenance", "No visibility into machine health until something breaks, so every fix starts from zero."],
+  ["Slow handovers", "Shift changes lose context on open issues and safety incidents between the outgoing and incoming crew."],
+  ["Stock surprises", "Critical spares run out with no early warning, stalling a repair that was otherwise ready to go."],
+  ["No accountability trail", "Work gets completed with no sign-off, no cost capture, and no audit trail behind it."],
+];
+
+const triageFeatures = [
+  ["01", "Multilingual trees", "Branching troubleshooting flows in English, Sinhala, Tamil, and Bengali."],
+  ["02", "Safe operator diagnosis", "Any operator can safely diagnose and react to a fault without waiting on a technician."],
+  ["03", "Supervisor authoring", "Supervisors build and edit custom triage flows per machine, no engineering help needed."],
+  ["04", "A real differentiator", "No other CMMS in this class ships guided, multilingual triage as a core workflow."],
+];
+
+const modules = [
+  ["01", "Machine Registry", "Full asset register, QR codes, documents, spare-parts links, and an automatic 0-100 health score."],
+  ["02", "Breakdown Management", "Kanban board, severity/type/root-cause tracking, push/SMS/email/in-app alerts, QR-triggered reporting."],
+  ["03", "Work Orders", "Full lifecycle from Draft to Closed, multi-technician checklists, time-segment tracking, parts requests, supervisor sign-off queue."],
+  ["04", "Preventive Maintenance", "Calendar- or meter-based schedules, PM calendar view, compliance dashboard with per-machine/technician trends."],
+  ["05", "Inventory & Parts", "Categorized catalog, multi-stage approval workflow, stock movement log, purchase orders, supplier management, Excel import."],
+  ["06", "Contractors", "Registry, job tracking, invoice comparison, four-dimension performance rating: speed, quality, professionalism, communication."],
+  ["07", "Shift Handovers", "Auto-compiled structured reports: pending work orders, ongoing breakdowns, low-stock alerts, watch-machine flags."],
+  ["08", "Training & Certification", "Module libraries, quizzes, assignment tracking, trainee onboarding programme, auto-issued certificates."],
+  ["09", "Guided Triage", "Multilingual (EN/SI/TA/BN) branching troubleshooting trees with a supervisor authoring tool."],
+  ["10", "Safety Workspace", "Incident/near-miss/hazard reporting, permit-to-work with precautions, safety training calendar, safety analytics."],
+  ["11", "Reports & Analytics", "One-click PDF/Excel/Google Sheets exports across 15+ report types, cross-module KPI dashboard."],
+  ["12", "MOE Dashboard", "Single composite Machine Overall Effectiveness score blending availability, maintenance compliance, reliability, and health, with critical-machine alerts."],
+];
 
 const roles = [
-  "Floor Operator",
-  "Trainee",
-  "Technician",
-  "Store Keeper",
-  "Maint. Supervisor",
-  "Plant Manager",
-  "HR Officer",
-  "Admin",
+  ["Plant Manager / Admin", "Company-wide dashboards, analytics, approvals, billing, full configuration control."],
+  ["Maintenance Supervisor", "Work order assignment, sign-off queue, PM oversight, shift handovers, team performance."],
+  ["Technician", "My Work Orders, breakdown response, PM checklists, parts requests, guided triage."],
+  ["Store Keeper", "Inventory catalog, stock movements, purchase orders, low-stock alerts, supplier management."],
+  ["HR / Training Officer", "Training module library, assignment tracking, trainee programmes, compliance reporting."],
+  ["Safety Officer", "Safety dashboard, incident/near-miss register, permit-to-work, safety training calendar & analytics."],
+  ["Floor Operator", "Fast breakdown reporting (incl. QR-triggered), guided troubleshooting, shift view."],
+  ["Trainee", "Structured onboarding programme, quizzes, weekend self-reports, certificates."],
+] as const;
+
+const industries = ["Food & Beverage", "Dairy", "Pharmaceuticals", "Packaging", "Textiles", "Chemicals"];
+
+const valueProps = [
+  "One system, every module, nothing else to reconcile",
+  "Real-time by default, backed by Firebase sync",
+  "Health scoring that predicts risk before it breaks",
+  "Nothing lost at shift change",
+  "Audit-ready from day one",
+  "Deploys fast, live in days, not months",
+];
+
+const pricingTiers = [
+  { name: "Basic", price: "$29", period: "/mo", annual: "$278/year, 20% off monthly", limits: "10 machines · 10 inventory items · 10 PM schedules · 5 users", features: ["Core maintenance only"], popular: false },
+  { name: "Workshop", price: "$59", period: "/mo", annual: "$566/year, 20% off monthly", limits: "100 machines · 10,000 items · unlimited PM · 20 users", features: ["Contractor management", "Shift handover, training & safety", "PM compliance dashboard", "Basic analytics"], popular: false },
+  { name: "Factory Pro", price: "$249", period: "/mo", annual: "$2,390/year, 20% off monthly", limits: "1,500 machines · unlimited inventory & PM · 100 users", features: ["Everything in Workshop", "MOE trend analytics", "Machine comparison"], popular: true },
+  { name: "Enterprise", price: "Contact Sales", period: "", annual: "", limits: "Unlimited machines, inventory, PM, users", features: ["TPM maturity roadmap & 5S scorecard", "Multi-site management", "Advanced reports hub", "SSO/SAML, custom integrations & API", "Dedicated support & SLA"], popular: false },
+];
+
+const securityPoints = [
+  ["Multi-tenant by design", "Data never crosses a tenant boundary: each plant's data is fully isolated."],
+  ["Cloud-hosted on Firebase", "Auth, Firestore, Storage, and Cloud Functions power the platform."],
+  ["Enforced access control", "Role-based access is checked on every route and every write."],
+  ["No on-site infrastructure", "Nothing to rack, patch, or maintain on the plant floor."],
+];
+
+const getStartedSteps = [
+  ["01", "Discovery call", "30 minutes on fleet size, sites, and your current process."],
+  ["02", "Guided demo", "Tailored to supervisor, store keeper, technician, or manager roles."],
+  ["03", "Pilot rollout", "Go live on one line or site first."],
+  ["04", "Full deployment", "Scale across sites, with roles pre-configured."],
 ];
 
 export default function Home() {
@@ -37,13 +89,15 @@ export default function Home() {
       <main>
         <Hero />
         <Problem />
-        <HowItWorks />
-        <Features />
         <Triage />
-        <Industries />
+        <Modules />
         <Roles />
+        <Industries />
+        <WhyFirmicore />
         <Pricing />
-        <Roadmap />
+        <Security />
+        <GetStarted />
+        <Blog />
         <FinalCTA />
       </main>
       <Footer />
@@ -60,93 +114,91 @@ function Hero() {
       </div>
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-12">
         <div className="lg:col-span-6">
-          <div className="inline-flex items-center gap-2 rounded-full bg-pulse/5 px-3 py-1.5 ring-1 ring-pulse/30">
-            <span className="h-1.5 w-1.5 rounded-full bg-pulse dot-pulse" />
-            <span className="font-mono text-[12px] uppercase tracking-[0.16em] text-pulse">Live · v1.0 shipping Q3 2026</span>
+          <div className="inline-flex items-center rounded-full border border-pulse/40 px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.1em] text-pulse">
+            Multi-tenant CMMS for process plants
           </div>
-          <h1 className="mt-6 font-sora text-[44px] font-bold leading-[1.02] text-ink sm:text-[58px] lg:text-[64px]">
-            Every Breakdown.
-            <br />
-            Every Machine.
-            <br />
-            <span className="bg-gradient-to-r from-pulse via-pulse-400 to-power-400 bg-clip-text text-transparent">Under Control.</span>
+          <h1 className="mt-6 font-sora text-[44px] font-bold leading-[1.05] text-ink sm:text-[58px] lg:text-[62px]">
+            Strength at the core <span className="text-pulse">of every machine.</span>
           </h1>
           <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-dim sm:text-lg">
-            Firmicore is the mobile-first maintenance platform built for factory floors: real-time breakdown tracking,
-            guided triage, and full repair history in one place.
+            Run maintenance like a modern operation. FirmiCore replaces WhatsApp messages, paper logbooks, and spreadsheets
+            with one connected system: machines, breakdowns, work orders, PM, spares, contractors, shift handovers,
+            training, safety, and reporting, so every role works from the same real-time picture.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="#pricing" className="btn-glow rounded-lg bg-power px-5 py-3 font-medium text-white">
-              Start Free - 10 Machines
+            <Link href="#cta-final" className="btn-glow rounded-lg bg-power px-5 py-3 font-medium text-white">
+              Book a demo
             </Link>
-            <Link href="#how" className="rounded-lg border border-white/15 px-5 py-3 font-medium text-ink transition hover:border-pulse/50 hover:text-pulse">
-              See How It Works
+            <Link href="#triage" className="rounded-lg border border-white/15 px-5 py-3 font-medium text-ink transition hover:border-pulse/50 hover:text-pulse">
+              See guided triage ↓
             </Link>
           </div>
-          <div className="mt-10 grid max-w-xl grid-cols-3 gap-3 sm:gap-6">
-            {[["10", "State Breakdown Lifecycle"], ["8", "User Roles"], ["5", "Reporting Channels"]].map(([num, label]) => (
+          <div className="mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-6">
+            {heroStats.map(([num, label]) => (
               <div key={label} className="border-l border-pulse/30 pl-3 sm:pl-4">
-                <div className="font-sora text-[30px] font-bold leading-none text-pulse sm:text-4xl">{num}</div>
+                <div className="font-sora text-[24px] font-bold leading-none text-pulse sm:text-3xl">{num}</div>
                 <div className="mt-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{label}</div>
               </div>
             ))}
           </div>
         </div>
         <div className="lg:col-span-6">
-          <DashboardMock />
+          <LiveFloorStatus />
         </div>
       </div>
     </section>
   );
 }
 
-function DashboardMock() {
-  const columns = [
-    ["Reported", "crit", ["Spindle overheating", "Hydraulic leak", "Belt mis-tracking"]],
-    ["In Progress", "power", ["Pressure valve replace", "Sensor recalibration"]],
-    ["Resolved Today", "uptime", ["Coolant refill", "Heater band swap"]],
+function LiveFloorStatus() {
+  const breakdowns = [
+    ["#A-114 Conveyor Motor", "Reported 2 min ago · Critical", "Reported", "crit"],
+    ["#A-098 Hydraulic Press", "Technician assigned · 14 min ago", "In Progress", "warn"],
   ] as const;
 
   return (
     <div className="relative">
       <div className="absolute -inset-6 rounded-[40px] bg-pulse/10 blur-3xl" />
-      <div className="shadow-glow relative overflow-hidden rounded-2xl border border-white/10 bg-navy-950/80">
-        <div className="flex items-center justify-between border-b border-white/8 bg-navy-900/70 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-crit/70" />
-            <span className="h-2.5 w-2.5 rounded-full bg-warn/70" />
-            <span className="h-2.5 w-2.5 rounded-full bg-uptime/70" />
-            <span className="ml-3 font-mono text-[11px] text-ink-mute">firmicore.com / dashboard / live</span>
+      <div className="shadow-glow relative overflow-hidden rounded-2xl border border-white/10 bg-navy-950/80 p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <div className="font-mono text-[11px] uppercase tracking-wider text-ink-mute">Line 3, Packaging</div>
+            <div className="mt-1 font-sora text-base font-bold text-ink">Live floor status</div>
           </div>
-          <span className="hidden font-mono text-[11px] text-uptime sm:inline">LIVE</span>
+          <StatusPill tone="uptime">● Live</StatusPill>
         </div>
-        <div className="grid grid-cols-4 border-b border-white/8 text-center">
-          {[["17", "Active"], ["4", "Critical"], ["42m", "MTTR"], ["99.2%", "Uptime"]].map(([value, label]) => (
-            <div key={label} className="border-r border-white/5 py-2.5 last:border-0">
-              <div className="font-sora text-[15px] font-semibold text-ink">{value}</div>
-              <div className="mt-0.5 font-mono text-[9px] uppercase tracking-wider text-ink-mute">{label}</div>
+        <div className="mb-3.5 grid grid-cols-2 gap-2.5">
+          <div className="rounded-lg border border-white/8 p-3">
+            <div className="font-mono text-[10px] uppercase tracking-wider text-ink-mute">Machine health score</div>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="font-sora text-2xl font-bold text-uptime">87</span>
+              <span className="text-[11px] text-ink-mute">/ 100</span>
+            </div>
+          </div>
+          <div className="rounded-lg border border-white/8 p-3">
+            <div className="font-mono text-[10px] uppercase tracking-wider text-ink-mute">MOE composite</div>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="font-sora text-2xl font-bold text-pulse">74</span>
+              <span className="text-[11px] text-ink-mute">/ 100</span>
+            </div>
+          </div>
+        </div>
+        <div className="mb-4 grid grid-cols-3 gap-2.5">
+          {[["Critical", "1", "text-crit"], ["Major", "2", "text-warn"], ["Minor", "4", "text-ink"]].map(([label, value, color]) => (
+            <div key={label} className="rounded-lg border border-white/8 p-2.5">
+              <div className="font-mono text-[10px] uppercase tracking-wider text-ink-mute">{label}</div>
+              <div className={`font-sora text-lg font-bold ${color}`}>{value}</div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-2 bg-[radial-gradient(800px_300px_at_50%_-50%,rgba(0,194,255,0.08),transparent)] p-3">
-          {columns.map(([label, tone, cards]) => (
-            <div key={label} className="min-h-[280px] rounded-lg border border-white/5 bg-navy-900/60 p-2">
-              <div className="flex items-center justify-between px-1 py-1.5">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink-dim">{label}</span>
-                <span className="font-mono text-[10px] text-ink-mute">{cards.length}</span>
+        <div className="space-y-2">
+          {breakdowns.map(([title, meta, status, tone]) => (
+            <div key={title} className="flex items-center justify-between rounded-lg border border-white/8 px-3 py-2.5">
+              <div>
+                <div className="text-[13px] font-medium text-ink">{title}</div>
+                <div className="text-[11px] text-ink-mute">{meta}</div>
               </div>
-              <div className="mt-1 space-y-2">
-                {cards.map((card, index) => (
-                  <div key={card} className={`rounded-md border border-white/5 bg-navy-800/75 p-2 ${tone === "crit" ? "border-l-crit" : tone === "power" ? "border-l-power-400" : "border-l-uptime"} border-l-2`}>
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] text-ink-mute">BR-14{index + 1}0</span>
-                      <StatusPill tone={tone}> {tone === "uptime" ? "DONE" : index === 0 ? "HIGH" : "MED"} </StatusPill>
-                    </div>
-                    <div className="mt-1.5 font-sora text-[12px] font-medium text-ink">CNC-0{index + 2} · Line A</div>
-                    <div className="mt-0.5 text-[11px] text-ink-dim">{card}</div>
-                  </div>
-                ))}
-              </div>
+              <StatusPill tone={tone}>{status}</StatusPill>
             </div>
           ))}
         </div>
@@ -160,22 +212,14 @@ function Problem() {
     <section id="problem" className="relative overflow-hidden py-24 sm:py-32">
       <div className="bp-grid-fine absolute inset-0 opacity-30" />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="mb-14 grid items-end gap-10 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <SectionLabel tone="crit">The problem</SectionLabel>
-            <h2 className="mt-4 font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
-              Factory maintenance <span className="text-crit">is broken.</span>
-            </h2>
-          </div>
-          <p className="text-base leading-relaxed text-ink-dim lg:col-span-5">
-            Six pain points we hear in every walkthrough. Firmicore turns each one into a structured, visible workflow.
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {problems.map(([title, body], index) => (
-            <div key={title} className="lift relative rounded-xl border border-l-2 border-white/5 border-l-crit/60 bg-navy-800/50 p-6 hover:border-l-crit">
-              <div className="absolute right-4 top-4 font-mono text-[10px] tracking-wider text-ink-mute">P0{index + 1}</div>
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-crit/10 text-crit ring-1 ring-crit/20">!</div>
+        <SectionLabel tone="crit">The problem</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Records scattered. Maintenance reactive. Nothing tracked until it breaks.
+        </h2>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {painPoints.map(([title, body]) => (
+            <div key={title} className="lift relative rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-crit/40">
+              <Corners />
               <h3 className="font-sora text-[17px] font-semibold text-ink">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
             </div>
@@ -186,28 +230,25 @@ function Problem() {
   );
 }
 
-function HowItWorks() {
-  const steps = [
-    ["01", "Report", "Supervisor scans a machine QR, sends WhatsApp, or logs via browser. Ticket created in under 30 seconds."],
-    ["02", "Respond", "Technician gets an instant notification with history, manuals, and parts checklist pre-loaded."],
-    ["03", "Resolve", "Repair is logged step-by-step. Root cause captured. Analytics recalculated instantly."],
-  ];
+function Triage() {
   return (
-    <section id="how" className="relative overflow-hidden py-24 sm:py-32">
+    <section id="triage" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
       <div className="bp-grid absolute inset-0 opacity-30" />
-      <div className="relative mx-auto max-w-7xl px-5 text-center sm:px-8">
-        <SectionLabel>How it works</SectionLabel>
-        <h2 className="mt-4 font-sora text-[36px] font-bold leading-[1.05] sm:text-[52px]">
-          Simple. Structured. <span className="text-pulse">Instant.</span>
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>The differentiator</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Guided Triage: multilingual, branching, <span className="text-pulse">built by your own supervisors.</span>
         </h2>
-        <div className="relative mt-14 grid gap-6 lg:grid-cols-3">
-          <div className="absolute left-[12%] right-[12%] top-12 hidden h-px bg-gradient-to-r from-transparent via-pulse/50 to-transparent lg:block" />
-          {steps.map(([num, title, body]) => (
-            <div key={num} className="relative rounded-xl border border-white/8 bg-navy-800/40 p-6 text-left lift hover:border-pulse/30">
-              <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-pulse/5 text-pulse ring-1 ring-pulse/30">
-                <span className="font-sora text-2xl font-bold">{num}</span>
-              </div>
-              <h3 className="font-sora text-2xl font-semibold">{title}</h3>
+        <p className="mt-5 max-w-2xl leading-relaxed text-ink-dim">
+          Branching troubleshooting trees in English, Sinhala, Tamil and Bengali let any operator safely diagnose and
+          react to a fault, no waiting for a technician to arrive before something happens. A supervisor-facing
+          authoring tool lets your team build custom triage flows per machine, without engineering help.
+        </p>
+        <div className="mt-14 grid gap-px overflow-hidden rounded-xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
+          {triageFeatures.map(([num, title, body]) => (
+            <div key={num} className="bg-navy-950 p-6">
+              <div className="font-mono text-[13px] font-bold tracking-wide text-pulse">{num}</div>
+              <h3 className="mt-3.5 font-sora text-[17px] font-bold text-ink">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
             </div>
           ))}
@@ -217,83 +258,23 @@ function HowItWorks() {
   );
 }
 
-function Features() {
+function Modules() {
   return (
-    <section id="features" className="relative overflow-hidden py-24 sm:py-32">
+    <section id="modules" className="relative overflow-hidden py-24 sm:py-32">
       <div className="bp-grid-fine absolute inset-0 opacity-30" />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionLabel>The platform</SectionLabel>
-        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-[52px]">
-          One platform. Every maintenance problem <span className="text-pulse">solved.</span>
+        <SectionLabel>Core modules</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-[48px]">
+          Twenty-plus feature modules. <span className="text-pulse">One connected system.</span>
         </h2>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map(([title, body, tone]) => (
-            <div key={title} className="lift rounded-xl border border-l-2 border-white/5 border-l-white/10 bg-navy-800/40 p-6 hover:border-l-pulse">
-              <StatusPill tone={tone}>{title.split(" ")[0]}</StatusPill>
-              <h3 className="mt-5 font-sora text-xl font-semibold">{title}</h3>
+          {modules.map(([num, name, body]) => (
+            <div key={num} className="lift relative rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-pulse/30">
+              <Corners />
+              <div className="font-mono text-[12px] font-bold tracking-wide text-pulse">{num}</div>
+              <h3 className="mt-3 font-sora text-[16.5px] font-bold text-ink">{name}</h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Triage() {
-  const stages = ["Safety", "Assess", "Safe Actions", "Document", "Wait"];
-  return (
-    <section id="triage" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-28 sm:py-36">
-      <div className="bp-grid absolute inset-0 opacity-40" />
-      <div className="absolute inset-0 bg-[radial-gradient(700px_500px_at_75%_50%,rgba(0,194,255,0.18),transparent_60%)]" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <SectionLabel>Differentiator</SectionLabel>
-          <h2 className="mt-6 font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
-            The only CMMS with <span className="text-pulse">guided operator triage.</span>
-          </h2>
-          <p className="mt-6 leading-relaxed text-ink-dim">
-            Firmicore walks operators through exact safe steps: check this gauge, shut down this way, document this evidence.
-            Every action logged. Zero guesswork.
-          </p>
-        </div>
-        <div className="lg:col-span-7">
-          <div className="shadow-glow rounded-2xl border border-white/10 bg-navy-950/75">
-            <div className="border-b border-white/8 px-5 py-4 font-mono text-xs text-ink-mute">firmicore.com / triage / CNC-04</div>
-            <div className="space-y-3 p-5">
-              {stages.map((stage, index) => (
-                <div key={stage} className={`flex items-center gap-4 rounded-lg border p-4 ${index === 2 ? "border-pulse/40 bg-pulse/5" : "border-white/8 bg-navy-800/40"}`}>
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pulse/10 font-sora font-bold text-pulse ring-1 ring-pulse/30">{index + 1}</div>
-                  <div>
-                    <div className="font-sora font-semibold">{stage}</div>
-                    <div className="text-sm text-ink-dim">{index === 2 ? "Drain coolant, vent pressure, isolate power." : "Logged with timestamps and supervisor visibility."}</div>
-                  </div>
-                  <div className="ml-auto hidden sm:block">
-                    <StatusPill tone={index < 2 ? "uptime" : index === 2 ? "pulse" : "mute"}>{index < 2 ? "Done" : index === 2 ? "Current" : "Pending"}</StatusPill>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Industries() {
-  return (
-    <section id="industries" className="relative overflow-hidden py-24 sm:py-32">
-      <div className="relative mx-auto max-w-7xl px-5 text-center sm:px-8">
-        <SectionLabel>Who it is for</SectionLabel>
-        <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-[52px]">
-          Built for the <span className="text-pulse">factory floor.</span>
-        </h2>
-        <div className="mt-10 flex flex-wrap justify-center gap-2.5">
-          {["Manufacturing & Production", "Food & Beverage", "Textile & Garment", "Pharmaceutical", "Electronics Assembly", "Industrial Warehouses", "BOI Industrial Zones"].map((item) => (
-            <span key={item} className="rounded-full border border-white/8 bg-navy-800/60 px-4 py-2.5 text-sm text-ink">
-              {item}
-            </span>
           ))}
         </div>
       </div>
@@ -303,17 +284,58 @@ function Industries() {
 
 function Roles() {
   return (
-    <section id="roles" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionLabel tone="power">Role-based access</SectionLabel>
-        <h2 className="mt-4 font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
-          Right access. Right person. <span className="text-power-400">Right time.</span>
+    <section id="roles" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel tone="power">Built for every role</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Nine role-based workspaces. <span className="text-power-400">Exactly the access each one needs.</span>
         </h2>
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {roles.map((role, index) => (
-            <div key={role} className="lift rounded-xl border border-t-2 border-white/8 bg-navy-800/40 p-5" style={{ borderTopColor: index < 4 ? "#10B981" : index < 7 ? "#3B72E8" : "#00C2FF" }}>
-              <div className="font-sora font-semibold">{role}</div>
-              <p className="mt-2 text-sm text-ink-dim">Focused permissions for real floor responsibility.</p>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-3">
+          {roles.map(([name, body]) => (
+            <div key={name} className="bg-navy-900 p-5">
+              <div className="font-sora font-semibold text-ink">{name}</div>
+              <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Industries() {
+  return (
+    <section className="relative overflow-hidden py-24 sm:py-32">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>Who it&apos;s for</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Manufacturing and process plants running <span className="text-pulse">mid-to-large equipment fleets.</span>
+        </h2>
+        <div className="mt-10 flex flex-wrap gap-2.5">
+          {industries.map((item) => (
+            <span key={item} className="rounded-full border border-white/15 px-4 py-2.5 text-sm text-ink">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyFirmicore() {
+  return (
+    <section className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>Why plants choose FirmiCore</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          One system, real-time by default, <span className="text-pulse">ready for audit from day one.</span>
+        </h2>
+        <div className="mt-12 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+          {valueProps.map((item) => (
+            <div key={item} className="flex items-start gap-3">
+              <span className="mt-0.5 font-sora text-base font-bold text-pulse">✓</span>
+              <span className="text-[14.5px] leading-relaxed text-ink-dim">{item}</span>
             </div>
           ))}
         </div>
@@ -323,30 +345,45 @@ function Roles() {
 }
 
 function Pricing() {
-  const plans = [
-    ["Starter", "Free", "10 machines", "3 users"],
-    ["Workshop", "$16/mo", "50 machines", "15 users"],
-    ["Factory", "$42/mo", "200 machines", "Unlimited users"],
-    ["Enterprise", "Custom", "Unlimited", "Unlimited users"],
-  ];
   return (
     <section id="pricing" className="relative overflow-hidden py-24 sm:py-32">
       <div className="bp-grid-fine absolute inset-0 opacity-25" />
-      <div className="relative mx-auto max-w-7xl px-5 text-center sm:px-8">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <SectionLabel>Pricing</SectionLabel>
-        <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-[52px]">
-          Per machine. <span className="text-pulse">Not per user.</span>
+        <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-[48px]">
+          Four tiers, scaled by <span className="text-pulse">fleet size and users.</span>
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-ink-dim">A factory with 200 machines and 10 staff pays $42/mo on Firmicore vs far more on per-seat competitors.</p>
+        <p className="mt-4 max-w-2xl text-ink-dim">
+          All limits and prices are indicative: confirm exact figures with sales before quoting a customer.
+        </p>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {plans.map(([name, price, machines, users]) => (
-            <div key={name} className={`relative rounded-2xl p-6 text-left lift ${name === "Factory" ? "border-2 border-power bg-power/15 shadow-glow" : "border border-white/8 bg-navy-800/40"}`}>
-              {name === "Factory" ? <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-power px-3 py-1 font-mono text-[10px] text-white">MOST POPULAR</div> : null}
-              <h3 className="font-sora text-2xl font-semibold">{name}</h3>
-              <div className="mt-6 font-sora text-4xl font-bold">{price}</div>
-              <div className="mt-2 text-sm text-ink-dim">{machines} · {users}</div>
-              <Link href="#cta-final" className={`mt-6 block rounded-lg py-2.5 text-center text-sm font-medium ${name === "Factory" ? "btn-glow bg-power text-white" : "border border-white/15 text-ink hover:border-pulse/50"}`}>
-                Start trial
+          {pricingTiers.map((tier) => (
+            <div
+              key={tier.name}
+              className={`relative flex flex-col gap-3.5 rounded-2xl p-6 text-left lift ${
+                tier.popular ? "border-2 border-power bg-power/15 shadow-glow" : "border border-white/8 bg-navy-800/40"
+              }`}
+            >
+              {tier.popular ? (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-power px-3 py-1 font-mono text-[10px] text-white">MOST POPULAR</div>
+              ) : null}
+              <h3 className="font-sora text-xl font-semibold">{tier.name}</h3>
+              <div>
+                <span className="font-sora text-3xl font-bold">{tier.price}</span>
+                <span className="ml-1 text-sm text-ink-mute">{tier.period}</span>
+              </div>
+              {tier.annual ? <div className="text-xs text-ink-mute">{tier.annual}</div> : null}
+              <div className="text-sm font-semibold text-ink-dim">{tier.limits}</div>
+              <div className="flex flex-1 flex-col gap-1.5">
+                {tier.features.map((feature) => (
+                  <div key={feature} className="flex gap-2 text-[12.5px] text-ink-dim">
+                    <span className="text-pulse">✓</span>
+                    {feature}
+                  </div>
+                ))}
+              </div>
+              <Link href="#cta-final" className={`mt-2 block rounded-lg py-2.5 text-center text-sm font-medium ${tier.popular ? "btn-glow bg-power text-white" : "border border-white/15 text-ink hover:border-pulse/50"}`}>
+                {tier.name === "Enterprise" ? "Talk to sales" : "Start trial"}
               </Link>
             </div>
           ))}
@@ -356,19 +393,60 @@ function Pricing() {
   );
 }
 
-function Roadmap() {
+function Security() {
   return (
-    <section id="roadmap" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionLabel>Roadmap</SectionLabel>
-        <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-5xl">What is <span className="text-pulse">coming.</span></h2>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {["Phase 1 - MVP", "Phase 2 - Growth", "Phase 3 - Scale"].map((phase, index) => (
-            <div key={phase} className={`rounded-xl p-6 ${index === 0 ? "border border-pulse/40 bg-pulse/10" : "border border-white/8 bg-navy-800/40"}`}>
-              <div className="font-mono text-[11px] uppercase tracking-wider text-pulse">{phase}</div>
-              <h3 className="mt-3 font-sora text-xl font-semibold">{index === 0 ? "Foundations" : index === 1 ? "Differentiation" : "Intelligence"}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-dim">Breakdown, work orders, triage, inventory, reports, AI prediction, IoT, and ERP integrations.</p>
+    <section id="security" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel tone="power">Deployment & security</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Multi-tenant by design. <span className="text-power-400">Nothing crosses a tenant boundary.</span>
+        </h2>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {securityPoints.map(([title, body]) => (
+            <div key={title}>
+              <div className="font-sora text-[15px] font-bold text-pulse">{title}</div>
+              <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function GetStarted() {
+  return (
+    <section className="relative py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>How you get started</SectionLabel>
+        <h2 className="mt-4 font-sora text-[36px] font-bold sm:text-5xl">
+          From discovery call <span className="text-pulse">to full deployment.</span>
+        </h2>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
+          {getStartedSteps.map(([num, title, body]) => (
+            <div key={num} className="bg-navy-900 p-6">
+              <div className="font-mono text-[12px] font-bold tracking-wide text-pulse">{num}</div>
+              <h3 className="mt-3 font-sora text-[15px] font-bold text-ink">{title}</h3>
+              <p className="mt-2 text-[12.5px] leading-relaxed text-ink-dim">{body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Blog() {
+  return (
+    <section id="blog" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>From the blog</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-5xl">
+          Notes on maintenance, uptime, <span className="text-pulse">and running a modern plant floor.</span>
+        </h2>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.slice(0, 3).map((post) => (
+            <PostCard key={post.slug} post={post} />
           ))}
         </div>
       </div>
@@ -378,21 +456,30 @@ function Roadmap() {
 
 function FinalCTA() {
   return (
-    <section id="cta-final" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-28 text-center sm:py-36">
+    <section id="cta-final" className="relative overflow-hidden py-28 text-center sm:py-36">
       <div className="bp-grid absolute inset-0 opacity-30" />
       <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 opacity-70">
         <ECGLine height={190} />
       </div>
       <div className="relative mx-auto max-w-4xl px-5 sm:px-8">
         <SectionLabel>Strength at the core</SectionLabel>
-        <h2 className="mt-5 font-sora text-[44px] font-bold leading-[1.02] sm:text-[68px]">
+        <h2 className="mt-5 font-sora text-[44px] font-bold leading-[1.02] sm:text-[64px]">
           Strength at the core <br />
           <span className="text-pulse">of every machine.</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-ink-dim">Start free with 10 machines. No credit card required. Set up in under an hour.</p>
+        <p className="mx-auto mt-6 max-w-xl text-ink-dim">Bring one connected maintenance system to your plant floor.</p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <a href="#" className="btn-glow rounded-lg bg-power px-6 py-3.5 font-medium text-white">Get Started Free</a>
-          <a href="#" className="px-6 py-3.5 font-medium text-pulse">Book a Demo</a>
+          <Link href="#" className="btn-glow rounded-lg bg-power px-6 py-3.5 font-medium text-white">
+            Book a demo
+          </Link>
+          <Link href="#" className="px-6 py-3.5 font-medium text-pulse">
+            Talk to sales
+          </Link>
+        </div>
+        <div className="mt-8 font-mono text-[13px] leading-relaxed text-ink-mute">
+          info@lumoraventures.com &nbsp;·&nbsp; +94 71 999 8500 &nbsp;·&nbsp; lumoraventures.com
+          <br />
+          Kurunegala Road, Kuliyapitiya 60200, Sri Lanka
         </div>
       </div>
     </section>
