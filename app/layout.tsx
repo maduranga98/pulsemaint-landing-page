@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   description:
     "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
   metadataBase: new URL("https://firmicore.com"),
+  alternates: { canonical: "/" },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -43,7 +44,37 @@ export const metadata: Metadata = {
     url: "https://firmicore.com",
     siteName: "Firmicore",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Firmicore" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Firmicore - Strength at the core of every machine.",
+    description:
+      "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
+    images: ["/og-image.png"],
+  },
+};
+
+const softwareJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Firmicore",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "Mobile-first CMMS platform for factory maintenance, breakdown tracking, and guided operator triage.",
+  offers: {
+    "@type": "Offer",
+    price: "29",
+    priceCurrency: "USD",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Firmicore",
+  url: "https://firmicore.com",
 };
 
 export default function RootLayout({
@@ -53,7 +84,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sora.variable} ${dmSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </body>
     </html>
   );
 }
