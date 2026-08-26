@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { posts } from "../blog-data";
+import { posts } from "../blog-posts";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel } from "../marketing-components";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const featured = posts[0];
+  const [featured, ...rest] = posts;
 
   return (
     <>
@@ -39,7 +39,7 @@ export default function BlogPage() {
                 Insights from the <span className="text-pulse">factory floor.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-ink-dim">
-                Field notes on maintenance, manufacturing, and the messy reality of running a plant.
+                Field notes on maintenance, manufacturing, and the messy reality of running a plant. Pricing breakdowns, honest competitor comparisons, and practical guides for plant teams.
               </p>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function BlogPage() {
                   {featured.title}
                 </h2>
                 <p className="mt-4 text-[15px] leading-relaxed text-ink-dim">{featured.excerpt}</p>
-                <div className="mt-auto pt-6 text-sm font-medium text-pulse">Read sample article</div>
+                <div className="mt-auto pt-6 text-sm font-medium text-pulse">Read the article</div>
               </div>
             </div>
           </Link>
@@ -73,12 +73,12 @@ export default function BlogPage() {
           <div className="mb-8 flex items-end justify-between gap-6">
             <div>
               <SectionLabel>Latest essays</SectionLabel>
-              <h2 className="mt-3 font-sora text-3xl font-bold">Structure for future posts</h2>
+              <h2 className="mt-3 font-sora text-3xl font-bold">Latest from the journal</h2>
             </div>
             <span className="hidden font-mono text-xs text-ink-mute sm:inline">Updated weekly</span>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
+            {rest.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}
           </div>

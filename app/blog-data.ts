@@ -1,3 +1,20 @@
+export type Block =
+  | { type: "p"; text: string }
+  | { type: "ul"; items: string[] }
+  | { type: "ol"; items: string[] }
+  | { type: "callout"; label?: string; text: string }
+  | { type: "stats"; items: [string, string][] }
+  | { type: "table"; caption?: string; headers: string[]; rows: string[][] }
+  | { type: "steps"; items: { title: string; text: string }[] }
+  | { type: "bars"; caption?: string; note?: string; items: { label: string; value: number; display: string }[] }
+  | { type: "faq"; items: { q: string; a: string }[] };
+
+export type Section = {
+  id: string;
+  heading: string;
+  blocks: Block[];
+};
+
 export type BlogPost = {
   title: string;
   slug: string;
@@ -7,38 +24,17 @@ export type BlogPost = {
   author: string;
   role: string;
   excerpt: string;
+  /** Long-form deck shown under the H1. */
+  deck?: string;
+  /** Caption for the hero figure. */
+  figure?: string;
+  /** Answer-first summary box rendered above the article body. */
+  takeaways?: string[];
+  /** Paragraphs rendered before the first H2. */
+  intro?: string[];
+  sections?: Section[];
+  /** Slugs of related posts shown in "Keep reading". */
+  related?: string[];
 };
 
-export const posts: BlogPost[] = [
-  {
-    title: "The Real Cost of Unplanned Downtime",
-    slug: "the-real-cost-of-unplanned-downtime",
-    category: "Operations",
-    read: "8 min",
-    date: "May 21, 2026",
-    author: "Tharindu Jayasekara",
-    role: "Founder, Lumora Ventures",
-    excerpt:
-      "The visible repair bill is rarely the problem. Lost output, overtime, scrap, and delayed customer orders usually cost far more.",
-  },
-  {
-    title: "Why QR Reporting Beats Paper Logs",
-    slug: "why-qr-reporting-beats-paper-logs",
-    category: "Product",
-    read: "5 min",
-    date: "May 14, 2026",
-    author: "Tharindu Jayasekara",
-    role: "Founder, Lumora Ventures",
-    excerpt: "A practical look at moving breakdown capture from clipboards to machine-level QR flows without disrupting the floor.",
-  },
-  {
-    title: "Guided Triage for Shared Factory Tablets",
-    slug: "guided-triage-for-shared-tablets",
-    category: "Engineering",
-    read: "6 min",
-    date: "May 8, 2026",
-    author: "Tharindu Jayasekara",
-    role: "Founder, Lumora Ventures",
-    excerpt: "How to design safe-action flows when personal phones are restricted and operators rotate across shifts.",
-  },
-];
+export { posts } from "./blog-posts";
