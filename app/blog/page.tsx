@@ -6,11 +6,24 @@ import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, Section
 export const metadata: Metadata = {
   title: "Blog",
   description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Blog | Firmicore",
+    description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+    url: "https://firmicore.com/blog",
+    type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Firmicore" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | Firmicore",
+    description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function BlogPage() {
   const featured = posts[0];
-  const allPosts = [...posts, ...posts.map((post, index) => ({ ...post, slug: `${post.slug}-${index + 2}`, title: `${post.title}: field note ${index + 2}` }))];
 
   return (
     <>
@@ -28,18 +41,6 @@ export default function BlogPage() {
               <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-ink-dim">
                 Field notes on maintenance, manufacturing, and the messy reality of running a plant.
               </p>
-            </div>
-            <div className="mt-12 flex flex-wrap gap-2">
-              {["All posts", "Operations", "Product", "Case study", "Engineering", "Industry"].map((category, index) => (
-                <button
-                  key={category}
-                  className={`rounded-full px-4 py-2 text-[13px] font-medium ring-1 ${
-                    index === 0 ? "bg-pulse/15 text-pulse ring-pulse/40" : "bg-navy-800/60 text-ink-dim ring-white/8"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
             </div>
           </div>
         </section>
@@ -77,7 +78,7 @@ export default function BlogPage() {
             <span className="hidden font-mono text-xs text-ink-mute sm:inline">Updated weekly</span>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {allPosts.map((post) => (
+            {posts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}
           </div>

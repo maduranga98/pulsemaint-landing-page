@@ -8,7 +8,7 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  return [{ slug: "the-real-cost-of-unplanned-downtime" }];
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -17,15 +17,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://firmicore.com/blog/${slug}`,
+      type: "article",
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: ["/og-image.png"],
+    },
   };
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = posts.find((item) => item.slug === slug) ?? posts[0];
+  const initials = post.author
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    author: { "@type": "Person", name: post.author },
+    datePublished: post.date,
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <Navbar />
       <main>
         <header className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
@@ -50,7 +82,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-white/8 pt-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-pulse to-power-400 font-sora font-bold text-navy-950">
-                TJ
+                {initials}
               </div>
               <div>
                 <div className="text-sm font-medium text-ink">{post.author}</div>
@@ -77,7 +109,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <aside className="hidden lg:col-span-3 lg:block">
             <div className="sticky top-24 rounded-xl border border-white/8 bg-navy-800/40 p-5">
               <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">On this page</div>
-              {["The downtime iceberg", "What to measure", "A better operating loop", "Sample post structure"].map((item) => (
+              {["The downtime iceberg", "What to measure", "A better operating loop", "Closing the loop"].map((item) => (
                 <a key={item} href={`#${item.toLowerCase().replaceAll(" ", "-")}`} className="block border-l border-white/10 py-1.5 pl-3 text-sm text-ink-dim hover:border-pulse hover:text-pulse">
                   {item}
                 </a>
@@ -141,11 +173,15 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             </div>
 
-            <h2 id="sample-post-structure">Sample post structure</h2>
+            <h2 id="closing-the-loop">Closing the loop</h2>
             <p>
-              This article is intentionally structured as a reusable template: hero metadata, author block, figure, sticky table of contents,
-              lede, H2 sections, stat grid, callout, visual flow, CTA, author bio, and related posts. Future Firmicore posts can follow the
-              same rhythm while swapping the data and body copy.
+              Downtime cost only becomes manageable once it is tracked consistently, not just remembered anecdotally. Teams that log
+              every stoppage against the same fields, machine, timestamp, cause, and resolution, start noticing patterns within weeks:
+              which lines fail most often, which parts wear out early, and which shifts are under-resourced.
+            </p>
+            <p>
+              That visibility is what turns maintenance from a reactive cost center into a lever for uptime. The technology matters less
+              than the discipline of capturing the same data every time a machine goes down.
             </p>
 
             <section className="relative my-12 overflow-hidden rounded-2xl border border-pulse/30 bg-gradient-to-br from-pulse/10 via-navy-800/60 to-power/10 p-8">
@@ -165,7 +201,8 @@ export default async function BlogPostPage({ params }: PageProps) {
             <section className="my-16 rounded-2xl border border-white/8 bg-navy-800/40 p-6">
               <div className="font-sora text-lg font-semibold">About the author</div>
               <p className="mb-0 mt-2 text-sm leading-relaxed text-ink-dim">
-                Tharindu works with manufacturing teams in Sri Lanka and Southeast Asia to design practical maintenance software for real factory constraints.
+                {post.author.split(" ")[0]} ({post.role}) works with manufacturing teams in Sri Lanka and Southeast Asia to design
+                practical maintenance software for real factory constraints.
               </p>
             </section>
           </article>

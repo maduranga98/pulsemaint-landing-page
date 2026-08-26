@@ -27,8 +27,8 @@ export const posts: BlogPost[] = [
     category: "Product",
     read: "5 min",
     date: "May 14, 2026",
-    author: "Nadeesha Perera",
-    role: "Product Lead",
+    author: "Tharindu Jayasekara",
+    role: "Founder, Lumora Ventures",
     excerpt: "A practical look at moving breakdown capture from clipboards to machine-level QR flows without disrupting the floor.",
   },
   {
@@ -37,8 +37,8 @@ export const posts: BlogPost[] = [
     category: "Engineering",
     read: "6 min",
     date: "May 8, 2026",
-    author: "Kasun Fernando",
-    role: "Engineering",
+    author: "Tharindu Jayasekara",
+    role: "Founder, Lumora Ventures",
     excerpt: "How to design safe-action flows when personal phones are restricted and operators rotate across shifts.",
   },
 ];

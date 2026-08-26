@@ -23,7 +23,7 @@ export function Logo() {
     <div className="flex items-center gap-2.5">
       <Image
         src="/logo.png"
-        alt=""
+        alt="Firmicore logo"
         width={44}
         height={44}
         className="h-10 w-10 rounded-lg object-contain shadow-[0_0_18px_rgba(0,194,255,0.22)]"
