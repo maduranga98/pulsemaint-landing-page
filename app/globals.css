@@ -194,3 +194,20 @@ h4 {
   color: var(--ink-dim);
   line-height: 1.65;
 }
+
+.article-prose ul,
+.article-prose ol {
+  padding-left: 1.25rem;
+}
+
+.article-prose ul {
+  list-style: disc;
+}
+
+.article-prose ol {
+  list-style: decimal;
+}
+
+.article-prose li::marker {
+  color: var(--pulse);
+}

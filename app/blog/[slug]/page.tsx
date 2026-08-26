@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { posts } from "../../blog-data";
+import { notFound } from "next/navigation";
+import { getPost, getRelated, posts } from "../../blog-posts";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "../../marketing-components";
+import { ArticleBlock } from "./article-blocks";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
+
+const SITE_URL = "https://firmicore.com";
 
 export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -13,22 +17,28 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = posts.find((item) => item.slug === slug) ?? posts[0];
+  const post = getPost(slug);
+  if (!post) return {};
+
+  const description = post.deck ?? post.excerpt;
   return {
     title: post.title,
-    description: post.excerpt,
+    description,
     alternates: { canonical: `/blog/${slug}` },
+    authors: [{ name: post.author }],
     openGraph: {
       title: post.title,
-      description: post.excerpt,
-      url: `https://firmicore.com/blog/${slug}`,
+      description,
+      url: `${SITE_URL}/blog/${slug}`,
       type: "article",
+      publishedTime: new Date(post.date).toISOString(),
+      authors: [post.author],
       images: [{ url: "/og-image.png", width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.excerpt,
+      description,
       images: ["/og-image.png"],
     },
   };
@@ -36,27 +46,68 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = posts.find((item) => item.slug === slug) ?? posts[0];
+  const post = getPost(slug);
+  if (!post) notFound();
+
+  const sections = post.sections ?? [];
+  const related = getRelated(post);
+  const publishedISO = new Date(post.date).toISOString();
   const initials = post.author
     .split(" ")
     .map((part) => part[0])
     .join("")
     .toUpperCase();
 
-  const articleJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
-    author: { "@type": "Person", name: post.author },
-    datePublished: post.date,
-  };
+  const faqItems = sections.flatMap((section) =>
+    section.blocks.flatMap((block) => (block.type === "faq" ? block.items : [])),
+  );
+
+  const jsonLd: Record<string, unknown>[] = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.deck ?? post.excerpt,
+      author: { "@type": "Person", name: post.author, jobTitle: post.role },
+      publisher: {
+        "@type": "Organization",
+        name: "Firmicore",
+        url: SITE_URL,
+      },
+      datePublished: publishedISO,
+      dateModified: publishedISO,
+      mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
+      image: `${SITE_URL}/og-image.png`,
+      articleSection: post.category,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Firmicore", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+        { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
+      ],
+    },
+  ];
+
+  if (faqItems.length > 0) {
+    jsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    });
+  }
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <Navbar />
       <main>
@@ -76,10 +127,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <span className="font-mono text-xs text-ink-mute">{post.read} · {post.date}</span>
             </div>
             <h1 className="font-sora text-[36px] font-bold leading-[1.05] sm:text-[52px]">{post.title}</h1>
-            <p className="mt-5 text-[18px] leading-relaxed text-ink-dim sm:text-xl">
-              The visible repair bill is only the top layer. The real damage hides in lost throughput, scrap, overtime, missed orders,
-              and the trust your team loses when every shift starts in reactive mode.
-            </p>
+            <p className="mt-5 text-[18px] leading-relaxed text-ink-dim sm:text-xl">{post.deck ?? post.excerpt}</p>
             <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-white/8 pt-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-pulse to-power-400 font-sora font-bold text-navy-950">
                 {initials}
@@ -100,89 +148,50 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="overflow-hidden rounded-2xl border border-white/8 bg-navy-950">
             <ArticleThumb category={post.category} />
           </div>
-          <div className="mt-3 text-center font-mono text-xs text-ink-mute">
-            Fig. 01 - Reported downtime cost vs hidden operational drag across a maintenance year.
-          </div>
+          {post.figure ? (
+            <div className="mt-3 text-center font-mono text-xs text-ink-mute">{post.figure}</div>
+          ) : null}
         </div>
 
         <section className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-12">
           <aside className="hidden lg:col-span-3 lg:block">
             <div className="sticky top-24 rounded-xl border border-white/8 bg-navy-800/40 p-5">
               <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">On this page</div>
-              {["The downtime iceberg", "What to measure", "A better operating loop", "Closing the loop"].map((item) => (
-                <a key={item} href={`#${item.toLowerCase().replaceAll(" ", "-")}`} className="block border-l border-white/10 py-1.5 pl-3 text-sm text-ink-dim hover:border-pulse hover:text-pulse">
-                  {item}
+              {sections.map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  className="block border-l border-white/10 py-1.5 pl-3 text-sm text-ink-dim hover:border-pulse hover:text-pulse"
+                >
+                  {section.heading}
                 </a>
               ))}
             </div>
           </aside>
           <article className="article-prose lg:col-span-9">
-            <p className="text-[19px] leading-[1.7] text-ink first-letter:float-left first-letter:mr-3 first-letter:font-sora first-letter:text-[56px] first-letter:font-bold first-letter:leading-[0.9] first-letter:text-pulse">
-              Unplanned downtime is usually discussed like a repair problem. A bearing failed, a motor tripped, a valve stuck open.
-              Someone asks how long it took to fix. Someone else asks what part was replaced. The invoice gets filed and everyone moves on.
-            </p>
-
-            <h2 id="the-downtime-iceberg">The downtime iceberg</h2>
-            <p>
-              The most expensive parts of a stoppage rarely show up on the maintenance invoice. They sit in production schedules, quality
-              rejects, overtime, customer penalties, and supervisor attention. In most factories, those costs are scattered across teams.
-            </p>
-            <div className="my-8 grid gap-3 sm:grid-cols-4">
-              {[["3-5x", "hidden cost multiplier"], ["42m", "average MTTR target"], ["17", "active tickets"], ["99.2%", "uptime goal"]].map(([value, label]) => (
-                <div key={label} className="rounded-lg border border-white/8 bg-navy-800/40 p-4">
-                  <div className="font-sora text-3xl font-bold text-pulse">{value}</div>
-                  <div className="mt-2 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{label}</div>
-                </div>
-              ))}
-            </div>
-
-            <h2 id="what-to-measure">What to measure</h2>
-            <p>
-              Start with a minimum reliable dataset: machine, line, timestamp, reporter, severity, technician response time, parts used,
-              root cause, safe actions taken, and final resolution. If your system cannot capture this under pressure, it will not survive
-              a real breakdown.
-            </p>
-            <ul>
-              <li>Use QR codes so reports start at the machine, not in a spreadsheet.</li>
-              <li>Capture operator evidence before memory fades or the machine is cleaned.</li>
-              <li>Separate response time from repair time so staffing issues become visible.</li>
-              <li>Attach parts usage to work orders so inventory planning follows reality.</li>
-            </ul>
-
-            <div className="my-10 rounded-xl border border-pulse/35 bg-pulse/5 p-6">
-              <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">Firmicore note</div>
-              <p className="mb-0 text-ink">
-                The goal is not more forms. The goal is a lightweight operating loop where every breakdown makes the next response faster.
-              </p>
-            </div>
-
-            <h2 id="a-better-operating-loop">A better operating loop</h2>
-            <p>
-              A modern maintenance flow should work like a control room: report instantly, route clearly, guide the first safe actions,
-              log the repair, update the machine history, and recalculate the dashboard without manual reconciliation.
-            </p>
-            <div className="my-10 overflow-hidden rounded-xl border border-white/8 bg-navy-800/30 p-6">
-              <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">Example flow</div>
-              <div className="grid gap-3 sm:grid-cols-5">
-                {["Report", "Triage", "Assign", "Repair", "Learn"].map((step, index) => (
-                  <div key={step} className="rounded-lg border border-white/8 bg-navy-950/60 p-4">
-                    <div className="font-mono text-xs text-pulse">0{index + 1}</div>
-                    <div className="mt-2 font-sora font-semibold">{step}</div>
-                  </div>
-                ))}
+            {post.takeaways?.length ? (
+              <div className="mb-10 rounded-2xl border border-white/10 bg-navy-800/50 p-6">
+                <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">Key takeaways</div>
+                <ul className="mb-0">
+                  {post.takeaways.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            ) : null}
 
-            <h2 id="closing-the-loop">Closing the loop</h2>
-            <p>
-              Downtime cost only becomes manageable once it is tracked consistently, not just remembered anecdotally. Teams that log
-              every stoppage against the same fields, machine, timestamp, cause, and resolution, start noticing patterns within weeks:
-              which lines fail most often, which parts wear out early, and which shifts are under-resourced.
-            </p>
-            <p>
-              That visibility is what turns maintenance from a reactive cost center into a lever for uptime. The technology matters less
-              than the discipline of capturing the same data every time a machine goes down.
-            </p>
+            {post.intro?.map((text, index) => (
+              <ArticleBlock key={text} block={{ type: "p", text }} lead={index === 0} />
+            ))}
+
+            {sections.map((section) => (
+              <section key={section.id}>
+                <h2 id={section.id}>{section.heading}</h2>
+                {section.blocks.map((block, index) => (
+                  <ArticleBlock key={index} block={block} />
+                ))}
+              </section>
+            ))}
 
             <section className="relative my-12 overflow-hidden rounded-2xl border border-pulse/30 bg-gradient-to-br from-pulse/10 via-navy-800/60 to-power/10 p-8">
               <div className="absolute inset-0 opacity-35">
@@ -214,8 +223,8 @@ export default async function BlogPostPage({ params }: PageProps) {
             <Link href="/blog" className="text-sm text-pulse">All essays</Link>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
-            {posts.map((related) => (
-              <PostCard key={related.slug} post={related} />
+            {related.map((item) => (
+              <PostCard key={item.slug} post={item} />
             ))}
           </div>
         </section>
