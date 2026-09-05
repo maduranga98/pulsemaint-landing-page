@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "What Is MTTR? How to Calculate and Improve Mean Time to Repair",
+  seoTitle: "What Is MTTR? Formula and How to Improve It",
   slug: "what-is-mttr",
   category: "Operations",
   read: "6 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "MTTR is the simplest maintenance metric to define and the easiest to measure wrongly. The formula, the related metrics, and the mistakes that make the number meaningless.",
+  metaDescription:
+    "Mean time to repair: the formula, how it differs from MTBF and MTTA, what counts toward the clock, and the mistakes that flatter the number.",
   deck: "A short reference on mean time to repair: the formula, how it differs from MTBF and MTTA, what counts toward it, and the measurement mistakes that flatter the number without improving anything.",
   takeaways: [
     "MTTR is total downtime across incidents divided by the number of incidents, over a defined period and asset set.",

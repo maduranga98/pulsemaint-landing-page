@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "What Is a CMMS? The Complete Guide for Manufacturing Teams",
+  seoTitle: "What Is a CMMS? A Guide for Manufacturers",
   slug: "what-is-a-cmms",
   category: "Guides",
   read: "12 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "A computerised maintenance management system is the record of what your machines do, who fixes them, and what it costs. This is the complete guide for manufacturing teams.",
+  metaDescription:
+    "What a CMMS is, what its core modules do, how it differs from EAM and ERP maintenance modules, and how to evaluate one without being sold to.",
   deck: "Everything a manufacturing team needs to understand before evaluating maintenance software: what a CMMS is, what the core modules actually do, how it differs from EAM and ERP maintenance modules, and how to evaluate one without being sold to.",
   figure: "Fig. 01 - The four core CMMS modules and how data flows between them.",
   takeaways: [

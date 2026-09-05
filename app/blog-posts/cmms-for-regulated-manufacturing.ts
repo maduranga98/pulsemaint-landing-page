@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "CMMS for Regulated Manufacturing: Textile, Food & Beverage, and Pharma",
+  seoTitle: "CMMS for Regulated Manufacturing",
   slug: "cmms-for-regulated-manufacturing",
   category: "Case study",
   read: "11 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "Three regulated verticals, three different definitions of an adequate maintenance record. What matters in textile, food and beverage, and pharmaceutical plants.",
+  metaDescription:
+    "What auditors look for in textile, food and beverage, and pharma maintenance records, and how to make a CMMS produce it by default.",
   deck: "Compliance requirements do not change what maintenance software does - they change what counts as a complete record. This covers what auditors actually look for in three verticals, and the common thread across all of them.",
   takeaways: [
     "Regulated manufacturing does not need different maintenance workflows - it needs the same workflows with audit-grade records attached.",

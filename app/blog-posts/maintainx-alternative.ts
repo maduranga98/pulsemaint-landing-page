@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "MaintainX Alternative: Why Manufacturers Are Switching to Per-Machine Pricing",
+  seoTitle: "MaintainX Alternative: Per-Machine CMMS",
   slug: "maintainx-alternative",
   category: "Comparison",
   read: "8 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "MaintainX is a strong, mature product with a real free tier. It also charges per user, which is the single biggest reason manufacturers outgrow it. An honest comparison.",
+  metaDescription:
+    "A straight comparison of MaintainX and a per-machine priced CMMS: where each wins on cost, user limits, and floor adoption, and how to choose.",
   deck: "MaintainX is one of the best-known names in maintenance software, and for good reason. This is a straight comparison of where it wins, where a per-machine alternative wins, and how to tell which side of the line your plant sits on.",
   figure: "Fig. 01 - Where each platform is strongest across pricing model, floor reporting, and contractor workflows.",
   takeaways: [

@@ -17,13 +17,19 @@ export type Section = {
 
 export type BlogPost = {
   title: string;
+  /** Short title for <title>/OG. Keep under ~50 chars so the SERP does not truncate it. */
+  seoTitle?: string;
   slug: string;
   category: string;
   read: string;
   date: string;
+  /** Set when a post is materially revised, so schema can emit a real dateModified. */
+  updated?: string;
   author: string;
   role: string;
   excerpt: string;
+  /** Meta description. Keep under 160 chars; deck/excerpt are too long for the SERP. */
+  metaDescription?: string;
   /** Long-form deck shown under the H1. */
   deck?: string;
   /** Caption for the hero figure. */

@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "How to Report a Machine Breakdown: From Paper Logs to QR Code Reporting",
+  seoTitle: "How to Report a Machine Breakdown",
   slug: "how-to-report-a-machine-breakdown",
   category: "Guides",
   read: "8 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "A breakdown report is the first and most fragile link in the maintenance chain. Get it wrong and every downstream metric is guesswork. Here is what good looks like.",
+  metaDescription:
+    "The five ways breakdowns get reported, what a complete report captures, and how QR intake works on factory floors where phones are banned.",
   deck: "Most maintenance data problems are not analysis problems. They are intake problems. This is a practical guide to the five ways breakdowns get reported, what a good report captures, and how to make it work on floors where phones are banned.",
   figure: "Fig. 01 - Breakdown reporting channels and the data each one reliably captures.",
   takeaways: [

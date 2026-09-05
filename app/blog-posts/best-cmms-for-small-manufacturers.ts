@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Best CMMS Software for Small Manufacturers in 2026",
+  seoTitle: "Best CMMS for Small Manufacturers (2026)",
   slug: "best-cmms-for-small-manufacturers",
   category: "Comparison",
   read: "10 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "Small manufacturers do not need a smaller version of enterprise maintenance software. They need different software. Here is what to shortlist and what to avoid.",
+  metaDescription:
+    "How to shortlist CMMS software for a small factory: what to prioritise with no IT team, what to skip, and the red flags that surface in month seven.",
   deck: "A 40-machine factory with no IT department has different constraints from a multi-site enterprise, and the vendors that serve it well are not always the biggest names. What to prioritise, what to shortlist, and the red flags that show up in month seven.",
   takeaways: [
     "Small manufacturers are cost-sensitive and IT-light, so setup speed and self-service configuration matter more than feature depth.",

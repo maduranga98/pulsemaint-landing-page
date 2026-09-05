@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "How to Reduce Machine Downtime: A Practical Guide for Plant Managers",
+  seoTitle: "How to Reduce Machine Downtime",
   slug: "how-to-reduce-machine-downtime",
   category: "Operations",
   read: "10 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "Downtime is a clock with five segments, and most plants only try to shorten one of them. Here are six levers, ordered by how quickly they pay back.",
+  metaDescription:
+    "Downtime is five sequential delays: report, acknowledge, assign, repair, resolve. Repair is rarely the longest. What to measure and which lever moves first.",
   deck: "Reducing downtime is not one problem. It is five sequential delays - report, acknowledge, assign, repair, resolve - and the repair segment is usually not the longest one. This guide covers what to measure and which levers move first.",
   figure: "Fig. 01 - The downtime clock broken into its five measurable segments.",
   takeaways: [

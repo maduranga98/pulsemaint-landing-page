@@ -3,21 +3,34 @@ import Link from "next/link";
 import { posts } from "../blog-posts";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel } from "../marketing-components";
 
+const TITLE = "CMMS & Factory Maintenance Blog";
+const DESCRIPTION =
+  "Field notes on CMMS software, breakdown response, and plant reliability: pricing breakdowns, competitor comparisons, and practical guides for plant teams.";
+
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "Blog | Firmicore",
-    description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
-    url: "https://firmicore.com/blog",
+    title: `${TITLE} | Firmicore`,
+    description: DESCRIPTION,
+    url: "https://firmicore.com/blog/",
+    siteName: "Firmicore",
+    locale: "en_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Firmicore" }],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Firmicore - mobile-first CMMS for factory maintenance",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog | Firmicore",
-    description: "Firmicore field notes on factory maintenance, breakdown operations, product design, and plant reliability.",
+    title: `${TITLE} | Firmicore`,
+    description: DESCRIPTION,
     images: ["/og-image.png"],
   },
 };
