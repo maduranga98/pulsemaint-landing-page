@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Cryotos Alternative: WhatsApp Breakdown Reporting Without the Per-User Trade-off",
+  seoTitle: "Cryotos Alternative for Factory Teams",
   slug: "cryotos-alternative",
   category: "Comparison",
   read: "7 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "Cryotos gets something right that most Western CMMS vendors miss: factory floors in South Asia already run on WhatsApp. Here is how the two platforms compare on intake, triage, and pricing.",
+  metaDescription:
+    "Cryotos compared with a per-machine CMMS on what decides floor adoption: breakdown intake channel, per-user limits, and rollout effort.",
   deck: "If you are evaluating Cryotos, you have probably already worked out that intake channel matters more than feature count. This compares the two platforms on the things that decide adoption on an actual factory floor.",
   figure: "Fig. 01 - Breakdown intake channels compared across mobile-permitted and mobile-restricted floors.",
   takeaways: [

@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Why QR Reporting Beats Paper Logs",
+  seoTitle: "Why QR Reporting Beats Paper Logs",
   slug: "why-qr-reporting-beats-paper-logs",
   category: "Product",
   read: "5 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "A practical look at moving breakdown capture from clipboards to machine-level QR flows without disrupting the floor.",
+  metaDescription:
+    "QR reporting is a data-quality fix, not a technology upgrade: it removes the field operators get wrong most often and starts the clock at the machine.",
   deck: "QR reporting is not a technology upgrade. It is a data-quality fix - it removes the one field operators get wrong most often, and it starts the clock at the machine.",
   intro: [
     "Paper logbooks survive because they work under pressure. Nothing needs charging, nothing needs a password, and everybody already knows how. Any replacement has to be at least as fast at the moment a machine stops, or it will not be used.",

@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Work Order Software: What It Is and How to Choose One",
+  seoTitle: "Work Order Software: How to Choose One",
   slug: "work-order-software",
   category: "Guides",
   read: "9 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "A work order is a contract between the person who found the problem and the person who fixes it. Here are the eight types, the full lifecycle, and what to look for in software.",
+  metaDescription:
+    "The eight work order types every plant deals with, what a complete work order lifecycle looks like, and the features that decide technician adoption.",
   deck: "Work order software is where maintenance intent becomes maintenance record. This covers the eight work order types every plant deals with, what a complete lifecycle looks like, and the features that decide whether technicians actually use the thing.",
   figure: "Fig. 01 - The work order lifecycle from creation through sign-off and machine history.",
   takeaways: [

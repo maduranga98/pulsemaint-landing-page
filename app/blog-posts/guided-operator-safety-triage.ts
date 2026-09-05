@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Guided Operator Safety Triage: A New Approach to Factory Floor Response",
+  seoTitle: "Guided Operator Safety Triage Explained",
   slug: "guided-operator-safety-triage",
   category: "Engineering",
   read: "9 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "There is a gap between a machine stopping and a technician arriving. Nobody's software manages it, and something always happens in it. That gap is the argument for guided triage.",
+  metaDescription:
+    "Most CMMS platforms treat the minutes between breakdown and repair as dead time. Guided triage turns that window into a structured, auditable sequence.",
   deck: "Every CMMS on the market treats the minutes between breakdown and repair as dead time. On a real floor, that is when an operator improvises. Guided triage turns that window into a structured, auditable, safer sequence.",
   figure: "Fig. 01 - The unmanaged window between failure and technician arrival, and what guided triage puts into it.",
   takeaways: [

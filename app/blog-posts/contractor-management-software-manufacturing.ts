@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Contractor Management Software for Manufacturing: A Buyer's Checklist",
+  seoTitle: "Contractor Management Software for Plants",
   slug: "contractor-management-software-manufacturing",
   category: "Operations",
   read: "8 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "External contractors need full accountability without an app install, a login, or a licence. Here is the lifecycle to support and the checklist to evaluate against.",
+  metaDescription:
+    "Contractor work is the part of maintenance that escapes the system: assigned by phone, tracked on WhatsApp, invoiced against nothing. The fix.",
   deck: "Contractor work is the part of maintenance that most often escapes the system entirely - assigned by phone, tracked on WhatsApp, invoiced against nothing. This is the workflow that fixes it.",
   figure: "Fig. 01 - The contractor lifecycle from registration through rating.",
   takeaways: [

@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "What Is Preventive Maintenance? A Beginner's Guide",
+  seoTitle: "What Is Preventive Maintenance?",
   slug: "what-is-preventive-maintenance",
   category: "Guides",
   read: "8 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "Preventive maintenance is work done on a schedule rather than after a failure. The definitions are simple; making the schedule survive a busy month is the hard part.",
+  metaDescription:
+    "Calendar-based vs meter-based schedules, how to build a checklist technicians will actually complete, and a realistic first 90 days of PM.",
   deck: "Definitions, the difference between calendar-based and meter-based schedules, how to build a checklist that technicians will actually complete, and a realistic first 90 days.",
   figure: "Fig. 01 - Preventive, reactive, and predictive maintenance compared by trigger and cost profile.",
   takeaways: [

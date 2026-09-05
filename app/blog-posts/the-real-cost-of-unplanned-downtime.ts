@@ -2,6 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "The Real Cost of Unplanned Downtime",
+  seoTitle: "The Real Cost of Unplanned Downtime",
   slug: "the-real-cost-of-unplanned-downtime",
   category: "Operations",
   read: "8 min",
@@ -10,6 +11,8 @@ export const post: BlogPost = {
   role: "Founder, Lumora Ventures",
   excerpt:
     "The visible repair bill is rarely the problem. Lost output, overtime, scrap, and delayed customer orders usually cost far more.",
+  metaDescription:
+    "The repair bill is the top layer. The real damage is lost throughput, scrap, overtime, missed orders, and a team that starts every shift reactive.",
   deck: "The visible repair bill is only the top layer. The real damage hides in lost throughput, scrap, overtime, missed orders, and the trust your team loses when every shift starts in reactive mode.",
   figure: "Fig. 01 - Reported downtime cost vs hidden operational drag across a maintenance year.",
   intro: [

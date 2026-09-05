@@ -10,6 +10,8 @@ type PageProps = {
 };
 
 const SITE_URL = "https://firmicore.com";
+const SITE_NAME = "Firmicore";
+const LOGO_URL = `${SITE_URL}/logo.png`;
 
 export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -20,26 +22,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = getPost(slug);
   if (!post) return {};
 
-  const description = post.deck ?? post.excerpt;
+  // deck/excerpt run 165-250 chars and truncate in the SERP, so posts carry a
+  // purpose-written metaDescription; the fallbacks only apply to new drafts.
+  const description = post.metaDescription ?? post.excerpt;
+  const title = post.seoTitle ?? post.title;
+  const publishedTime = new Date(post.date).toISOString();
+  const modifiedTime = post.updated ? new Date(post.updated).toISOString() : publishedTime;
+
   return {
-    title: post.title,
+    title,
     description,
     alternates: { canonical: `/blog/${slug}` },
     authors: [{ name: post.author }],
     openGraph: {
-      title: post.title,
+      title,
       description,
-      url: `${SITE_URL}/blog/${slug}`,
+      url: `${SITE_URL}/blog/${slug}/`,
+      siteName: SITE_NAME,
+      locale: "en_US",
       type: "article",
-      publishedTime: new Date(post.date).toISOString(),
+      publishedTime,
+      modifiedTime,
       authors: [post.author],
-      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: post.title }],
+      section: post.category,
+      // Image comes from the colocated opengraph-image route, which renders a
+      // per-post card instead of the one shared /og-image.png.
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title,
       description,
-      images: ["/og-image.png"],
     },
   };
 }
@@ -52,6 +64,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   const sections = post.sections ?? [];
   const related = getRelated(post);
   const publishedISO = new Date(post.date).toISOString();
+  const modifiedISO = post.updated ? new Date(post.updated).toISOString() : publishedISO;
+  const postUrl = `${SITE_URL}/blog/${post.slug}/`;
   const initials = post.author
     .split(" ")
     .map((part) => part[0])
@@ -67,26 +81,37 @@ export default async function BlogPostPage({ params }: PageProps) {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: post.title,
-      description: post.deck ?? post.excerpt,
+      description: post.metaDescription ?? post.excerpt,
       author: { "@type": "Person", name: post.author, jobTitle: post.role },
       publisher: {
         "@type": "Organization",
-        name: "Firmicore",
-        url: SITE_URL,
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        logo: { "@type": "ImageObject", url: LOGO_URL },
       },
       datePublished: publishedISO,
-      dateModified: publishedISO,
-      mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
-      image: `${SITE_URL}/og-image.png`,
+      dateModified: modifiedISO,
+      mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+      url: postUrl,
+      // Matches the file emitted by the colocated opengraph-image route. It is
+      // extensionless, so firebase.json sets its Content-Type explicitly.
+      image: {
+        "@type": "ImageObject",
+        url: `${postUrl}opengraph-image`,
+        width: 1200,
+        height: 630,
+      },
+      inLanguage: "en",
       articleSection: post.category,
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Firmicore", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
-        { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
+        { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog/` },
+        { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
       ],
     },
   ];
