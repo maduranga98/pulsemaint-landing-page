@@ -91,7 +91,7 @@ export function Navbar() {
     ["Roles", "/#roles"],
     ["Pricing", "/#pricing"],
     ["Security", "/#security"],
-    ["Blog", "/blog"],
+    ["Blog", "/blog/"],
   ];
 
   return (
@@ -145,7 +145,7 @@ export function Footer() {
   const columns = [
     { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ["LinkedIn", "#"]] },
-    { title: "Resources", links: [["Blog", "/blog"], ["Guided demo", "/#cta-final"], ["Talk to sales", "/#cta-final"]] },
+    { title: "Resources", links: [["Blog", "/blog/"], ["Guided demo", "/#cta-final"], ["Talk to sales", "/#cta-final"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 
@@ -241,7 +241,7 @@ export function ArticleThumb({ category = "Product" }: { category?: string }) {
 
 export function PostCard({ post }: { post: BlogPost }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/8 bg-navy-800/40 lift hover:border-pulse/35">
+    <Link href={`/blog/${post.slug}/`} className="group flex h-full flex-col overflow-hidden rounded-xl border border-white/8 bg-navy-800/40 lift hover:border-pulse/35">
       <div className="aspect-[16/9] bg-navy-950">
         <ArticleThumb category={post.category} />
       </div>

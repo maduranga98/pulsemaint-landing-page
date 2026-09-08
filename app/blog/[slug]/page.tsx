@@ -32,7 +32,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    alternates: { canonical: `/blog/${slug}` },
+    // Trailing slash is required: `trailingSlash: true` serves this route at
+    // /blog/<slug>/ and 301s the unslashed form.
+    alternates: { canonical: `/blog/${slug}/` },
     authors: [{ name: post.author }],
     openGraph: {
       title,
@@ -143,7 +145,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <nav className="mb-8 flex items-center gap-2 font-mono text-[12px] text-ink-mute">
               <Link href="/" className="hover:text-pulse">Firmicore</Link>
               <span>/</span>
-              <Link href="/blog" className="hover:text-pulse">Blog</Link>
+              <Link href="/blog/" className="hover:text-pulse">Blog</Link>
               <span>/</span>
               <span className="text-pulse">{post.category}</span>
             </nav>
@@ -245,7 +247,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <section className="mx-auto max-w-5xl border-t border-white/8 px-5 py-16 sm:px-8">
           <div className="mb-8 flex items-center justify-between">
             <h2 className="font-sora text-2xl font-semibold">Keep reading</h2>
-            <Link href="/blog" className="text-sm text-pulse">All essays</Link>
+            <Link href="/blog/" className="text-sm text-pulse">All essays</Link>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">
             {related.map((item) => (
