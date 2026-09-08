@@ -10,7 +10,9 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/blog" },
+  // Trailing slash is required: `trailingSlash: true` serves this route at
+  // /blog/ and 301s /blog, so an unslashed canonical points at a redirect.
+  alternates: { canonical: "/blog/" },
   openGraph: {
     title: `${TITLE} | Firmicore`,
     description: DESCRIPTION,
@@ -59,7 +61,7 @@ export default function BlogPage() {
         </section>
 
         <section className="mx-auto max-w-7xl px-5 pb-16 sm:px-8">
-          <Link href={`/blog/${featured.slug}`} className="group block overflow-hidden rounded-2xl border border-white/8 bg-navy-800/40 lift hover:border-pulse/40">
+          <Link href={`/blog/${featured.slug}/`} className="group block overflow-hidden rounded-2xl border border-white/8 bg-navy-800/40 lift hover:border-pulse/40">
             <div className="grid lg:grid-cols-12">
               <div className="relative aspect-[16/10] bg-navy-950 lg:col-span-7 lg:aspect-auto">
                 <ArticleThumb category={featured.category} />
