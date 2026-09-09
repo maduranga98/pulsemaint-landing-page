@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { posts } from "../blog-posts";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel } from "../marketing-components";
+import { SITE_NAME, SITE_URL } from "../site-data";
 
 const TITLE = "CMMS & Factory Maintenance Blog";
 const DESCRIPTION =
@@ -37,17 +38,81 @@ export const metadata: Metadata = {
   },
 };
 
+const BLOG_URL = `${SITE_URL}/blog/`;
+
+/**
+ * A Blog node with an explicit ItemList gives retrieval systems the full index
+ * from one fetch, including the titles and summaries of posts that are only
+ * reachable by paging through cards. Without it, the archive is discovered one
+ * link at a time and the long tail is routinely missed.
+ */
+const blogJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${BLOG_URL}#blog`,
+    name: `${SITE_NAME} — ${TITLE}`,
+    description: DESCRIPTION,
+    url: BLOG_URL,
+    inLanguage: "en",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      "@id": `${SITE_URL}/blog/${post.slug}/`,
+      headline: post.title,
+      description: post.metaDescription ?? post.excerpt,
+      url: `${SITE_URL}/blog/${post.slug}/`,
+      datePublished: new Date(post.date).toISOString(),
+      dateModified: new Date(post.updated ?? post.date).toISOString(),
+      author: { "@type": "Person", name: post.author },
+      articleSection: post.category,
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${BLOG_URL}#index`,
+    name: `${SITE_NAME} articles`,
+    numberOfItems: posts.length,
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: posts.map((post, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: post.title,
+      url: `${SITE_URL}/blog/${post.slug}/`,
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Blog", item: BLOG_URL },
+    ],
+  },
+];
+
 export default function BlogPage() {
   const [featured, ...rest] = posts;
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd).replace(/</g, "\\u003c") }}
+      />
       <Navbar />
       <main>
         <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
           <div className="bp-grid absolute inset-0 opacity-40" />
           <div className="absolute inset-0 bg-[radial-gradient(800px_500px_at_85%_-10%,rgba(0,194,255,0.2),transparent_60%)]" />
           <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+            <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 font-mono text-[12px] text-ink-mute">
+              <Link href="/" className="hover:text-pulse">{SITE_NAME}</Link>
+              <span>/</span>
+              <span className="text-pulse">Blog</span>
+            </nav>
             <div className="max-w-3xl">
               <SectionLabel>The Firmicore Journal</SectionLabel>
               <h1 className="mt-5 font-sora text-[44px] font-bold leading-[1.04] sm:text-[60px]">
@@ -55,6 +120,13 @@ export default function BlogPage() {
               </h1>
               <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-ink-dim">
                 Field notes on maintenance, manufacturing, and the messy reality of running a plant. Pricing breakdowns, honest competitor comparisons, and practical guides for plant teams.
+              </p>
+              <p className="mt-4 text-sm text-ink-dim">
+                Looking for a definition rather than an essay?{" "}
+                <Link href="/glossary/" className="text-pulse">
+                  Start with the maintenance glossary
+                </Link>
+                .
               </p>
             </div>
           </div>
