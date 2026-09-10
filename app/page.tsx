@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { posts } from "./blog-data";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
+import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
 
 const heroStats = [
   ["9", "Role-based workspaces"],
@@ -82,12 +83,90 @@ const getStartedSteps = [
   ["04", "Full deployment", "Scale across sites, with roles pre-configured."],
 ];
 
+/**
+ * Homepage JSON-LD.
+ *
+ * The layout emits the Organization/WebSite/SoftwareApplication entities; these
+ * are the page-level ones. FAQPage and HowTo both mirror content that is
+ * visible on the page - schema that describes text a reader cannot see is a
+ * structured-data violation and gets the markup ignored wholesale.
+ */
+function homeJsonLd() {
+  const faqPage = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${SITE_URL}/#faq`,
+    mainEntity: FAQS.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
+  const howTo = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "@id": `${SITE_URL}/#rollout`,
+    name: `How to roll out ${SITE_NAME} at a plant`,
+    description:
+      "The four steps from first call to a plant-wide deployment: discovery call, guided demo, pilot on one line or site, then full deployment.",
+    step: getStartedSteps.map(([num, title, body], index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: title,
+      text: body,
+      url: `${SITE_URL}/#rollout-${num}`,
+    })),
+  };
+
+  const webPage = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/#webpage`,
+    url: `${SITE_URL}/`,
+    name: `${SITE_NAME} - multi-tenant CMMS for manufacturing and process plants`,
+    description: ONE_LINER,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#software` },
+    inLanguage: "en",
+    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/og-image.png` },
+    // The one-line definition and the FAQ answers are the passages worth
+    // reading aloud or quoting; pointing at them beats letting a parser guess.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#at-a-glance-summary", "#faq"],
+    },
+    significantLink: [`${SITE_URL}/glossary/`, `${SITE_URL}/blog/`],
+  };
+
+  const modulesList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${SITE_URL}/#modules-list`,
+    name: `${SITE_NAME} core modules`,
+    numberOfItems: modules.length,
+    itemListElement: modules.map(([, name, body], index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+      description: body,
+    })),
+  };
+
+  return [webPage, faqPage, howTo, modulesList];
+}
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd()).replace(/</g, "\\u003c") }}
+      />
       <Navbar />
       <main>
         <Hero />
+        <AtAGlance />
         <Problem />
         <Triage />
         <Modules />
@@ -98,6 +177,7 @@ export default function Home() {
         <Security />
         <GetStarted />
         <Blog />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />
@@ -204,6 +284,57 @@ function LiveFloorStatus() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Answer-first summary block.
+ *
+ * The hero sells; this states. An assistant asked "what is Firmicore" needs one
+ * declarative sentence that names the entity and a compact key-value table it
+ * can quote without reconstructing meaning from marketing copy.
+ */
+function AtAGlance() {
+  return (
+    <section id="at-a-glance" className="relative overflow-hidden border-y border-white/8 bg-navy-950 py-20 sm:py-24">
+      <div className="bp-grid-fine absolute inset-0 opacity-25" />
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <SectionLabel>At a glance</SectionLabel>
+          <h2 className="mt-4 font-sora text-[32px] font-bold leading-[1.08] sm:text-[40px]">
+            What FirmiCore is, <span className="text-pulse">in one paragraph.</span>
+          </h2>
+          <p id="at-a-glance-summary" className="mt-5 text-[16px] leading-relaxed text-ink-dim">
+            {ONE_LINER}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="#faq" className="text-sm font-medium text-pulse">
+              Common questions ↓
+            </Link>
+            <Link href="/glossary/" className="text-sm font-medium text-ink-dim transition hover:text-pulse">
+              Maintenance glossary →
+            </Link>
+          </div>
+        </div>
+        <div className="lg:col-span-7">
+          <div className="overflow-hidden rounded-xl border border-white/8">
+            <table className="w-full border-collapse text-left text-[13.5px]">
+              <caption className="sr-only">FirmiCore product facts</caption>
+              <tbody>
+                {QUICK_FACTS.map(([label, value]) => (
+                  <tr key={label} className="border-b border-white/8 last:border-b-0">
+                    <th scope="row" className="w-[38%] bg-navy-800/40 px-4 py-3 align-top font-mono text-[11px] font-normal uppercase tracking-wider text-ink-mute">
+                      {label}
+                    </th>
+                    <td className="px-4 py-3 align-top leading-relaxed text-ink-dim">{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -424,7 +555,7 @@ function GetStarted() {
         </h2>
         <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
           {getStartedSteps.map(([num, title, body]) => (
-            <div key={num} className="bg-navy-900 p-6">
+            <div key={num} id={`rollout-${num}`} className="scroll-mt-24 bg-navy-900 p-6">
               <div className="font-mono text-[12px] font-bold tracking-wide text-pulse">{num}</div>
               <h3 className="mt-3 font-sora text-[15px] font-bold text-ink">{title}</h3>
               <p className="mt-2 text-[12.5px] leading-relaxed text-ink-dim">{body}</p>
@@ -454,6 +585,41 @@ function Blog() {
   );
 }
 
+/**
+ * Visible Q&A in the phrasing people actually ask, each answer self-contained.
+ * This is the block the FAQPage schema mirrors; the two must stay in sync,
+ * which is why both read from FAQS rather than from separate copies.
+ */
+function FAQ() {
+  return (
+    <section id="faq" className="relative overflow-hidden py-24 sm:py-32">
+      <div className="bp-grid-fine absolute inset-0 opacity-25" />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionLabel>Common questions</SectionLabel>
+        <h2 className="mt-4 max-w-3xl font-sora text-[36px] font-bold leading-[1.05] sm:text-[46px]">
+          Straight answers about pricing, rollout, <span className="text-pulse">and what makes it different.</span>
+        </h2>
+        <div className="mt-12 grid gap-4 lg:grid-cols-2">
+          {FAQS.map((item) => (
+            <article key={item.q} className="lift relative rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-pulse/30">
+              <Corners />
+              <h3 className="font-sora text-[17px] font-semibold leading-snug text-ink">{item.q}</h3>
+              <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-dim">{item.a}</p>
+            </article>
+          ))}
+        </div>
+        <p className="mt-8 text-sm text-ink-dim">
+          Still unsure of a term?{" "}
+          <Link href="/glossary/" className="text-pulse">
+            The glossary defines {GLOSSARY.length} maintenance terms
+          </Link>{" "}
+          used across this site, from MTTR to permit to work.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function FinalCTA() {
   return (
     <section id="cta-final" className="relative overflow-hidden py-28 text-center sm:py-36">
@@ -469,12 +635,12 @@ function FinalCTA() {
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-ink-dim">Bring one connected maintenance system to your plant floor.</p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <Link href="#" className="btn-glow rounded-lg bg-power px-6 py-3.5 font-medium text-white">
+          <a href="mailto:info@lumoraventures.com?subject=Firmicore%20demo%20request" className="btn-glow rounded-lg bg-power px-6 py-3.5 font-medium text-white">
             Book a demo
-          </Link>
-          <Link href="#" className="px-6 py-3.5 font-medium text-pulse">
+          </a>
+          <a href="tel:+94719998500" className="px-6 py-3.5 font-medium text-pulse">
             Talk to sales
-          </Link>
+          </a>
         </div>
         <div className="mt-8 font-mono text-[13px] leading-relaxed text-ink-mute">
           info@lumoraventures.com &nbsp;·&nbsp; +94 71 999 8500 &nbsp;·&nbsp; lumoraventures.com

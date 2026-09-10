@@ -90,7 +90,8 @@ export function Navbar() {
     ["Modules", "/#modules"],
     ["Roles", "/#roles"],
     ["Pricing", "/#pricing"],
-    ["Security", "/#security"],
+    ["FAQ", "/#faq"],
+    ["Glossary", "/glossary/"],
     ["Blog", "/blog/"],
   ];
 
@@ -145,7 +146,7 @@ export function Footer() {
   const columns = [
     { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ["LinkedIn", "#"]] },
-    { title: "Resources", links: [["Blog", "/blog/"], ["Guided demo", "/#cta-final"], ["Talk to sales", "/#cta-final"]] },
+    { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Guided demo", "/#cta-final"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 

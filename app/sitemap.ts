@@ -1,9 +1,8 @@
 import type { MetadataRoute } from "next";
 import { posts } from "./blog-data";
+import { SITE_URL as BASE_URL } from "./site-data";
 
 export const dynamic = "force-static";
-
-const BASE_URL = "https://firmicore.com";
 
 /**
  * `trailingSlash: true` in next.config.ts means every HTML route is served at a
@@ -30,6 +29,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // every deploy, and there is no build-time signal for when it actually changed.
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
     { url: url("/blog/"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.8 },
+    // The glossary changes only when a term is added or reworded, and there is
+    // no build-time signal for that, so it carries no lastModified either.
+    { url: url("/glossary/"), changeFrequency: "monthly", priority: 0.7 },
   ];
 
   const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({

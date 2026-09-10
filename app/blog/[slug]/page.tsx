@@ -2,16 +2,36 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getRelated, posts } from "../../blog-posts";
+import { wordCount } from "../../llms-markdown";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "../../marketing-components";
+import { GLOSSARY, SITE_NAME, SITE_URL } from "../../site-data";
 import { ArticleBlock } from "./article-blocks";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const SITE_URL = "https://firmicore.com";
-const SITE_NAME = "Firmicore";
 const LOGO_URL = `${SITE_URL}/logo.png`;
+
+/** "6 min" -> "PT6M" for schema `timeRequired`. */
+function readingTimeISO(read: string): string | undefined {
+  const minutes = Number.parseInt(read, 10);
+  return Number.isFinite(minutes) ? `PT${minutes}M` : undefined;
+}
+
+/**
+ * Glossary terms the post actually mentions, emitted as `about`/`mentions`.
+ * Entity links are what let an answer engine connect this article to the
+ * definitional query that brought the reader in.
+ */
+function mentionedTerms(haystack: string) {
+  return GLOSSARY.filter((entry) => haystack.toLowerCase().includes(entry.term.toLowerCase())).map((entry) => ({
+    "@type": "DefinedTerm",
+    "@id": `${SITE_URL}/glossary/#${entry.slug}`,
+    name: entry.term,
+    url: `${SITE_URL}/glossary/#${entry.slug}`,
+  }));
+}
 
 export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -36,6 +56,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // /blog/<slug>/ and 301s the unslashed form.
     alternates: { canonical: `/blog/${slug}/` },
     authors: [{ name: post.author }],
+    keywords: [post.category, "CMMS", "maintenance", ...post.title.split(/[\s:,]+/).filter((word) => word.length > 4)],
+    // Uncapped snippets: an answer engine that can only quote 160 characters
+    // paraphrases instead of citing, and a paraphrase carries no attribution.
+    robots: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+    },
     openGraph: {
       title,
       description,
@@ -78,13 +108,28 @@ export default async function BlogPostPage({ params }: PageProps) {
     section.blocks.flatMap((block) => (block.type === "faq" ? block.items : [])),
   );
 
+  // Section headings double as the article's answerable sub-questions, so they
+  // are indexed as page anchors an assistant can deep-link into.
+  const searchableText = [post.title, post.deck ?? "", post.excerpt, ...sections.map((section) => section.heading)].join(" ");
+  const terms = mentionedTerms(searchableText);
+  const timeRequired = readingTimeISO(post.read);
+
   const jsonLd: Record<string, unknown>[] = [
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
+      "@id": `${postUrl}#article`,
       headline: post.title,
+      alternativeHeadline: post.seoTitle,
       description: post.metaDescription ?? post.excerpt,
-      author: { "@type": "Person", name: post.author, jobTitle: post.role },
+      abstract: post.deck ?? post.excerpt,
+      author: {
+        "@type": "Person",
+        name: post.author,
+        jobTitle: post.role,
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+        knowsAbout: ["Maintenance management", "Plant reliability", "CMMS implementation"],
+      },
       publisher: {
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
@@ -106,6 +151,28 @@ export default async function BlogPostPage({ params }: PageProps) {
       },
       inLanguage: "en",
       articleSection: post.category,
+      isPartOf: { "@id": `${SITE_URL}/blog/#blog` },
+      isAccessibleForFree: true,
+      wordCount: wordCount(post),
+      ...(timeRequired ? { timeRequired } : {}),
+      ...(post.takeaways?.length
+        ? {
+            // The takeaways box is the passage worth quoting: it is the
+            // answer, stated without the article around it.
+            speakable: { "@type": "SpeakableSpecification", cssSelector: ["#key-takeaways"] },
+          }
+        : {}),
+      ...(terms.length ? { about: terms.slice(0, 3), mentions: terms } : {}),
+      ...(sections.length
+        ? {
+            hasPart: sections.map((section) => ({
+              "@type": "WebPageElement",
+              "@id": `${postUrl}#${section.id}`,
+              name: section.heading,
+              url: `${postUrl}#${section.id}`,
+            })),
+          }
+        : {}),
     },
     {
       "@context": "https://schema.org",
@@ -151,7 +218,16 @@ export default async function BlogPostPage({ params }: PageProps) {
             </nav>
             <div className="mb-5 flex items-center gap-3">
               <CategoryBadge category={post.category} />
-              <span className="font-mono text-xs text-ink-mute">{post.read} · {post.date}</span>
+              <span className="font-mono text-xs text-ink-mute">
+                {post.read} ·{" "}
+                <time dateTime={publishedISO.slice(0, 10)}>{post.date}</time>
+                {post.updated ? (
+                  <>
+                    {" · Updated "}
+                    <time dateTime={modifiedISO.slice(0, 10)}>{post.updated}</time>
+                  </>
+                ) : null}
+              </span>
             </div>
             <h1 className="font-sora text-[36px] font-bold leading-[1.05] sm:text-[52px]">{post.title}</h1>
             <p className="mt-5 text-[18px] leading-relaxed text-ink-dim sm:text-xl">{post.deck ?? post.excerpt}</p>
@@ -197,7 +273,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           </aside>
           <article className="article-prose lg:col-span-9">
             {post.takeaways?.length ? (
-              <div className="mb-10 rounded-2xl border border-white/10 bg-navy-800/50 p-6">
+              <div id="key-takeaways" className="mb-10 scroll-mt-24 rounded-2xl border border-white/10 bg-navy-800/50 p-6">
                 <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">Key takeaways</div>
                 <ul className="mb-0">
                   {post.takeaways.map((item) => (
