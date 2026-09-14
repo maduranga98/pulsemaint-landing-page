@@ -141,7 +141,7 @@ function rows(data: BookingRequest, meta: Meta): [string, string][] {
     ["Email", data.email],
     ["Phone", data.phone || "-"],
     ["Machines", data.machineCount.toLocaleString("en-US")],
-    ["Preferred slot", formatDate(data.preferredDate, data.preferredTime, data.timezone)],
+    ["Confirmed slot", formatDate(data.preferredDate, data.preferredTime, data.timezone)],
     ["Meeting link", MEETING_LINK],
     ["Notes", data.notes || "-"],
     ["Submitted", meta.submittedAt.toISOString()],
@@ -179,7 +179,7 @@ export function internalMail(data: BookingRequest, meta: Meta) {
     from: `"Firmicore Bookings" <${SMTP_USER}>`,
     to: BOOKING_RECIPIENT,
     replyTo: `"${data.fullName.replace(/"/g, "")}" <${data.email}>`,
-    subject: `Demo request - ${data.companyName} (${data.machineCount} machines, ${data.country})`,
+    subject: `Demo booked - ${data.companyName} (${data.machineCount} machines, ${data.country})`,
     text,
     html: `
       <div style="background:#F4F7FB;padding:28px 12px;">
@@ -206,17 +206,17 @@ export function confirmationMail(data: BookingRequest) {
   const text = [
     `Hi ${data.fullName},`,
     "",
-    "Thanks for booking a Firmicore demo. We have your request and will confirm the slot by email within one business day.",
+    "Your Firmicore demo is confirmed. The meeting link below is where we will meet - no further confirmation needed.",
     "",
     `Company: ${data.companyName}`,
     `Country: ${data.country}`,
     `Machines: ${data.machineCount.toLocaleString("en-US")}`,
-    `Requested slot: ${slot}`,
+    `Your slot: ${slot}`,
     "",
     `Meeting link: ${MEETING_LINK}`,
-    "Join from any browser at the confirmed time - no install needed.",
+    "Join from any browser at your slot time - no install needed.",
     "",
-    "Reply to this email if anything changes.",
+    "Reply to this email if you need to reschedule.",
     "",
     "Firmicore - a product of Lumora Ventures Pvt Ltd",
   ].join("\n");
@@ -225,24 +225,24 @@ export function confirmationMail(data: BookingRequest) {
     from: `"Firmicore" <${SMTP_USER}>`,
     to: data.email,
     replyTo: SMTP_USER,
-    subject: "Your Firmicore demo request",
+    subject: "Your Firmicore demo is confirmed",
     text,
     html: `
       <div style="background:#F4F7FB;padding:28px 12px;">
         <table role="presentation" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;width:100%;background:#FFFFFF;border:1px solid #E6ECF5;border-radius:14px;overflow:hidden;">
           <tr><td style="background:${INK};padding:24px;">
-            <div style="font:700 19px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;color:#FFFFFF;">Demo request received</div>
+            <div style="font:700 19px/1.2 -apple-system,Segoe UI,Roboto,sans-serif;color:#FFFFFF;">Your demo is confirmed</div>
             <div style="margin-top:6px;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:${BRAND};">Strength at the core of every machine.</div>
           </td></tr>
           <tr><td style="padding:24px;font:400 15px/1.7 -apple-system,Segoe UI,Roboto,sans-serif;color:${INK};">
             <p style="margin:0 0 16px;">Hi ${escapeHtml(data.fullName)},</p>
-            <p style="margin:0 0 16px;">Thanks for booking a Firmicore demo. We have your request and will confirm the slot by email within one business day.</p>
+            <p style="margin:0 0 16px;">Your Firmicore demo is confirmed. The meeting link below is where we will meet &ndash; no further confirmation needed.</p>
             <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid #E6ECF5;border-radius:10px;">
               ${[
                 ["Company", data.companyName],
                 ["Country", data.country],
                 ["Machines", data.machineCount.toLocaleString("en-US")],
-                ["Requested slot", slot],
+                ["Your slot", slot],
               ]
                 .map(
                   ([label, value]) => `<tr>
@@ -265,10 +265,10 @@ export function confirmationMail(data: BookingRequest) {
                     MEETING_LINK
                   )}</a>
                 </div>
-                <div style="margin-top:10px;font:400 12px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#6A7790;">Join from any browser at the confirmed time - no install needed.</div>
+                <div style="margin-top:10px;font:400 12px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#6A7790;">Join from any browser at your slot time &ndash; no install needed.</div>
               </td></tr>
             </table>
-            <p style="margin:18px 0 0;color:#6A7790;font-size:13px;">Reply to this email if anything changes.</p>
+            <p style="margin:18px 0 0;color:#6A7790;font-size:13px;">Reply to this email if you need to reschedule.</p>
           </td></tr>
           <tr><td style="padding:16px 24px;background:#F4F7FB;font:400 12px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#6A7790;">
             Firmicore &middot; a product of Lumora Ventures Pvt Ltd &middot; Kuliyapitiya, Sri Lanka

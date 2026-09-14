@@ -281,10 +281,10 @@ export function BookingForm() {
         <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-uptime/40 text-lg text-uptime">
           ✓
         </div>
-        <h3 className="mt-5 font-sora text-xl font-bold text-ink">Request received</h3>
+        <h3 className="mt-5 font-sora text-xl font-bold text-ink">Your demo is booked</h3>
         <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-dim">
-          A confirmation with your meeting link is on its way to your inbox. We will confirm the slot within one
-          business day.
+          Your meeting link is on its way to your inbox. Nothing else to confirm &mdash; just join at your slot
+          time.
         </p>
         <button
           type="button"
@@ -465,7 +465,7 @@ export function BookingForm() {
           {sending ? "Sending…" : "Request my demo"}
         </button>
         <p className="text-[12.5px] leading-relaxed text-ink-mute">
-          We reply within one business day. No spam, and your details stay with our team.
+          Your meeting link arrives by email the moment you book. No spam, and your details stay with our team.
         </p>
       </div>
 
