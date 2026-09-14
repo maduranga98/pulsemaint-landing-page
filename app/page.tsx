@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { posts } from "./blog-data";
+import { BookingForm } from "./booking-form";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
-import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
+import { CONTACT_PHONE, FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
 
 const heroStats = [
   ["9", "Role-based workspaces"],
@@ -50,6 +51,12 @@ const roles = [
   ["Floor Operator", "Fast breakdown reporting (incl. QR-triggered), guided troubleshooting, shift view."],
   ["Trainee", "Structured onboarding programme, quizzes, weekend self-reports, certificates."],
 ] as const;
+
+const bookingAssurances: [string, string][] = [
+  ["30 minutes, not a sales pitch.", "A working walkthrough on the modules you actually run."],
+  ["Role-tailored.", "Supervisor, technician, store keeper, or plant manager: we open the workspace you care about."],
+  ["Your numbers.", "We size the rollout against your machine count and site layout before you commit."],
+];
 
 const industries = ["Food & Beverage", "Dairy", "Pharmaceuticals", "Packaging", "Textiles", "Chemicals"];
 
@@ -178,6 +185,7 @@ export default function Home() {
         <GetStarted />
         <Blog />
         <FAQ />
+        <BookDemo />
         <FinalCTA />
       </main>
       <Footer />
@@ -206,7 +214,7 @@ function Hero() {
             training, safety, and reporting, so every role works from the same real-time picture.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="#cta-final" className="btn-glow rounded-lg bg-power px-5 py-3 font-medium text-white">
+            <Link href="#book-demo" className="btn-glow rounded-lg bg-power px-5 py-3 font-medium text-white">
               Book a demo
             </Link>
             <Link href="#triage" className="rounded-lg border border-white/15 px-5 py-3 font-medium text-ink transition hover:border-pulse/50 hover:text-pulse">
@@ -513,7 +521,7 @@ function Pricing() {
                   </div>
                 ))}
               </div>
-              <Link href="#cta-final" className={`mt-2 block rounded-lg py-2.5 text-center text-sm font-medium ${tier.popular ? "btn-glow bg-power text-white" : "border border-white/15 text-ink hover:border-pulse/50"}`}>
+              <Link href="#book-demo" className={`mt-2 block rounded-lg py-2.5 text-center text-sm font-medium ${tier.popular ? "btn-glow bg-power text-white" : "border border-white/15 text-ink hover:border-pulse/50"}`}>
                 {tier.name === "Enterprise" ? "Talk to sales" : "Start trial"}
               </Link>
             </div>
@@ -615,6 +623,51 @@ function FAQ() {
           </Link>{" "}
           used across this site, from MTTR to permit to work.
         </p>
+      </div>
+    </section>
+  );
+}
+
+/**
+ * Booking section.
+ *
+ * The form itself is the only client component on this page: everything around
+ * it stays server-rendered so the static export ships the copy as HTML and the
+ * interactive cost is one small island.
+ */
+function BookDemo() {
+  return (
+    <section id="book-demo" className="relative scroll-mt-20 overflow-hidden border-y border-white/8 bg-navy-950 py-24 sm:py-32">
+      <div className="bp-grid-fine absolute inset-0 opacity-25" />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <SectionLabel>Book a demo</SectionLabel>
+          <h2 className="mt-4 font-sora text-[36px] font-bold leading-[1.05] sm:text-[44px]">
+            Pick a slot. <span className="text-pulse">We will bring your plant to life.</span>
+          </h2>
+          <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-ink-dim">
+            Tell us your fleet size and the slot that suits you. We tailor the walkthrough to the roles you run, and you
+            get a confirmation by email within one business day.
+          </p>
+          <ul className="mt-8 space-y-3.5">
+            {bookingAssurances.map(([title, body]) => (
+              <li key={title} className="flex gap-3">
+                <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-pulse" />
+                <span className="text-[14.5px] leading-relaxed text-ink-dim">
+                  <span className="font-medium text-ink">{title}</span> {body}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 font-mono text-[12.5px] leading-relaxed text-ink-mute">
+            Prefer email? support@firmicore.com
+            <br />
+            {CONTACT_PHONE.replace(/-/g, " ")}
+          </div>
+        </div>
+        <div className="lg:col-span-7">
+          <BookingForm />
+        </div>
       </div>
     </section>
   );

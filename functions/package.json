@@ -1,0 +1,22 @@
+{
+  "name": "firmicore-functions",
+  "private": true,
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "deploy": "npm run build && firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-functions": "^6.6.0",
+    "nodemailer": "^7.0.9"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^7.0.4",
+    "typescript": "^5.9.3"
+  }
+}

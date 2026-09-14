@@ -1,0 +1,403 @@
+"use client";
+
+import { cloneElement, useCallback, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { COUNTRIES } from "./countries";
+
+/** Hosting rewrites this path to the `bookDemo` Cloud Function (see firebase.json). */
+const ENDPOINT = "/api/book-demo";
+
+const MAX_MACHINES = 100_000;
+const MAX_NOTES = 2_000;
+/** How far ahead a visitor may book, in days. */
+const BOOKING_HORIZON_DAYS = 120;
+
+/** 30-minute slots across a working day; the label carries the 12-hour reading. */
+const TIME_SLOTS = Array.from({ length: 21 }, (_, index) => {
+  const minutes = 8 * 60 + index * 30;
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  const value = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+  const suffix = hour < 12 ? "AM" : "PM";
+  const twelve = hour % 12 === 0 ? 12 : hour % 12;
+  return { value, label: `${twelve}:${String(minute).padStart(2, "0")} ${suffix}` };
+});
+
+type Fields = {
+  fullName: string;
+  email: string;
+  phone: string;
+  companyName: string;
+  country: string;
+  machineCount: string;
+  preferredDate: string;
+  preferredTime: string;
+  notes: string;
+};
+
+const EMPTY: Fields = {
+  fullName: "",
+  email: "",
+  phone: "",
+  companyName: "",
+  country: "",
+  machineCount: "",
+  preferredDate: "",
+  preferredTime: "10:00",
+  notes: "",
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** Mirrors the Cloud Function's rules so a mistake is caught before the round trip. */
+function validate(values: Fields): Partial<Record<keyof Fields, string>> {
+  const errors: Partial<Record<keyof Fields, string>> = {};
+  const machines = Number(values.machineCount);
+
+  if (values.fullName.trim().length < 2) errors.fullName = "Tell us who we are meeting.";
+  if (!EMAIL_RE.test(values.email.trim())) errors.email = "Enter a valid work email.";
+  if (values.companyName.trim().length < 2) errors.companyName = "Company name is required.";
+  if (!values.country) errors.country = "Select your country.";
+  if (!Number.isInteger(machines) || machines < 1 || machines > MAX_MACHINES) {
+    errors.machineCount = `Enter a number between 1 and ${MAX_MACHINES.toLocaleString("en-US")}.`;
+  }
+  if (!values.preferredDate) errors.preferredDate = "Pick a preferred date.";
+  if (!values.preferredTime) errors.preferredTime = "Pick a preferred time.";
+
+  return errors;
+}
+
+function toDateInput(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+/**
+ * Bookable window for the date input.
+ *
+ * The page is statically exported, so "today" cannot come from render: the
+ * build machine's clock would be baked into the HTML and then disagree with the
+ * browser on hydration. useSyncExternalStore gives the server an empty range
+ * (no min/max attributes) and the client the real one, with no post-mount
+ * setState and no mismatch. The snapshot is cached because it must be
+ * referentially stable across reads.
+ */
+const NO_RANGE = { min: "", max: "" } as const;
+const subscribeToNothing = () => () => {};
+let cachedRange: { min: string; max: string } | null = null;
+
+function readBookingRange(): { min: string; max: string } {
+  if (!cachedRange) {
+    const today = new Date();
+    const horizon = new Date(today);
+    horizon.setDate(horizon.getDate() + BOOKING_HORIZON_DAYS);
+    cachedRange = { min: toDateInput(today), max: toDateInput(horizon) };
+  }
+  return cachedRange;
+}
+
+function serverBookingRange(): { min: string; max: string } {
+  return NO_RANGE;
+}
+
+const fieldClass =
+  "w-full rounded-lg border border-white/10 bg-navy-950/60 px-3.5 py-2.5 text-[15px] text-ink outline-none transition placeholder:text-ink-mute focus:border-pulse/60 focus:ring-2 focus:ring-pulse/20";
+const labelClass = "mb-1.5 block font-mono text-[11px] uppercase tracking-[0.12em] text-ink-mute";
+
+export function BookingForm() {
+  const formId = useId();
+  const [values, setValues] = useState<Fields>(EMPTY);
+  const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [message, setMessage] = useState("");
+  const honeypot = useRef<HTMLInputElement>(null);
+
+  const dateRange = useSyncExternalStore(subscribeToNothing, readBookingRange, serverBookingRange);
+
+  const setField = useCallback(
+    (key: keyof Fields) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      const { value } = event.target;
+      setValues((current) => ({ ...current, [key]: value }));
+      // Clear only the field being corrected; leave the rest of the summary intact.
+      setErrors((current) => (current[key] ? { ...current, [key]: undefined } : current));
+    },
+    []
+  );
+
+  const countryOptions = useMemo(
+    () => COUNTRIES.map((country) => <option key={country} value={country}>{country}</option>),
+    []
+  );
+
+  const submit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (status === "sending") return;
+
+      const found = validate(values);
+      if (Object.keys(found).length > 0) {
+        setErrors(found);
+        setStatus("error");
+        setMessage("Please check the highlighted fields.");
+        return;
+      }
+
+      setStatus("sending");
+      setMessage("");
+
+      try {
+        const response = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...values,
+            machineCount: Number(values.machineCount),
+            // Read at submit time: the slot only means something with the
+            // visitor's own zone attached.
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone ?? "",
+            website: honeypot.current?.value ?? "",
+          }),
+        });
+        const payload = (await response.json().catch(() => ({}))) as {
+          ok?: boolean;
+          message?: string;
+          errors?: Partial<Record<keyof Fields, string>>;
+        };
+
+        if (!response.ok || !payload.ok) {
+          setErrors(payload.errors ?? {});
+          setStatus("error");
+          setMessage(payload.message ?? "Something went wrong. Please try again or email support@firmicore.com.");
+          return;
+        }
+
+        setValues(EMPTY);
+        setErrors({});
+        setStatus("sent");
+      } catch {
+        setStatus("error");
+        setMessage("Network error. Please try again or email support@firmicore.com.");
+      }
+    },
+    [status, values]
+  );
+
+  if (status === "sent") {
+    return (
+      <div className="rounded-2xl border border-uptime/30 bg-navy-950/70 p-8 text-center sm:p-10">
+        <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-uptime/40 text-lg text-uptime">
+          ✓
+        </div>
+        <h3 className="mt-5 font-sora text-xl font-bold text-ink">Request received</h3>
+        <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-dim">
+          A confirmation is on its way to your inbox. We will confirm the slot within one business day.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="mt-6 rounded-lg border border-white/15 px-5 py-2.5 text-sm font-medium text-ink transition hover:border-pulse/50 hover:text-pulse"
+        >
+          Book another demo
+        </button>
+      </div>
+    );
+  }
+
+  const sending = status === "sending";
+
+  return (
+    <form onSubmit={submit} noValidate className="rounded-2xl border border-white/10 bg-navy-950/70 p-6 sm:p-8">
+      <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+        <Field id={`${formId}-name`} label="Full name" error={errors.fullName}>
+          <input
+            id={`${formId}-name`}
+            name="fullName"
+            value={values.fullName}
+            onChange={setField("fullName")}
+            autoComplete="name"
+            maxLength={120}
+            placeholder="Nimal Perera"
+            className={fieldClass}
+          />
+        </Field>
+
+        <Field id={`${formId}-company`} label="Company name" error={errors.companyName}>
+          <input
+            id={`${formId}-company`}
+            name="companyName"
+            value={values.companyName}
+            onChange={setField("companyName")}
+            autoComplete="organization"
+            maxLength={160}
+            placeholder="Acme Processing Ltd"
+            className={fieldClass}
+          />
+        </Field>
+
+        <Field id={`${formId}-email`} label="Work email" error={errors.email}>
+          <input
+            id={`${formId}-email`}
+            name="email"
+            type="email"
+            inputMode="email"
+            value={values.email}
+            onChange={setField("email")}
+            autoComplete="email"
+            maxLength={254}
+            placeholder="you@company.com"
+            className={fieldClass}
+          />
+        </Field>
+
+        <Field id={`${formId}-phone`} label="Phone (optional)" error={errors.phone}>
+          <input
+            id={`${formId}-phone`}
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            value={values.phone}
+            onChange={setField("phone")}
+            autoComplete="tel"
+            maxLength={40}
+            placeholder="+94 71 999 8500"
+            className={fieldClass}
+          />
+        </Field>
+
+        <Field id={`${formId}-country`} label="Country" error={errors.country}>
+          <select
+            id={`${formId}-country`}
+            name="country"
+            value={values.country}
+            onChange={setField("country")}
+            autoComplete="country-name"
+            className={`${fieldClass} select-field appearance-none`}
+          >
+            <option value="">Select a country</option>
+            {countryOptions}
+          </select>
+        </Field>
+
+        <Field id={`${formId}-machines`} label="Number of machines" error={errors.machineCount}>
+          <input
+            id={`${formId}-machines`}
+            name="machineCount"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            max={MAX_MACHINES}
+            step={1}
+            value={values.machineCount}
+            onChange={setField("machineCount")}
+            placeholder="120"
+            className={fieldClass}
+          />
+        </Field>
+
+        <Field id={`${formId}-date`} label="Preferred date" error={errors.preferredDate}>
+          <input
+            id={`${formId}-date`}
+            name="preferredDate"
+            type="date"
+            value={values.preferredDate}
+            onChange={setField("preferredDate")}
+            min={dateRange.min || undefined}
+            max={dateRange.max || undefined}
+            className={`${fieldClass} [color-scheme:dark]`}
+          />
+        </Field>
+
+        <Field id={`${formId}-time`} label="Preferred time" error={errors.preferredTime}>
+          <select
+            id={`${formId}-time`}
+            name="preferredTime"
+            value={values.preferredTime}
+            onChange={setField("preferredTime")}
+            className={`${fieldClass} select-field appearance-none`}
+          >
+            {TIME_SLOTS.map((slot) => (
+              <option key={slot.value} value={slot.value}>
+                {slot.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <div className="sm:col-span-2">
+          <Field id={`${formId}-notes`} label="What should we focus on? (optional)" error={errors.notes}>
+            <textarea
+              id={`${formId}-notes`}
+              name="notes"
+              rows={3}
+              value={values.notes}
+              onChange={setField("notes")}
+              maxLength={MAX_NOTES}
+              placeholder="Sites, lines, the modules you care about most."
+              className={`${fieldClass} resize-y`}
+            />
+          </Field>
+        </div>
+      </div>
+
+      {/* Honeypot: hidden from people and assistive tech, irresistible to bots. */}
+      <div aria-hidden="true" className="absolute h-px w-px overflow-hidden opacity-0" style={{ left: "-9999px" }}>
+        <label htmlFor={`${formId}-website`}>Website</label>
+        <input id={`${formId}-website`} ref={honeypot} name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <button
+          type="submit"
+          disabled={sending}
+          className="btn-glow shrink-0 whitespace-nowrap rounded-lg bg-power px-6 py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {sending ? "Sending…" : "Request my demo"}
+        </button>
+        <p className="text-[12.5px] leading-relaxed text-ink-mute">
+          We reply within one business day. No spam, and your details stay with our team.
+        </p>
+      </div>
+
+      <p
+        role="status"
+        aria-live="polite"
+        className={`mt-4 text-sm ${status === "error" ? "text-crit" : "text-ink-dim"}`}
+      >
+        {message}
+      </p>
+    </form>
+  );
+}
+
+/**
+ * Label + control + error, with the error wired to the control via
+ * aria-describedby so a screen reader announces the reason, not just "invalid".
+ */
+function Field({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  children: React.ReactElement<{ "aria-invalid"?: boolean; "aria-describedby"?: string }>;
+}) {
+  const errorId = `${id}-error`;
+  const control = error
+    ? cloneElement(children, { "aria-invalid": true, "aria-describedby": errorId })
+    : children;
+
+  return (
+    <div>
+      <label htmlFor={id} className={labelClass}>
+        {label}
+      </label>
+      {control}
+      {error ? (
+        <p id={errorId} className="mt-1.5 text-[12.5px] text-crit">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
