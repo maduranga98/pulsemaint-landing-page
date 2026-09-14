@@ -61,6 +61,11 @@ The emulator does not read production secrets; put `SMTP_PASSWORD=...` in
 
 - **Validation** lives in `src/booking.ts` and is the authority; the React form
   mirrors it only to give instant feedback.
+- **Time zones**: the slot is stored and mailed with the IANA zone the visitor
+  chose - defaulted to their device's, changeable, since the demo is often for a
+  plant in another country. Both mails print the visitor's reading *and* the UTC
+  instant, resolved through the runtime's tz database, so DST and half-hour
+  offsets come out right. A zone the runtime's ICU rejects fails validation.
 - **Honeypot**: a filled `website` field returns `200 OK` and sends nothing, so a
   bot cannot detect the trap.
 - **Rate limit**: 5 submissions per IP per hour, per instance (`maxInstances` is

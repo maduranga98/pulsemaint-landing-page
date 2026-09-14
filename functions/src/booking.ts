@@ -44,6 +44,21 @@ function asString(value: unknown, max: number): string {
   return value.replace(CONTROL_RE, " ").trim().slice(0, max);
 }
 
+/**
+ * A zone is valid if the runtime's ICU accepts it. Checking against a hardcoded
+ * list would drift from the browser's list every time the tz database moves;
+ * asking Intl is the same question the mail formatter will ask later.
+ */
+export function isValidTimezone(zone: string): boolean {
+  if (!zone) return false;
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: zone });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** A calendar date is only valid if round-tripping it yields the same string. */
 function isRealDate(value: string): boolean {
   if (!DATE_RE.test(value)) return false;
@@ -79,6 +94,9 @@ export function validateBooking(
   }
   if (!isRealDate(preferredDate)) errors.preferredDate = "Pick a preferred date.";
   if (!TIME_RE.test(preferredTime)) errors.preferredTime = "Pick a preferred time.";
+  // Required: a slot without a zone is a guess, and guessing is how a demo gets
+  // missed by five and a half hours.
+  if (!isValidTimezone(timezone)) errors.timezone = "Select the time zone for that slot.";
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
 
