@@ -283,7 +283,8 @@ export function BookingForm() {
         </div>
         <h3 className="mt-5 font-sora text-xl font-bold text-ink">Request received</h3>
         <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-dim">
-          A confirmation is on its way to your inbox. We will confirm the slot within one business day.
+          A confirmation with your meeting link is on its way to your inbox. We will confirm the slot within one
+          business day.
         </p>
         <button
           type="button"
