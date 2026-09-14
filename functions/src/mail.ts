@@ -8,6 +8,15 @@ export const SMTP_USER = "support@firmicore.com";
 export const BOOKING_RECIPIENT = process.env.BOOKING_RECIPIENT || SMTP_USER;
 
 /**
+ * The standing video room every demo runs in.
+ *
+ * Overridable so the room can be rotated without a code change; the value is
+ * still escaped everywhere it is rendered, since an env var is one more thing
+ * that can be wrong.
+ */
+export const MEETING_LINK = process.env.MEETING_LINK || "https://meet.google.com/gxw-qkoe-wqh";
+
+/**
  * One transporter per warm instance.
  *
  * Port 465 is implicit TLS, so `secure` is true; the pool keeps the TLS
@@ -133,6 +142,7 @@ function rows(data: BookingRequest, meta: Meta): [string, string][] {
     ["Phone", data.phone || "-"],
     ["Machines", data.machineCount.toLocaleString("en-US")],
     ["Preferred slot", formatDate(data.preferredDate, data.preferredTime, data.timezone)],
+    ["Meeting link", MEETING_LINK],
     ["Notes", data.notes || "-"],
     ["Submitted", meta.submittedAt.toISOString()],
     ["Source IP", meta.ip || "-"],
@@ -203,6 +213,9 @@ export function confirmationMail(data: BookingRequest) {
     `Machines: ${data.machineCount.toLocaleString("en-US")}`,
     `Requested slot: ${slot}`,
     "",
+    `Meeting link: ${MEETING_LINK}`,
+    "Join from any browser at the confirmed time - no install needed.",
+    "",
     "Reply to this email if anything changes.",
     "",
     "Firmicore - a product of Lumora Ventures Pvt Ltd",
@@ -242,6 +255,18 @@ export function confirmationMail(data: BookingRequest) {
                   </tr>`
                 )
                 .join("")}
+            </table>
+            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:18px;border:1px solid #E6ECF5;border-radius:10px;background:#F9FBFE;">
+              <tr><td style="padding:18px 14px;text-align:center;">
+                <div style="font:600 11px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6A7790;">Meeting link</div>
+                <a href="${escapeHtml(MEETING_LINK)}" style="display:inline-block;margin-top:12px;padding:12px 26px;border-radius:8px;background:${INK};color:#FFFFFF;font:600 14px/1 -apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none;">Join the demo</a>
+                <div style="margin-top:12px;font:400 13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;word-break:break-all;">
+                  <a href="${escapeHtml(MEETING_LINK)}" style="color:#0A66C2;text-decoration:none;">${escapeHtml(
+                    MEETING_LINK
+                  )}</a>
+                </div>
+                <div style="margin-top:10px;font:400 12px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#6A7790;">Join from any browser at the confirmed time - no install needed.</div>
+              </td></tr>
             </table>
             <p style="margin:18px 0 0;color:#6A7790;font-size:13px;">Reply to this email if anything changes.</p>
           </td></tr>
