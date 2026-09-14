@@ -3,13 +3,39 @@
     "site": "pulsemaint-landing-page",
     "public": "out",
     "trailingSlash": true,
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/api/book-demo",
+        "function": {
+          "functionId": "bookDemo",
+          "region": "us-central1"
+        }
+      },
+      {
+        "source": "/api/book-demo/",
+        "function": {
+          "functionId": "bookDemo",
+          "region": "us-central1"
+        }
+      }
+    ],
     "headers": [
       {
         "source": "**/opengraph-image",
         "headers": [
-          { "key": "Content-Type", "value": "image/png" },
-          { "key": "Cache-Control", "value": "public, max-age=3600" }
+          {
+            "key": "Content-Type",
+            "value": "image/png"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
         ]
       },
       {
@@ -22,5 +48,24 @@
         ]
       }
     ]
-  }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs22",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" ci",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
+      "ignore": [
+        "node_modules",
+        ".git",
+        "*.local",
+        "src",
+        "*.ts",
+        "tsconfig.json"
+      ]
+    }
+  ]
 }

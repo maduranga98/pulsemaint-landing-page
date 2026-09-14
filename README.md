@@ -35,3 +35,19 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # pulsemaint-landing-page
+
+## Demo booking form
+
+The homepage `#book-demo` section posts to `/api/book-demo`, which Firebase
+Hosting rewrites to the `bookDemo` Cloud Function. That function sends the
+request over SMTP (`mail.spacemail.com:465`) to `support@firmicore.com`.
+
+The mailbox password is a Firebase secret and is never committed:
+
+```bash
+firebase functions:secrets:set SMTP_PASSWORD
+firebase deploy --only functions:bookDemo
+```
+
+See [`functions/README.md`](functions/README.md) for the full setup, local
+emulator instructions, and the abuse-protection behaviour.

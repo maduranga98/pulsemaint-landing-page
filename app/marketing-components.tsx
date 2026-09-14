@@ -109,7 +109,7 @@ export function Navbar() {
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/#cta-final" className="btn-glow rounded-lg bg-power px-4 py-2 text-sm font-medium text-white">
+          <Link href="/#book-demo" className="btn-glow rounded-lg bg-power px-4 py-2 text-sm font-medium text-white">
             Book a demo
           </Link>
         </div>
@@ -132,7 +132,7 @@ export function Navbar() {
                 {label}
               </Link>
             ))}
-            <Link href="/#cta-final" onClick={() => setOpen(false)} className="btn-glow mt-2 rounded-lg bg-power py-2.5 text-center text-sm font-medium text-white">
+            <Link href="/#book-demo" onClick={() => setOpen(false)} className="btn-glow mt-2 rounded-lg bg-power py-2.5 text-center text-sm font-medium text-white">
               Book a demo
             </Link>
           </div>
@@ -146,7 +146,7 @@ export function Footer() {
   const columns = [
     { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ["LinkedIn", "#"]] },
-    { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Guided demo", "/#cta-final"]] },
+    { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Book a demo", "/#book-demo"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 
