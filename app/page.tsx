@@ -646,8 +646,8 @@ function BookDemo() {
             Pick a slot. <span className="text-pulse">We will bring your plant to life.</span>
           </h2>
           <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-ink-dim">
-            Tell us your fleet size and the slot that suits you. We tailor the walkthrough to the roles you run, and you
-            get a confirmation by email within one business day.
+            Tell us your fleet size and the slot that suits you. We tailor the walkthrough to the roles you run, and
+            your meeting link lands in your inbox the moment you book.
           </p>
           <ul className="mt-8 space-y-3.5">
             {bookingAssurances.map(([title, body]) => (
