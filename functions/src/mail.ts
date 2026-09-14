@@ -47,18 +47,79 @@ export function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
 }
 
+/**
+ * Minutes a zone is ahead of UTC at a given instant: format the instant in the
+ * zone, read the wall clock back, and take the difference.
+ */
+function zoneOffsetMinutes(zone: string, at: Date): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: zone,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(at);
+  const read = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? "0");
+  const asUtc = Date.UTC(read("year"), read("month") - 1, read("day"), read("hour"), read("minute"));
+  return (asUtc - Math.floor(at.getTime() / 60_000) * 60_000) / 60_000;
+}
+
+/** The instant a wall-clock slot in `zone` actually falls on. */
+function resolveInstant(date: string, time: string, zone: string): Date | null {
+  const naive = Date.parse(`${date}T${time}:00Z`);
+  if (Number.isNaN(naive)) return null;
+  try {
+    // Two passes: the first offset can be the wrong side of a DST change, and
+    // re-reading it at the corrected instant settles it.
+    let instant = naive - zoneOffsetMinutes(zone, new Date(naive)) * 60_000;
+    instant = naive - zoneOffsetMinutes(zone, new Date(instant)) * 60_000;
+    return new Date(instant);
+  } catch {
+    return null;
+  }
+}
+
+function offsetLabel(zone: string, at: Date): string {
+  try {
+    const name = new Intl.DateTimeFormat("en-US", { timeZone: zone, timeZoneName: "longOffset" })
+      .formatToParts(at)
+      .find((part) => part.type === "timeZoneName")?.value;
+    return name === "GMT" ? "UTC+00:00" : (name ?? "").replace("GMT", "UTC");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * The requested slot, in the visitor's zone and in UTC.
+ *
+ * Both readings go in the mail on purpose: the visitor's is the one to confirm
+ * back to them, and UTC is the one that survives being pasted into a calendar
+ * by someone sitting in a different country.
+ */
 function formatDate(date: string, time: string, timezone: string): string {
-  const parsed = new Date(`${date}T${time}:00Z`);
-  const day = Number.isNaN(parsed.getTime())
-    ? date
-    : parsed.toLocaleDateString("en-GB", {
+  const zone = timezone || "UTC";
+  const instant = resolveInstant(date, time, zone);
+
+  const day = instant
+    ? instant.toLocaleDateString("en-GB", {
         weekday: "long",
         day: "numeric",
         month: "long",
         year: "numeric",
-        timeZone: "UTC",
-      });
-  return `${day} at ${time}${timezone ? ` (${timezone})` : ""}`;
+        timeZone: zone,
+      })
+    : date;
+
+  // "UTC, UTC+00:00" says the same thing twice.
+  const offset = instant && zone !== "UTC" ? offsetLabel(zone, instant) : "";
+  const local = `${day} at ${time} (${zone}${offset ? `, ${offset}` : ""})`;
+  if (!instant) return local;
+
+  const utc = instant.toISOString().replace("T", " ").slice(0, 16);
+  return `${local} = ${utc} UTC`;
 }
 
 type Meta = { ip: string; userAgent: string; referer: string; submittedAt: Date };

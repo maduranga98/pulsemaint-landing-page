@@ -2,6 +2,7 @@
 
 import { cloneElement, useCallback, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { COUNTRIES } from "./countries";
+import { TIMEZONE_GROUPS, TIMEZONE_VALUES } from "./timezones";
 
 /** Hosting rewrites this path to the `bookDemo` Cloud Function (see firebase.json). */
 const ENDPOINT = "/api/book-demo";
@@ -31,6 +32,7 @@ type Fields = {
   machineCount: string;
   preferredDate: string;
   preferredTime: string;
+  timezone: string;
   notes: string;
 };
 
@@ -43,6 +45,7 @@ const EMPTY: Fields = {
   machineCount: "",
   preferredDate: "",
   preferredTime: "10:00",
+  timezone: "",
   notes: "",
 };
 
@@ -62,6 +65,7 @@ function validate(values: Fields): Partial<Record<keyof Fields, string>> {
   }
   if (!values.preferredDate) errors.preferredDate = "Pick a preferred date.";
   if (!values.preferredTime) errors.preferredTime = "Pick a preferred time.";
+  if (values.timezone && !TIMEZONE_VALUES.has(values.timezone)) errors.timezone = "Pick a time zone.";
 
   return errors;
 }
@@ -71,31 +75,103 @@ function toDateInput(date: Date): string {
 }
 
 /**
- * Bookable window for the date input.
+ * Everything the form needs from the visitor's own environment: the bookable
+ * date window and the zone their clock is in.
  *
- * The page is statically exported, so "today" cannot come from render: the
- * build machine's clock would be baked into the HTML and then disagree with the
- * browser on hydration. useSyncExternalStore gives the server an empty range
- * (no min/max attributes) and the client the real one, with no post-mount
- * setState and no mismatch. The snapshot is cached because it must be
- * referentially stable across reads.
+ * The page is statically exported, so neither can come from render - the build
+ * machine's clock and ICU data would be baked into the HTML and then disagree
+ * with the browser on hydration. useSyncExternalStore hands the server a
+ * neutral snapshot and the client the real one, with no post-mount setState and
+ * no mismatch. Snapshots are cached because they must be referentially stable
+ * across reads.
  */
-const NO_RANGE = { min: "", max: "" } as const;
-const subscribeToNothing = () => () => {};
-let cachedRange: { min: string; max: string } | null = null;
+type ClientEnv = { ready: boolean; min: string; max: string; zone: string };
 
-function readBookingRange(): { min: string; max: string } {
-  if (!cachedRange) {
+const SERVER_ENV: ClientEnv = { ready: false, min: "", max: "", zone: "UTC" };
+const subscribeToNothing = () => () => {};
+let cachedEnv: ClientEnv | null = null;
+
+function readClientEnv(): ClientEnv {
+  if (!cachedEnv) {
     const today = new Date();
     const horizon = new Date(today);
     horizon.setDate(horizon.getDate() + BOOKING_HORIZON_DAYS);
-    cachedRange = { min: toDateInput(today), max: toDateInput(horizon) };
+    const detected = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+    cachedEnv = {
+      ready: true,
+      min: toDateInput(today),
+      max: toDateInput(horizon),
+      // An unlisted zone (an alias the browser reports but our generated list
+      // does not carry) falls back to UTC rather than a blank select.
+      zone: TIMEZONE_VALUES.has(detected) ? detected : "UTC",
+    };
   }
-  return cachedRange;
+  return cachedEnv;
 }
 
-function serverBookingRange(): { min: string; max: string } {
-  return NO_RANGE;
+function readServerEnv(): ClientEnv {
+  return SERVER_ENV;
+}
+
+/**
+ * "UTC+05:30" for a zone on a given date - the offset, not the zone name,
+ * because that is what makes two zones comparable at a glance. Date-dependent
+ * on purpose: half the world's offsets move with DST.
+ */
+function offsetLabel(zone: string, date: string): string {
+  try {
+    const at = new Date(`${date || toDateInput(new Date())}T12:00:00Z`);
+    const formatted = new Intl.DateTimeFormat("en-US", { timeZone: zone, timeZoneName: "longOffset" })
+      .formatToParts(at)
+      .find((part) => part.type === "timeZoneName")?.value;
+    return formatted === "GMT" ? "UTC+00:00" : (formatted ?? "").replace("GMT", "UTC");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Minutes a zone is ahead of UTC at a given instant. Formatting the instant in
+ * the zone and reading the wall clock back is the only way to get this without
+ * shipping a tz database.
+ */
+function zoneOffsetMinutes(zone: string, at: Date): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: zone,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).formatToParts(at);
+  const read = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? "0");
+  const asUtc = Date.UTC(read("year"), read("month") - 1, read("day"), read("hour"), read("minute"));
+  // Both sides are minute-resolution, so the difference is the offset exactly.
+  return (asUtc - Math.floor(at.getTime() / 60_000) * 60_000) / 60_000;
+}
+
+/** The visitor's wall-clock slot read back as UTC, e.g. "05:00". */
+function utcReading(date: string, time: string, zone: string): string {
+  try {
+    const naive = Date.parse(`${date}T${time}:00Z`);
+    if (Number.isNaN(naive)) return "";
+    // Two passes: the first offset may be the wrong side of a DST change, and
+    // re-reading it at the corrected instant settles it.
+    let instant = naive - zoneOffsetMinutes(zone, new Date(naive)) * 60_000;
+    instant = naive - zoneOffsetMinutes(zone, new Date(instant)) * 60_000;
+    return new Date(instant).toISOString().slice(11, 16);
+  } catch {
+    return "";
+  }
+}
+
+/** "Fri 2 Oct, 10:30 AM in Asia/Colombo (UTC+05:30) - 05:00 UTC on our side." */
+function describeSlot(date: string, time: string, zone: string): string {
+  if (!date || !time) return "";
+  const offset = zone === "UTC" ? "" : offsetLabel(zone, date);
+  const utc = utcReading(date, time, zone);
+  return `${time} in ${zone}${offset ? ` (${offset})` : ""}${utc ? ` - ${utc} UTC on our side` : ""}.`;
 }
 
 const fieldClass =
@@ -110,7 +186,10 @@ export function BookingForm() {
   const [message, setMessage] = useState("");
   const honeypot = useRef<HTMLInputElement>(null);
 
-  const dateRange = useSyncExternalStore(subscribeToNothing, readBookingRange, serverBookingRange);
+  const env = useSyncExternalStore(subscribeToNothing, readClientEnv, readServerEnv);
+  // Blank until the visitor picks one: their own zone is the default, but the
+  // meeting may well be for a plant in another one.
+  const zone = values.timezone || env.zone;
 
   const setField = useCallback(
     (key: keyof Fields) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -126,6 +205,24 @@ export function BookingForm() {
     () => COUNTRIES.map((country) => <option key={country} value={country}>{country}</option>),
     []
   );
+
+  const timezoneOptions = useMemo(
+    () =>
+      TIMEZONE_GROUPS.map(([region, zones]) => (
+        <optgroup key={region} label={region}>
+          {zones.map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </optgroup>
+      )),
+    []
+  );
+
+  // Only meaningful once the browser has told us the real zone; before that the
+  // server snapshot would print a UTC reading nobody asked for.
+  const slotSummary = env.ready ? describeSlot(values.preferredDate, values.preferredTime, zone) : "";
 
   const submit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -150,9 +247,7 @@ export function BookingForm() {
           body: JSON.stringify({
             ...values,
             machineCount: Number(values.machineCount),
-            // Read at submit time: the slot only means something with the
-            // visitor's own zone attached.
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone ?? "",
+            timezone: zone,
             website: honeypot.current?.value ?? "",
           }),
         });
@@ -177,7 +272,7 @@ export function BookingForm() {
         setMessage("Network error. Please try again or email support@firmicore.com.");
       }
     },
-    [status, values]
+    [status, values, zone]
   );
 
   if (status === "sent") {
@@ -299,8 +394,8 @@ export function BookingForm() {
             type="date"
             value={values.preferredDate}
             onChange={setField("preferredDate")}
-            min={dateRange.min || undefined}
-            max={dateRange.max || undefined}
+            min={env.min || undefined}
+            max={env.max || undefined}
             className={`${fieldClass} [color-scheme:dark]`}
           />
         </Field>
@@ -320,6 +415,23 @@ export function BookingForm() {
             ))}
           </select>
         </Field>
+
+        <div className="sm:col-span-2">
+          <Field id={`${formId}-timezone`} label="Time zone of that slot" error={errors.timezone}>
+            <select
+              id={`${formId}-timezone`}
+              name="timezone"
+              value={zone}
+              onChange={setField("timezone")}
+              className={`${fieldClass} select-field appearance-none`}
+            >
+              {timezoneOptions}
+            </select>
+          </Field>
+          <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-mute">
+            {slotSummary || "We default to your device's time zone. Change it if the demo is for another site."}
+          </p>
+        </div>
 
         <div className="sm:col-span-2">
           <Field id={`${formId}-notes`} label="What should we focus on? (optional)" error={errors.notes}>
