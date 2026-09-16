@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { SOCIAL_LINKS } from "./site-data";
 import type { BlogPost } from "./blog-data";
 
 export type { BlogPost };
@@ -145,7 +146,7 @@ export function Navbar() {
 export function Footer() {
   const columns = [
     { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
-    { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ["LinkedIn", "#"]] },
+    { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ...SOCIAL_LINKS.map((link) => [link.label, link.url] as [string, string])] },
     { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Book a demo", "/#book-demo"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
@@ -168,13 +169,29 @@ export function Footer() {
             <div key={column.title}>
               <div className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{column.title}</div>
               <ul className="space-y-2.5">
-                {column.links.map(([label, href]) => (
-                  <li key={label}>
-                    <Link href={href} className="text-sm text-ink-dim transition hover:text-pulse">
-                      {label}
-                    </Link>
-                  </li>
-                ))}
+                {column.links.map(([label, href]) =>
+                  href.startsWith("http") ? (
+                    <li key={label}>
+                      {/* External profile: rel="me" is the link-side half of the
+                          schema.org sameAs claim, and the pair is what lets a
+                          crawler treat the profile as verified. */}
+                      <a
+                        href={href}
+                        rel="me noopener noreferrer"
+                        target="_blank"
+                        className="text-sm text-ink-dim transition hover:text-pulse"
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={label}>
+                      <Link href={href} className="text-sm text-ink-dim transition hover:text-pulse">
+                        {label}
+                      </Link>
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           ))}

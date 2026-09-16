@@ -13,6 +13,21 @@ export const CONTACT_EMAIL = "info@lumoraventures.com";
 export const CONTACT_PHONE = "+94-71-999-8500";
 
 /**
+ * Official social profiles, emitted as the Organization's `sameAs` and rendered
+ * as real footer links.
+ *
+ * `sameAs` is how the entity gets reconciled against a knowledge graph, and it
+ * carries more weight when a crawler can corroborate it with an actual link on
+ * the page, so the two surfaces read from this one list.
+ *
+ * Canonical host only: Facebook serves the same profile from web.facebook.com,
+ * but emits www.facebook.com as og:url, and sameAs matching is string-based.
+ */
+export const SOCIAL_LINKS: { label: string; url: string }[] = [
+  { label: "Facebook", url: "https://www.facebook.com/profile.php?id=61594147745569" },
+];
+
+/**
  * Date the homepage facts (modules, roles, pricing, security model) were last
  * reviewed against the product. Bump it by hand when one of them changes.
  *

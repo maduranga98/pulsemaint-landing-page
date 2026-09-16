@@ -1,5 +1,5 @@
 import { posts } from "../blog-posts";
-import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "../site-data";
+import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "../site-data";
 
 /**
  * /llms.txt — the llmstxt.org convention: a single Markdown map of the site,
@@ -52,6 +52,7 @@ export function GET(): Response {
       "- Email: info@lumoraventures.com",
       "- Phone: +94 71 999 8500",
       "- Address: Kurunegala Road, Kuliyapitiya 60200, Sri Lanka",
+      ...SOCIAL_LINKS.map((link) => `- ${link.label}: ${link.url}`),
     ]),
     `---\nContent may be quoted with attribution to ${SITE_NAME} (${SITE_URL}/). Pricing figures are indicative; confirm with sales before quoting a customer.`,
   ].join("\n\n");
