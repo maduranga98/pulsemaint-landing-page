@@ -13,6 +13,82 @@ export const CONTACT_EMAIL = "info@lumoraventures.com";
 export const CONTACT_PHONE = "+94-71-999-8500";
 
 /**
+ * Date the homepage facts (modules, roles, pricing, security model) were last
+ * reviewed against the product. Bump it by hand when one of them changes.
+ *
+ * Deliberately a constant rather than `new Date()`: a build-time timestamp
+ * would claim a fresh edit on every deploy, and a `dateModified` that is always
+ * "today" is a freshness signal answer engines learn to discount.
+ */
+export const CONTENT_LAST_REVIEWED = "2026-09-16";
+
+/**
+ * Pricing tiers. Rendered as the pricing cards on the homepage AND emitted as
+ * individual schema.org `Offer` nodes, so "what does the Workshop tier cost"
+ * can be answered from structured data instead of parsed out of prose.
+ */
+export type PricingTier = {
+  name: string;
+  /** Display price, e.g. "$29" or "Contact Sales". */
+  price: string;
+  /** Numeric monthly price in USD. Omitted for quote-only tiers. */
+  priceUSD?: number;
+  period: string;
+  annual: string;
+  limits: string;
+  features: string[];
+  popular: boolean;
+};
+
+export const PRICING_TIERS: PricingTier[] = [
+  {
+    name: "Basic",
+    price: "$29",
+    priceUSD: 29,
+    period: "/mo",
+    annual: "$278/year, 20% off monthly",
+    limits: "10 machines \u00b7 10 inventory items \u00b7 10 PM schedules \u00b7 5 users",
+    features: ["Core maintenance only"],
+    popular: false,
+  },
+  {
+    name: "Workshop",
+    price: "$59",
+    priceUSD: 59,
+    period: "/mo",
+    annual: "$566/year, 20% off monthly",
+    limits: "100 machines \u00b7 10,000 items \u00b7 unlimited PM \u00b7 20 users",
+    features: ["Contractor management", "Shift handover, training & safety", "PM compliance dashboard", "Basic analytics"],
+    popular: false,
+  },
+  {
+    name: "Factory Pro",
+    price: "$249",
+    priceUSD: 249,
+    period: "/mo",
+    annual: "$2,390/year, 20% off monthly",
+    limits: "1,500 machines \u00b7 unlimited inventory & PM \u00b7 100 users",
+    features: ["Everything in Workshop", "MOE trend analytics", "Machine comparison"],
+    popular: true,
+  },
+  {
+    name: "Enterprise",
+    price: "Contact Sales",
+    period: "",
+    annual: "",
+    limits: "Unlimited machines, inventory, PM, users",
+    features: [
+      "TPM maturity roadmap & 5S scorecard",
+      "Multi-site management",
+      "Advanced reports hub",
+      "SSO/SAML, custom integrations & API",
+      "Dedicated support & SLA",
+    ],
+    popular: false,
+  },
+];
+
+/**
  * The one-sentence definition. Answer engines lift the first declarative
  * sentence that starts with the entity name, so this leads with "Firmicore is".
  */

@@ -163,6 +163,19 @@ export default async function BlogPostPage({ params }: PageProps) {
           }
         : {}),
       ...(terms.length ? { about: terms.slice(0, 3), mentions: terms } : {}),
+      // A traceable claim is a quotable claim: `citation` is what lets an
+      // answer engine verify a figure instead of discarding it as unsourced.
+      ...(post.sources?.length
+        ? {
+            citation: post.sources.map((source) => ({
+              "@type": "CreativeWork",
+              name: source.title,
+              url: source.url,
+              ...(source.publisher ? { publisher: { "@type": "Organization", name: source.publisher } } : {}),
+              ...(source.date ? { datePublished: source.date } : {}),
+            })),
+          }
+        : {}),
       ...(sections.length
         ? {
             hasPart: sections.map((section) => ({
@@ -295,6 +308,23 @@ export default async function BlogPostPage({ params }: PageProps) {
                 ))}
               </section>
             ))}
+
+            {post.sources?.length ? (
+              <section id="sources" className="my-12 scroll-mt-24 rounded-2xl border border-white/10 bg-navy-800/50 p-6">
+                <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">Sources</div>
+                <ol className="mb-0">
+                  {post.sources.map((source) => (
+                    <li key={source.url}>
+                      <a href={source.url} target="_blank" rel="noopener noreferrer nofollow" className="text-pulse hover:underline">
+                        {source.title}
+                      </a>
+                      {source.publisher ? <span className="text-ink-mute"> &mdash; {source.publisher}</span> : null}
+                      {source.date ? <span className="text-ink-mute"> ({source.date})</span> : null}
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            ) : null}
 
             <section className="relative my-12 overflow-hidden rounded-2xl border border-pulse/30 bg-gradient-to-br from-pulse/10 via-navy-800/60 to-power/10 p-8">
               <div className="absolute inset-0 opacity-35">

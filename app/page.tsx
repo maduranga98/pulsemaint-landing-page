@@ -2,7 +2,7 @@ import Link from "next/link";
 import { posts } from "./blog-data";
 import { BookingForm } from "./booking-form";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
-import { CONTACT_PHONE, FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
+import { CONTACT_PHONE, CONTENT_LAST_REVIEWED, FAQS, GLOSSARY, ONE_LINER, PRICING_TIERS, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
 
 const heroStats = [
   ["9", "Role-based workspaces"],
@@ -69,12 +69,6 @@ const valueProps = [
   "Deploys fast, live in days, not months",
 ];
 
-const pricingTiers = [
-  { name: "Basic", price: "$29", period: "/mo", annual: "$278/year, 20% off monthly", limits: "10 machines · 10 inventory items · 10 PM schedules · 5 users", features: ["Core maintenance only"], popular: false },
-  { name: "Workshop", price: "$59", period: "/mo", annual: "$566/year, 20% off monthly", limits: "100 machines · 10,000 items · unlimited PM · 20 users", features: ["Contractor management", "Shift handover, training & safety", "PM compliance dashboard", "Basic analytics"], popular: false },
-  { name: "Factory Pro", price: "$249", period: "/mo", annual: "$2,390/year, 20% off monthly", limits: "1,500 machines · unlimited inventory & PM · 100 users", features: ["Everything in Workshop", "MOE trend analytics", "Machine comparison"], popular: true },
-  { name: "Enterprise", price: "Contact Sales", period: "", annual: "", limits: "Unlimited machines, inventory, PM, users", features: ["TPM maturity roadmap & 5S scorecard", "Multi-site management", "Advanced reports hub", "SSO/SAML, custom integrations & API", "Dedicated support & SLA"], popular: false },
-];
 
 const securityPoints = [
   ["Multi-tenant by design", "Data never crosses a tenant boundary: each plant's data is fully isolated."],
@@ -136,7 +130,11 @@ function homeJsonLd() {
     isPartOf: { "@id": `${SITE_URL}/#website` },
     about: { "@id": `${SITE_URL}/#software` },
     inLanguage: "en",
-    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/og-image.png` },
+    // Points at the generated 1200x630 card, not the old undersized PNG.
+    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 },
+    // Hand-maintained review date. See CONTENT_LAST_REVIEWED for why this is
+    // not derived from the build clock.
+    dateModified: CONTENT_LAST_REVIEWED,
     // The one-line definition and the FAQ answers are the passages worth
     // reading aloud or quoting; pointing at them beats letting a parser guess.
     speakable: {
@@ -496,7 +494,7 @@ function Pricing() {
           All limits and prices are indicative: confirm exact figures with sales before quoting a customer.
         </p>
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {pricingTiers.map((tier) => (
+          {PRICING_TIERS.map((tier) => (
             <div
               key={tier.name}
               className={`relative flex flex-col gap-3.5 rounded-2xl p-6 text-left lift ${
