@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Sora } from "next/font/google";
 import "./globals.css";
-import { CONTACT_EMAIL, CONTACT_PHONE, LEGAL_NAME, ONE_LINER, PRICING_TIERS, SITE_NAME, SITE_URL } from "./site-data";
+import { CONTACT_EMAIL, CONTACT_PHONE, LEGAL_NAME, ONE_LINER, PRICING_TIERS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "./site-data";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -118,10 +118,10 @@ const organizationJsonLd = {
     "Mobile-first CMMS for factory maintenance: breakdown tracking, guided operator triage, work orders, and repair history.",
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
-  // sameAs is how an entity gets reconciled against a knowledge graph. Only the
-  // parent company's own domain is listed: an unverified profile URL is worse
-  // than none, because a wrong reconciliation is hard to undo.
-  sameAs: ["https://lumoraventures.com/"],
+  // sameAs is how an entity gets reconciled against a knowledge graph, so every
+  // URL here must be a profile the company actually controls: an unverified one
+  // is worse than none, because a wrong reconciliation is hard to undo.
+  sameAs: ["https://lumoraventures.com/", ...SOCIAL_LINKS.map((link) => link.url)],
   parentOrganization: { "@type": "Organization", name: LEGAL_NAME, url: "https://lumoraventures.com/" },
   areaServed: ["LK", "IN", "BD", "SG", "MY", "AE"],
   knowsAbout: [
