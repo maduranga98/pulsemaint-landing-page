@@ -41,6 +41,15 @@ export type BlogPost = {
   sections?: Section[];
   /** Slugs of related posts shown in "Keep reading". */
   related?: string[];
+  /**
+   * External sources backing the claims and figures in the post.
+   *
+   * Rendered as a visible "Sources" list AND emitted as schema.org `citation`.
+   * An unsourced statistic is not quotable: answer engines weight a claim by
+   * whether it can be traced, so a `stats` block with no entry here is a
+   * citation the article will not earn.
+   */
+  sources?: { title: string; url: string; publisher?: string; date?: string }[];
 };
 
 export { posts } from "./blog-posts";

@@ -32,6 +32,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // The glossary changes only when a term is added or reworded, and there is
     // no build-time signal for that, so it carries no lastModified either.
     { url: url("/glossary/"), changeFrequency: "monthly", priority: 0.7 },
+    // The llms.txt pair is regenerated from `posts` on every build, so it is
+    // as fresh as the newest article. Listing it here is the second discovery
+    // path after the <link rel="alternate"> tags in the document head.
+    { url: url("/llms.txt"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.5 },
+    { url: url("/llms-full.txt"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.5 },
   ];
 
   const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({

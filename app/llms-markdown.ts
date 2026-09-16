@@ -56,6 +56,14 @@ export function postToMarkdown(post: BlogPost): string {
     section.blocks.forEach((block) => parts.push(blockToMarkdown(block)));
   });
 
+  if (post.sources?.length) {
+    parts.push(
+      `### Sources\n\n${post.sources
+        .map((source) => `- [${source.title}](${source.url})${source.publisher ? ` - ${source.publisher}` : ""}${source.date ? ` (${source.date})` : ""}`)
+        .join("\n")}`,
+    );
+  }
+
   return parts.join("\n\n");
 }
 

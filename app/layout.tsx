@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Sora } from "next/font/google";
 import "./globals.css";
-import { CONTACT_EMAIL, CONTACT_PHONE, LEGAL_NAME, ONE_LINER, SITE_NAME, SITE_URL } from "./site-data";
+import { CONTACT_EMAIL, CONTACT_PHONE, LEGAL_NAME, ONE_LINER, PRICING_TIERS, SITE_NAME, SITE_URL } from "./site-data";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -29,7 +29,18 @@ export const metadata: Metadata = {
   description:
     "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
   metadataBase: new URL(SITE_URL),
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: {
+      // Nothing linked to /llms.txt, so a fetch-time crawler had to guess the
+      // path. These two <link rel="alternate"> tags are the discovery hook.
+      "text/plain": [
+        { url: "/llms.txt", title: `${SITE_NAME} - site map for language models` },
+        { url: "/llms-full.txt", title: `${SITE_NAME} - full site text` },
+      ],
+      "application/rss+xml": [{ url: "/feed.xml", title: `${SITE_NAME} blog` }],
+    },
+  },
   applicationName: SITE_NAME,
   category: "Business Software",
   keywords: [
@@ -79,21 +90,16 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Firmicore - mobile-first CMMS for factory maintenance",
-      },
-    ],
+    // og:image comes from app/opengraph-image.tsx, which renders a real
+    // 1200x630 card at build time. Declaring it here too would pin the stale
+    // /og-image.png, which was only 484x516.
   },
   twitter: {
     card: "summary_large_image",
     title: "Firmicore - Strength at the core of every machine.",
     description:
       "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
-    images: ["/og-image.png"],
+    // twitter:image falls back to the generated opengraph-image as well.
   },
 };
 
@@ -182,14 +188,42 @@ const softwareJsonLd = {
     "MOE dashboard: composite Machine Overall Effectiveness score per machine",
   ],
   // The page advertises four tiers from $29/mo to $249/mo plus Contact Sales.
-  // A single Offer at $29 contradicts it; AggregateOffer states the real range.
+  // A single Offer at $29 contradicts it; AggregateOffer states the real range,
+  // and `offers` names each tier so "what does the Workshop tier cost" is
+  // answerable from structured data rather than from parsed prose.
   offers: {
     "@type": "AggregateOffer",
     priceCurrency: "USD",
     lowPrice: "29",
     highPrice: "249",
-    offerCount: 4,
+    offerCount: PRICING_TIERS.length,
     url: `${SITE_URL}/#pricing`,
+    offers: PRICING_TIERS.map((tier) => ({
+      "@type": "Offer",
+      "@id": `${SITE_URL}/#offer-${tier.name.toLowerCase().replace(/\s+/g, "-")}`,
+      name: `${SITE_NAME} ${tier.name}`,
+      description: tier.limits,
+      category: "SubscriptionPlan",
+      url: `${SITE_URL}/#pricing`,
+      // A quote-only tier has no price. Emitting 0, or omitting the currency
+      // while keeping a price, both read as free.
+      ...(tier.priceUSD === undefined
+        ? { availability: "https://schema.org/InStock", priceSpecification: { "@type": "PriceSpecification", valueAddedTaxIncluded: false } }
+        : {
+            price: String(tier.priceUSD),
+            priceCurrency: "USD",
+            availability: "https://schema.org/InStock",
+            priceSpecification: {
+              "@type": "UnitPriceSpecification",
+              price: String(tier.priceUSD),
+              priceCurrency: "USD",
+              unitCode: "MON",
+              billingDuration: 1,
+              billingIncrement: 1,
+            },
+          }),
+      itemOffered: { "@id": `${SITE_URL}/#software` },
+    })),
   },
 };
 
