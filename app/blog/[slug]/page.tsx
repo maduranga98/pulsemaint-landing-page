@@ -4,7 +4,15 @@ import { notFound } from "next/navigation";
 import { getPost, getRelated, posts } from "../../blog-posts";
 import { wordCount } from "../../llms-markdown";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "../../marketing-components";
-import { GLOSSARY, SITE_NAME, SITE_URL } from "../../site-data";
+import {
+  GLOSSARY,
+  OG_IMAGE_ALT,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  SITE_NAME,
+  SITE_URL,
+  ogImageUrl,
+} from "../../site-data";
 import { ArticleBlock } from "./article-blocks";
 
 type PageProps = {
@@ -77,13 +85,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       modifiedTime,
       authors: [post.author],
       section: post.category,
-      // Image comes from the colocated opengraph-image route, which renders a
-      // per-post card instead of the one shared /og-image.png.
+      // Per-post card, declared explicitly. The `.png` extension is what keeps
+      // it out of Hosting's trailing-slash rewrite for extensionless paths.
+      images: [
+        { url: ogImageUrl(slug), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [{ url: ogImageUrl(slug), alt: OG_IMAGE_ALT }],
     },
   };
 }
@@ -141,13 +153,13 @@ export default async function BlogPostPage({ params }: PageProps) {
       dateModified: modifiedISO,
       mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
       url: postUrl,
-      // Matches the file emitted by the colocated opengraph-image route. It is
-      // extensionless, so firebase.json sets its Content-Type explicitly.
+      // Same URL as og:image, so a crawler that reconciles the two sees one
+      // image rather than two candidates.
       image: {
         "@type": "ImageObject",
-        url: `${postUrl}opengraph-image`,
-        width: 1200,
-        height: 630,
+        url: ogImageUrl(post.slug),
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
       },
       inLanguage: "en",
       articleSection: post.category,

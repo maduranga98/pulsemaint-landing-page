@@ -7,6 +7,23 @@
  */
 
 export const SITE_URL = "https://firmicore.com";
+
+/**
+ * Social card URLs.
+ *
+ * Built from an explicit `.png` route rather than Next's `opengraph-image` file
+ * convention. That convention emits an extensionless URL, and Hosting runs with
+ * `trailingSlash: true`, which appends a slash to any extensionless path - so
+ * every card URL redirected to a path with no file behind it. Keep the `.png`.
+ */
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
+export const OG_IMAGE_ALT = "Firmicore - mobile-first CMMS for factory maintenance";
+
+/** Card for `card`, which is a post slug or "home" for the site-wide card. */
+export function ogImageUrl(card: string): string {
+  return `${SITE_URL}/og/${card}.png`;
+}
 export const SITE_NAME = "Firmicore";
 export const LEGAL_NAME = "Lumora Ventures Pvt Ltd";
 export const CONTACT_EMAIL = "info@lumoraventures.com";

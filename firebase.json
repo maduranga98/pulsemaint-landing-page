@@ -26,12 +26,8 @@
     ],
     "headers": [
       {
-        "source": "**opengraph-image",
+        "source": "/og/**.png",
         "headers": [
-          {
-            "key": "Content-Type",
-            "value": "image/png"
-          },
           {
             "key": "Cache-Control",
             "value": "public, max-age=3600"
