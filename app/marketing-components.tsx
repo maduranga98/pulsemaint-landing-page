@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { SOCIAL_LINKS } from "./site-data";
+import { SOCIAL_LINKS, type SocialLink } from "./site-data";
 import type { BlogPost } from "./blog-data";
 
 export type { BlogPost };
@@ -143,10 +143,30 @@ export function Navbar() {
   );
 }
 
+/**
+ * Brand glyphs for the footer's social row, inlined so the icons ship with the
+ * markup instead of costing a request and a layout shift. `currentColor` keeps
+ * them on the link's hover transition.
+ */
+function SocialIcon({ name }: { name: SocialLink["icon"] }) {
+  const paths: Record<SocialLink["icon"], string> = {
+    facebook:
+      "M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z",
+    linkedin:
+      "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.83v1.64h.05c.53-1 1.84-2.06 3.79-2.06C21.3 8.58 22 10.9 22 14.2V21h-4v-6.03c0-1.44-.03-3.29-2-3.29-2.01 0-2.32 1.57-2.32 3.19V21h-4V9Z",
+  };
+
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="h-[18px] w-[18px]">
+      <path d={paths[name]} />
+    </svg>
+  );
+}
+
 export function Footer() {
   const columns = [
     { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
-    { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"], ...SOCIAL_LINKS.map((link) => [link.label, link.url] as [string, string])] },
+    { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"]] },
     { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Book a demo", "/#book-demo"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
@@ -163,35 +183,38 @@ export function Footer() {
             <div>info@lumoraventures.com · +94 71 999 8500</div>
             <div>Kurunegala Road, Kuliyapitiya 60200, Sri Lanka</div>
           </div>
+          <div className="mt-6 flex items-center gap-3">
+            {SOCIAL_LINKS.map((social) => (
+              /* External profile: rel="me" is the link-side half of the
+                 schema.org sameAs claim, and the pair is what lets a crawler
+                 treat the profile as verified. The glyph is decorative, so the
+                 accessible name comes from aria-label. */
+              <a
+                key={social.url}
+                href={social.url}
+                aria-label={social.label}
+                title={social.label}
+                rel="me noopener noreferrer"
+                target="_blank"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-ink-dim transition hover:border-pulse/40 hover:text-pulse"
+              >
+                <SocialIcon name={social.icon} />
+              </a>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-8">
           {columns.map((column) => (
             <div key={column.title}>
               <div className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{column.title}</div>
               <ul className="space-y-2.5">
-                {column.links.map(([label, href]) =>
-                  href.startsWith("http") ? (
-                    <li key={label}>
-                      {/* External profile: rel="me" is the link-side half of the
-                          schema.org sameAs claim, and the pair is what lets a
-                          crawler treat the profile as verified. */}
-                      <a
-                        href={href}
-                        rel="me noopener noreferrer"
-                        target="_blank"
-                        className="text-sm text-ink-dim transition hover:text-pulse"
-                      >
-                        {label}
-                      </a>
-                    </li>
-                  ) : (
-                    <li key={label}>
-                      <Link href={href} className="text-sm text-ink-dim transition hover:text-pulse">
-                        {label}
-                      </Link>
-                    </li>
-                  ),
-                )}
+                {column.links.map(([label, href]) => (
+                  <li key={label}>
+                    <Link href={href} className="text-sm text-ink-dim transition hover:text-pulse">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           ))}
