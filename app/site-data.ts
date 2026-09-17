@@ -39,9 +39,15 @@ export const CONTACT_PHONE = "+94-71-999-8500";
  *
  * Canonical host only: Facebook serves the same profile from web.facebook.com,
  * but emits www.facebook.com as og:url, and sameAs matching is string-based.
+ *
+ * `icon` keys the footer's inline SVG glyph; the markup stays in the component
+ * so this module remains plain data that server files can import.
  */
-export const SOCIAL_LINKS: { label: string; url: string }[] = [
-  { label: "Facebook", url: "https://www.facebook.com/profile.php?id=61594147745569" },
+export type SocialLink = { label: string; url: string; icon: "facebook" | "linkedin" };
+
+export const SOCIAL_LINKS: SocialLink[] = [
+  { label: "Facebook", url: "https://www.facebook.com/profile.php?id=61594147745569", icon: "facebook" },
+  { label: "LinkedIn", url: "https://www.linkedin.com/company/firmicore/", icon: "linkedin" },
 ];
 
 /**
