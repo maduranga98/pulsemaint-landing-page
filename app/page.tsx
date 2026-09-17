@@ -2,7 +2,20 @@ import Link from "next/link";
 import { posts } from "./blog-data";
 import { BookingForm } from "./booking-form";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
-import { CONTACT_PHONE, CONTENT_LAST_REVIEWED, FAQS, GLOSSARY, ONE_LINER, PRICING_TIERS, QUICK_FACTS, SITE_NAME, SITE_URL } from "./site-data";
+import {
+  CONTACT_PHONE,
+  CONTENT_LAST_REVIEWED,
+  FAQS,
+  GLOSSARY,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  ONE_LINER,
+  PRICING_TIERS,
+  QUICK_FACTS,
+  SITE_NAME,
+  SITE_URL,
+  ogImageUrl,
+} from "./site-data";
 
 const heroStats = [
   ["9", "Role-based workspaces"],
@@ -131,7 +144,7 @@ function homeJsonLd() {
     about: { "@id": `${SITE_URL}/#software` },
     inLanguage: "en",
     // Points at the generated 1200x630 card, not the old undersized PNG.
-    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630 },
+    primaryImageOfPage: { "@type": "ImageObject", url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT },
     // Hand-maintained review date. See CONTENT_LAST_REVIEWED for why this is
     // not derived from the build clock.
     dateModified: CONTENT_LAST_REVIEWED,

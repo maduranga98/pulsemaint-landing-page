@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { posts } from "../blog-posts";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel } from "../marketing-components";
-import { SITE_NAME, SITE_URL } from "../site-data";
+import { OG_IMAGE_ALT, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, SITE_NAME, SITE_URL, ogImageUrl } from "../site-data";
 
 const TITLE = "CMMS & Factory Maintenance Blog";
 const DESCRIPTION =
@@ -21,12 +21,17 @@ export const metadata: Metadata = {
     siteName: "Firmicore",
     locale: "en_US",
     type: "website",
-    // Inherits the generated 1200x630 card from app/opengraph-image.tsx.
+    // A child `openGraph` replaces the root layout's wholesale rather than
+    // merging into it, so the site-wide card has to be restated here.
+    images: [
+      { url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${TITLE} | Firmicore`,
     description: DESCRIPTION,
+    images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
   },
 };
 

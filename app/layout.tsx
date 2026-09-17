@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Sora } from "next/font/google";
 import "./globals.css";
-import { CONTACT_EMAIL, CONTACT_PHONE, LEGAL_NAME, ONE_LINER, PRICING_TIERS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "./site-data";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  LEGAL_NAME,
+  OG_IMAGE_ALT,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  ONE_LINER,
+  PRICING_TIERS,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_LINKS,
+  ogImageUrl,
+} from "./site-data";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -90,16 +103,20 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
-    // og:image comes from app/opengraph-image.tsx, which renders a real
-    // 1200x630 card at build time. Declaring it here too would pin the stale
-    // /og-image.png, which was only 484x516.
+    // Declared explicitly rather than inherited from an `opengraph-image` file
+    // convention: that convention emits an extensionless URL, and Hosting's
+    // `trailingSlash: true` redirects every extensionless path to a slashed one
+    // that has no file behind it.
+    images: [
+      { url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Firmicore - Strength at the core of every machine.",
     description:
       "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
-    // twitter:image falls back to the generated opengraph-image as well.
+    images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
   },
 };
 

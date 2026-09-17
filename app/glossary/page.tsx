@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Corners, Footer, Navbar, SectionLabel } from "../marketing-components";
-import { GLOSSARY, GLOSSARY_GROUPS, SITE_NAME, SITE_URL } from "../site-data";
+import {
+  GLOSSARY,
+  GLOSSARY_GROUPS,
+  OG_IMAGE_ALT,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_WIDTH,
+  SITE_NAME,
+  SITE_URL,
+  ogImageUrl,
+} from "../site-data";
 
 const TITLE = "Maintenance & CMMS Glossary";
 const DESCRIPTION =
@@ -20,12 +29,17 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
     type: "website",
-    // Inherits the generated 1200x630 card from app/opengraph-image.tsx.
+    // A child `openGraph` replaces the root layout's wholesale rather than
+    // merging into it, so the site-wide card has to be restated here.
+    images: [
+      { url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${TITLE} | ${SITE_NAME}`,
     description: DESCRIPTION,
+    images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
   },
 };
 
