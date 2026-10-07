@@ -50,6 +50,23 @@ export function breadcrumbJsonLd(name: string, path: string) {
   };
 }
 
+/** BreadcrumbList for a page any depth below the homepage. `trail` is every crumb after Home, in order. */
+export function breadcrumbTrailJsonLd(trail: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
+      ...trail.map((crumb, index) => ({
+        "@type": "ListItem",
+        position: index + 2,
+        name: crumb.name,
+        item: `${SITE_URL}${crumb.path}`,
+      })),
+    ],
+  };
+}
+
 /** Serialises JSON-LD for a <script>, escaping "<" so copy can never close the tag. */
 export function jsonLdHtml(data: unknown): { __html: string } {
   return { __html: JSON.stringify(data).replace(/</g, "\\u003c") };

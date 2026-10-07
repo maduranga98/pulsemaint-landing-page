@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { posts } from "./blog-data";
+import { GLOSSARY } from "./glossary-data";
 import { PricingCards } from "./pricing-cards";
 import { LazyBookingForm } from "./lazy-booking-form";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
@@ -7,7 +8,6 @@ import {
   CONTACT_PHONE,
   CONTENT_LAST_REVIEWED,
   FAQS,
-  GLOSSARY,
   MODULES,
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,

@@ -3,91 +3,77 @@ import Link from "next/link";
 import { Corners, Footer, Navbar, SectionLabel } from "../marketing-components";
 import {
   GLOSSARY,
-  GLOSSARY_GROUPS,
-  OG_IMAGE_ALT,
-  OG_IMAGE_HEIGHT,
-  OG_IMAGE_WIDTH,
-  SITE_NAME,
-  SITE_URL,
-  ogImageUrl,
-} from "../site-data";
+  GLOSSARY_PATH,
+  GLOSSARY_SET_ID,
+  GLOSSARY_TITLE,
+  GLOSSARY_URL,
+  glossaryLastUpdated,
+  termLetter,
+  termPath,
+  termUrl,
+} from "../glossary-data";
+import { breadcrumbTrailJsonLd, jsonLdHtml, pageMetadata } from "../page-metadata";
+import { SITE_NAME, SITE_URL } from "../site-data";
 
-const TITLE = "Maintenance & CMMS Glossary";
+const TITLE = `Maintenance & CMMS Glossary: ${GLOSSARY.length} Terms | ${SITE_NAME}`;
 const DESCRIPTION =
-  "Plain definitions of the maintenance terms plant teams actually use: CMMS, MTTR, MTBF, OEE, PM compliance, permit to work, backlog, and more.";
+  "Plain definitions of the maintenance terms plant teams use: OEE, MTBF, MTTR, CMMS, EAM, preventive maintenance, downtime and more, each on its own page.";
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  // Trailing slash required: `trailingSlash: true` serves this at /glossary/
-  // and 301s the unslashed form.
-  alternates: { canonical: "/glossary/" },
-  openGraph: {
-    title: `${TITLE} | ${SITE_NAME}`,
-    description: DESCRIPTION,
-    url: `${SITE_URL}/glossary/`,
-    siteName: SITE_NAME,
-    locale: "en_US",
-    type: "website",
-    // A child `openGraph` replaces the root layout's wholesale rather than
-    // merging into it, so the site-wide card has to be restated here.
-    images: [
-      { url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${TITLE} | ${SITE_NAME}`,
-    description: DESCRIPTION,
-    images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
-  },
-};
+// Trailing slash required: `trailingSlash: true` serves this at /glossary/
+// and 301s the unslashed form.
+export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: GLOSSARY_PATH });
 
-const PAGE_URL = `${SITE_URL}/glossary/`;
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const ALPHABET = Array.from({ length: 26 }, (_, index) => String.fromCharCode(65 + index));
 
 /**
  * DefinedTermSet is the schema type answer engines resolve definitional queries
- * against. Each term also gets a stable #slug anchor so a citation can point at
- * the single definition rather than at the page.
+ * against. Every term it lists is a DefinedTerm on its own page, which points
+ * back here through `inDefinedTermSet`.
  */
 const definedTermSetJsonLd = {
   "@context": "https://schema.org",
   "@type": "DefinedTermSet",
-  "@id": `${PAGE_URL}#glossary`,
-  name: `${SITE_NAME} maintenance and CMMS glossary`,
+  "@id": GLOSSARY_SET_ID,
+  name: GLOSSARY_TITLE,
   description: DESCRIPTION,
-  url: PAGE_URL,
+  url: GLOSSARY_URL,
   inLanguage: "en",
-  publisher: { "@id": `${SITE_URL}/#organization` },
+  dateModified: glossaryLastUpdated(),
+  author: { "@id": ORGANIZATION_ID },
+  publisher: { "@id": ORGANIZATION_ID },
   hasDefinedTerm: GLOSSARY.map((entry) => ({
     "@type": "DefinedTerm",
-    "@id": `${PAGE_URL}#${entry.slug}`,
+    "@id": `${termUrl(entry.slug)}#term`,
     name: entry.term,
     termCode: entry.slug,
-    description: entry.detail ? `${entry.definition} ${entry.detail}` : entry.definition,
-    url: `${PAGE_URL}#${entry.slug}`,
-    inDefinedTermSet: { "@id": `${PAGE_URL}#glossary` },
+    description: entry.shortDefinition,
+    url: termUrl(entry.slug),
+    inDefinedTermSet: { "@id": GLOSSARY_SET_ID },
   })),
 };
 
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
-    { "@type": "ListItem", position: 2, name: TITLE, item: PAGE_URL },
-  ],
-};
+/**
+ * Before the glossary had a page per term, every definition lived at
+ * /glossary/#<slug>. A server cannot redirect a fragment, so this sends a
+ * visitor arriving on an old anchor to the term's own page. Without script the
+ * `id` on each entry below still scrolls to it, so an old link never dead-ends.
+ */
+const legacyAnchorScript = `(function(){var h=location.hash.slice(1);if(h&&${JSON.stringify(
+  GLOSSARY.map((entry) => entry.slug),
+)}.indexOf(h)>-1){location.replace("${GLOSSARY_PATH}"+h+"/")}})();`;
 
 export default function GlossaryPage() {
+  const byLetter = ALPHABET.map((letter) => ({ letter, entries: GLOSSARY.filter((entry) => termLetter(entry) === letter) }));
+  const filled = byLetter.filter((group) => group.entries.length > 0);
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([definedTermSetJsonLd, breadcrumbJsonLd]).replace(/</g, "\\u003c"),
-        }}
+        dangerouslySetInnerHTML={jsonLdHtml([definedTermSetJsonLd, breadcrumbTrailJsonLd([{ name: "Glossary", path: GLOSSARY_PATH }])])}
       />
+      <script dangerouslySetInnerHTML={{ __html: legacyAnchorScript }} />
       <Navbar />
       <main>
         <section className="relative overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16">
@@ -105,73 +91,74 @@ export default function GlossaryPage() {
                 Maintenance &amp; CMMS <span className="text-pulse">glossary.</span>
               </h1>
               <p className="mt-5 text-[17px] leading-relaxed text-ink-dim">
-                {GLOSSARY.length} terms used on a plant floor, each defined in one sentence, with the caveat that makes the
-                definition useful in practice. Written for maintenance teams comparing systems, not for a certification exam.
+                {GLOSSARY.length} terms used on a plant floor. Each has its own page with a one-sentence definition, the formula
+                where there is one, and the caveat that makes the definition useful in practice. Written for maintenance
+                teams and plant managers comparing systems, not for a certification exam.
               </p>
             </div>
           </div>
         </section>
 
-        <nav aria-label="Glossary terms" className="mx-auto max-w-7xl px-5 pb-12 sm:px-8">
+        <nav aria-label="Glossary A to Z" className="mx-auto max-w-7xl px-5 pb-12 sm:px-8">
           <div className="rounded-xl border border-white/8 bg-navy-800/40 p-5">
-            <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">Jump to a term</div>
+            <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">Jump to a letter</div>
             <ul className="flex flex-wrap gap-2">
-              {GLOSSARY.map((entry) => (
-                <li key={entry.slug}>
-                  <a
-                    href={`#${entry.slug}`}
-                    className="inline-block rounded-full border border-white/12 px-3 py-1.5 text-[13px] text-ink-dim transition hover:border-pulse/50 hover:text-pulse"
-                  >
-                    {entry.term}
-                  </a>
+              {byLetter.map(({ letter, entries }) => (
+                <li key={letter}>
+                  {entries.length > 0 ? (
+                    <a
+                      href={`#letter-${letter.toLowerCase()}`}
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/12 font-mono text-[13px] text-ink-dim transition hover:border-pulse/50 hover:text-pulse"
+                    >
+                      {letter}
+                    </a>
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/5 font-mono text-[13px] text-ink-mute/50"
+                    >
+                      {letter}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
         </nav>
 
-        {GLOSSARY_GROUPS.map((group) => {
-          const entries = GLOSSARY.filter((entry) => entry.group === group);
-          if (entries.length === 0) return null;
-
-          return (
-            <section key={group} className="mx-auto max-w-7xl px-5 pb-16 sm:px-8">
-              <h2 className="mb-6 font-sora text-2xl font-bold text-ink">{group}</h2>
-              <div className="grid gap-4 lg:grid-cols-2">
-                {entries.map((entry) => (
-                  <article
-                    key={entry.slug}
-                    id={entry.slug}
-                    className="lift relative scroll-mt-24 rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-pulse/30"
-                  >
-                    <Corners />
-                    <h3 className="font-sora text-[18px] font-bold text-ink">{entry.term}</h3>
-                    <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-dim">{entry.definition}</p>
-                    {entry.detail ? (
-                      <p className="mt-3 border-l border-pulse/30 pl-3 text-[13.5px] leading-relaxed text-ink-mute">
-                        {entry.detail}
-                      </p>
-                    ) : null}
-                    {entry.readMore || entry.alsoRead ? (
-                      <div className="mt-4 flex flex-col gap-1.5">
-                        {[...(entry.readMore ? [entry.readMore] : []), ...(entry.alsoRead ?? [])].map((link) => (
-                          <Link key={link.href} href={link.href} className="text-[13px] font-medium text-pulse">
-                            {link.label} →
-                          </Link>
-                        ))}
-                      </div>
-                    ) : null}
-                  </article>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+        {filled.map(({ letter, entries }) => (
+          <section key={letter} id={`letter-${letter.toLowerCase()}`} className="mx-auto max-w-7xl scroll-mt-24 px-5 pb-14 sm:px-8">
+            <h2 className="mb-6 border-b border-white/8 pb-3 font-sora text-2xl font-bold text-ink">{letter}</h2>
+            <ul className="grid gap-4 lg:grid-cols-2">
+              {entries.map((entry) => (
+                <li
+                  key={entry.slug}
+                  id={entry.slug}
+                  className="lift relative scroll-mt-24 rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-pulse/30"
+                >
+                  <Corners />
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h3 className="font-sora text-[18px] font-bold text-ink">
+                      <Link href={termPath(entry.slug)} className="transition hover:text-pulse">
+                        {entry.term}
+                      </Link>
+                    </h3>
+                    <span className="shrink-0 font-mono text-[10px] uppercase tracking-wider text-ink-mute">{entry.group}</span>
+                  </div>
+                  <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-dim">{entry.shortDefinition}</p>
+                  <Link href={termPath(entry.slug)} className="mt-4 inline-block text-[13px] font-medium text-pulse">
+                    Read the definition →
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
 
         <section className="mx-auto max-w-7xl border-t border-white/8 px-5 py-16 sm:px-8">
           <SectionLabel>Put the terms to work</SectionLabel>
           <h2 className="mt-4 max-w-2xl font-sora text-[30px] font-bold leading-tight sm:text-[38px]">
-            Firmicore measures every one of these <span className="text-pulse">from day one.</span>
+            Firmicore calculates several of these <span className="text-pulse">from your own records.</span>
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-ink-dim">
             MTTR, PM compliance, machine health, and MOE are computed from the work your team already records, so the

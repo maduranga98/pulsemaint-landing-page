@@ -1,5 +1,6 @@
 import { posts } from "../blog-posts";
-import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "../site-data";
+import { GLOSSARY, termUrl } from "../glossary-data";
+import { FAQS, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "../site-data";
 
 /**
  * /llms.txt — the llmstxt.org convention: a single Markdown map of the site,
@@ -31,7 +32,7 @@ export function GET(): Response {
       `- [Features](${SITE_URL}/features/): the twelve core modules, each linked to the guide that explains it.`,
       `- [Guided Triage](${SITE_URL}/#triage): multilingual branching troubleshooting, the product's main differentiator.`,
       `- [FAQ](${SITE_URL}/#faq): direct answers to the most common product questions.`,
-      `- [Maintenance glossary](${SITE_URL}/glossary/): ${GLOSSARY.length} defined terms (CMMS, MTTR, MTBF, OEE, PM compliance, permit to work, and more).`,
+      `- [Maintenance glossary](${SITE_URL}/glossary/): ${GLOSSARY.length} defined terms, each on its own page (CMMS, OEE, MTBF, MTTR, EAM, PM compliance, and more).`,
       `- [Blog](${SITE_URL}/blog/): ${posts.length} long-form articles on CMMS selection, downtime, and plant reliability.`,
     ]),
     section(
@@ -40,7 +41,7 @@ export function GET(): Response {
     ),
     section(
       "Glossary",
-      GLOSSARY.map((entry) => `- **${entry.term}** (${SITE_URL}/glossary/#${entry.slug}): ${entry.definition}`),
+      GLOSSARY.map((entry) => `- **${entry.term}** (${termUrl(entry.slug)}): ${entry.shortDefinition}`),
     ),
     section(
       "Articles",

@@ -1,6 +1,8 @@
 import { posts } from "../blog-posts";
 import { postToMarkdown } from "../llms-markdown";
-import { FAQS, GLOSSARY, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "../site-data";
+import { GLOSSARY } from "../glossary-data";
+import { glossaryTermToMarkdown } from "../glossary-markdown";
+import { FAQS, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "../site-data";
 
 /**
  * /llms-full.txt — every page's full text in one Markdown document.
@@ -21,11 +23,7 @@ export function GET(): Response {
     "# Frequently asked questions",
     FAQS.map((item) => `## ${item.q}\n\n${item.a}`).join("\n\n"),
     "# Maintenance glossary",
-    GLOSSARY.map((entry) =>
-      [`## ${entry.term}`, entry.definition, entry.detail, entry.readMore ? `See also: ${SITE_URL}${entry.readMore.href}` : null]
-        .filter(Boolean)
-        .join("\n\n"),
-    ).join("\n\n"),
+    GLOSSARY.map(glossaryTermToMarkdown).join("\n\n"),
     "# Articles",
     posts.map(postToMarkdown).join("\n\n---\n\n"),
     `---\nContent may be quoted with attribution to ${SITE_NAME} (${SITE_URL}/).`,
