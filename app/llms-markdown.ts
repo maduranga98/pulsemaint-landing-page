@@ -1,4 +1,5 @@
 import type { Block, BlogPost } from "./blog-data";
+import type { PillarBlock, PillarPageData } from "./pillar-types";
 import { SITE_URL } from "./site-data";
 
 /**
@@ -72,4 +73,30 @@ export function postToMarkdown(post: BlogPost): string {
 /** Rough word count of the rendered article, used for schema `wordCount`. */
 export function wordCount(post: BlogPost): number {
   return postToMarkdown(post).split(/\s+/).filter(Boolean).length;
+}
+
+function pillarBlockToMarkdown(block: PillarBlock): string {
+  if (block.type === "h3") return `#### ${block.text}`;
+  if (block.type === "diagram") return `_${block.caption}_`;
+  return blockToMarkdown(block);
+}
+
+/** A pillar page as Markdown for /llms-full.txt: answer first, then each section, then the FAQ. */
+export function pillarToMarkdown(page: PillarPageData): string {
+  const parts: string[] = [
+    `## ${page.h1} ${page.h1Accent}`,
+    `Source: ${SITE_URL}${page.path}`,
+    `Published: ${page.published} · Updated: ${page.updated} · Publisher: Firmicore`,
+    page.lede,
+  ];
+
+  page.sections.forEach((section, index) => {
+    parts.push(`### ${section.heading}`);
+    if (index === 0) parts.push(page.answer);
+    section.blocks.forEach((block) => parts.push(pillarBlockToMarkdown(block)));
+  });
+
+  parts.push(`### Frequently asked questions\n\n${page.faq.map((item) => `**Q: ${item.q}**\n\nA: ${item.a}`).join("\n\n")}`);
+
+  return parts.join("\n\n").replace(/\]\((\/[^)\s]*)\)/g, `](${SITE_URL}$1)`);
 }

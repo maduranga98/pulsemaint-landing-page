@@ -1,5 +1,6 @@
 import { posts } from "../blog-posts";
 import { GLOSSARY, termUrl } from "../glossary-data";
+import { PILLAR_PAGES } from "../pillar-pages";
 import { FAQS, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL, SOCIAL_LINKS } from "../site-data";
 
 /**
@@ -30,6 +31,7 @@ export function GET(): Response {
       `- [Product overview](${SITE_URL}/): modules, role workspaces, pricing tiers, security model, and rollout steps.`,
       `- [Pricing](${SITE_URL}/pricing/): four tiers scaled by fleet size and users, with a pricing FAQ.`,
       `- [Features](${SITE_URL}/features/): the twelve core modules, each linked to the guide that explains it.`,
+      ...PILLAR_PAGES.map((pillar) => `- [${pillar.label}](${SITE_URL}${pillar.path}): ${pillar.description}`),
       `- [Guided Triage](${SITE_URL}/#triage): multilingual branching troubleshooting, the product's main differentiator.`,
       `- [FAQ](${SITE_URL}/#faq): direct answers to the most common product questions.`,
       `- [Maintenance glossary](${SITE_URL}/glossary/): ${GLOSSARY.length} defined terms, each on its own page (CMMS, OEE, MTBF, MTTR, EAM, PM compliance, and more).`,

@@ -59,7 +59,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore keeps a failure history against every machine in its machine registry, and each breakdown is reported against the right asset by scanning its QR code. That per-machine history is the raw material for judging how often an asset fails.",
   relatedTerms: ["mttr", "mtta", "downtime", "preventive-maintenance", "root-cause"],
-  relatedPosts: ["what-is-mttr", "how-to-reduce-machine-downtime", "what-is-preventive-maintenance"],
+  relatedPosts: ["what-is-mttr", "how-to-reduce-machine-downtime", "/maintenance-management-software/"],
   faq: [
     {
       q: "Is a higher MTBF always better?",

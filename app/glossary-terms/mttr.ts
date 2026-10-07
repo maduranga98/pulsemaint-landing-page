@@ -59,7 +59,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore calculates MTTR from the breakdown and work order records your team already creates, so the figure comes from the workflow rather than a spreadsheet. QR-based reporting starts the record at the machine, which keeps the start of the clock honest.",
   relatedTerms: ["mtbf", "mtta", "downtime", "unplanned-downtime", "work-order"],
-  relatedPosts: ["what-is-mttr", "how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime"],
+  relatedPosts: ["what-is-mttr", "how-to-reduce-machine-downtime", "/maintenance-management-software/", "the-real-cost-of-unplanned-downtime"],
   faq: [
     {
       q: "What is a good MTTR?",

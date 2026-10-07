@@ -51,7 +51,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore records breakdowns against the machine, with severity, type and root cause, and can report on them across the plant. Preventive maintenance schedules help plan stops in advance so they are not unplanned.",
   relatedTerms: ["unplanned-downtime", "idle-time", "mttr", "oee", "preventive-maintenance"],
-  relatedPosts: ["how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime", "what-is-mttr"],
+  relatedPosts: ["how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime", "/maintenance-management-software/", "what-is-mttr"],
   faq: [
     {
       q: "What is the difference between planned and unplanned downtime?",

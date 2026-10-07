@@ -51,7 +51,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore tracks every job as a [work order](/glossary/work-order/) with status from draft to closed and a supervisor sign-off queue, so outstanding work is visible rather than held in memory. Shift handover reports list pending work orders for the incoming crew.",
   relatedTerms: ["work-order", "planned-maintenance", "pm-compliance", "shift-handover", "reactive-maintenance"],
-  relatedPosts: ["work-order-software", "what-is-preventive-maintenance", "how-to-reduce-machine-downtime"],
+  relatedPosts: ["work-order-software", "what-is-preventive-maintenance", "/work-order-software/", "how-to-reduce-machine-downtime"],
   faq: [
     {
       q: "How big should a maintenance backlog be?",

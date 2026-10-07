@@ -15,7 +15,7 @@ export const post: BlogPost = {
     "Shared devices break the assumptions mobile software is built on: no personal login, no session, a new user every few minutes. How triage adapts.",
   deck: "Shared devices break most of the assumptions mobile software is built on: no personal login, no persistent session, and a different user every few minutes. Here is how triage flows have to change.",
   intro: [
-    "A shared floor tablet is not a phone with more users. It is a public terminal in a hostile environment, and designing for it means giving up several conveniences that single-user mobile apps take for granted.",
+    "A shared floor tablet is not a phone with more users. It is a public terminal in a hostile environment, and designing for it means giving up several conveniences that single-user mobile apps take for granted. Learn more about rolling shared tablets out alongside QR reporting in the [maintenance management software guide](/maintenance-management-software/#shop-floor-rollout).",
   ],
   sections: [
     {

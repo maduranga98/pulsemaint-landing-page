@@ -62,7 +62,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore is a maintenance system, not a production monitoring system, so it does not replace the counters that feed OEE. It records breakdowns and work orders, which is where availability losses start, and its [MOE score](/glossary/moe/) is a separate maintenance metric designed to show which machine to look at next.",
   relatedTerms: ["mtbf", "mttr", "downtime", "moe", "machine-health-score"],
-  relatedPosts: ["how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime", "what-is-mttr"],
+  relatedPosts: ["how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime", "/maintenance-management-software/"],
   faq: [
     {
       q: "What is the difference between OEE and overall equipment effectiveness?",

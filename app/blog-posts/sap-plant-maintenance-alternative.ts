@@ -24,7 +24,7 @@ export const post: BlogPost = {
   ],
   intro: [
     "We meet this objection regularly in Sri Lanka: a group runs SAP for finance and procurement, and someone has proposed extending it into maintenance. The question on the table is whether the plant should adopt SAP PM or a dedicated CMMS.",
-    "It is a fair question with a genuinely context-dependent answer, and it deserves better than a sales pitch. What follows is the comparison we would give if we were not selling anything - including the cases where SAP PM is clearly correct.",
+    "It is a fair question with a genuinely context-dependent answer, and it deserves better than a sales pitch. What follows is the comparison we would give if we were not selling anything - including the cases where SAP PM is clearly correct. Learn more about the wider choice between spreadsheets, ERP modules and dedicated systems in the [maintenance management software guide](/maintenance-management-software/#erp-maintenance-modules).",
   ],
   sections: [
     {

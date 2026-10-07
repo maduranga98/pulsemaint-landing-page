@@ -1,5 +1,6 @@
 import { posts } from "../blog-posts";
-import { postToMarkdown } from "../llms-markdown";
+import { pillarToMarkdown, postToMarkdown } from "../llms-markdown";
+import { PILLAR_PAGES } from "../pillar-pages";
 import { GLOSSARY } from "../glossary-data";
 import { glossaryTermToMarkdown } from "../glossary-markdown";
 import { FAQS, ONE_LINER, QUICK_FACTS, SITE_NAME, SITE_URL } from "../site-data";
@@ -24,6 +25,8 @@ export function GET(): Response {
     FAQS.map((item) => `## ${item.q}\n\n${item.a}`).join("\n\n"),
     "# Maintenance glossary",
     GLOSSARY.map(glossaryTermToMarkdown).join("\n\n"),
+    "# Guides",
+    PILLAR_PAGES.map(pillarToMarkdown).join("\n\n---\n\n"),
     "# Articles",
     posts.map(postToMarkdown).join("\n\n---\n\n"),
     `---\nContent may be quoted with attribution to ${SITE_NAME} (${SITE_URL}/).`,

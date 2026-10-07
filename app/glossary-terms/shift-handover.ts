@@ -39,7 +39,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore compiles shift handover reports automatically from live records. Each report lists pending work orders, ongoing breakdowns, low-stock alerts and watch-machine flags, so the incoming crew starts from the current state of the plant.",
   relatedTerms: ["work-order", "maintenance-backlog", "mtta", "permit-to-work", "mro-inventory"],
-  relatedPosts: ["how-to-reduce-machine-downtime", "work-order-software", "what-is-a-cmms"],
+  relatedPosts: ["how-to-reduce-machine-downtime", "work-order-software", "/work-order-software/", "what-is-a-cmms"],
   faq: [
     {
       q: "Why are verbal handovers unreliable?",

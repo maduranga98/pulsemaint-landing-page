@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { posts } from "./blog-data";
 import { GLOSSARY, glossaryLastUpdated, termUrl } from "./glossary-data";
+import { PILLAR_PAGES } from "./pillar-pages";
 import { FEATURES_PAGE_UPDATED, PRICING_PAGE_UPDATED, SITE_URL as BASE_URL } from "./site-data";
 
 export const dynamic = "force-static";
@@ -31,6 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
     { url: url("/features/"), lastModified: new Date(FEATURES_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/pricing/"), lastModified: new Date(PRICING_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
+    // The three pillar pages sit just under pricing and features: they are the
+    // head-term landing pages, so they outrank any individual post.
+    ...PILLAR_PAGES.map((pillar) => ({
+      url: url(pillar.path),
+      lastModified: new Date(pillar.updated),
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    })),
     { url: url("/blog/"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.8 },
     // The hub's lastmod is the newest `updated` on any term, a hand-maintained
     // date, so it moves only when a definition does.

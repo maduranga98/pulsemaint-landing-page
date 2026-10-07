@@ -10,7 +10,8 @@
     "check:urls": "node scripts/check-canonical-urls.mjs",
     "check:links": "tsx scripts/check-links.ts",
     "check:glossary": "tsx scripts/check-glossary.ts",
-    "images": "node scripts/optimize-images.mjs"
+    "images": "node scripts/optimize-images.mjs",
+    "check:pillars": "tsx scripts/check-pillars.ts"
   },
   "dependencies": {
     "next": "16.2.6",

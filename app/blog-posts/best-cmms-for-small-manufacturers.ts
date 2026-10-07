@@ -23,7 +23,7 @@ export const post: BlogPost = {
   ],
   intro: [
     "Most CMMS buying advice is written for plants with a maintenance planner, an IT function, and a procurement process. If you are a 40-machine factory where the production manager also owns maintenance and the 'IT department' is whoever is best with computers, that advice does not apply.",
-    "This post is written for that case.",
+    "This post is written for that case. Learn more about features and pricing models in the wider [CMMS software guide](/cmms-software/).",
   ],
   sections: [
     {
