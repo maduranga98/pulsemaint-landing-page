@@ -1,8 +1,6 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { MobileMenu } from "./mobile-menu";
+import { Picture } from "./optimized-image";
 import { SOCIAL_LINKS, type SocialLink } from "./site-data";
 import type { BlogPost } from "./blog-data";
 
@@ -19,16 +17,18 @@ const toneClasses: Record<Tone, string> = {
   mute: "bg-white/5 text-ink-dim ring-white/10",
 };
 
-export function Logo() {
+/** `eager` for the header mark (above the fold); the footer copy lazy-loads. */
+export function Logo({ eager = false }: { eager?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
-      <Image
-        src="/logo.png"
+      <Picture
+        name="logo"
         alt="Firmicore logo"
-        width={44}
-        height={44}
+        width={40}
+        height={40}
+        sizes="40px"
         className="h-10 w-10 rounded-lg object-contain shadow-[0_0_18px_rgba(0,194,255,0.22)]"
-        priority
+        eager={eager}
       />
       <span className="font-sora text-lg font-bold tracking-normal text-ink">
         Firmi<span className="text-pulse">core</span>
@@ -85,25 +85,24 @@ export function Corners() {
   );
 }
 
-export function Navbar() {
-  const [open, setOpen] = useState(false);
-  const links = [
-    ["Modules", "/#modules"],
-    ["Roles", "/#roles"],
-    ["Pricing", "/#pricing"],
-    ["FAQ", "/#faq"],
-    ["Glossary", "/glossary/"],
-    ["Blog", "/blog/"],
-  ];
+export const NAV_LINKS = [
+  ["Features", "/features/"],
+  ["Pricing", "/pricing/"],
+  ["Roles", "/#roles"],
+  ["FAQ", "/#faq"],
+  ["Glossary", "/glossary/"],
+  ["Blog", "/blog/"],
+] as const;
 
+export function Navbar() {
   return (
     <header className="nav-blur fixed inset-x-0 top-0 z-50">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
         <Link href="/" aria-label="Firmicore home">
-          <Logo />
+          <Logo eager />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
-          {links.map(([label, href]) => (
+          {NAV_LINKS.map(([label, href]) => (
             <Link key={href} href={href} className="text-sm text-ink-dim transition hover:text-ink">
               {label}
             </Link>
@@ -114,31 +113,8 @@ export function Navbar() {
             Book a demo
           </Link>
         </div>
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          className="rounded-md p-2 text-ink md:hidden"
-          aria-label="Toggle navigation"
-        >
-          <span className="block h-0.5 w-5 bg-current" />
-          <span className="mt-1.5 block h-0.5 w-5 bg-current" />
-          <span className="mt-1.5 block h-0.5 w-5 bg-current" />
-        </button>
+        <MobileMenu links={NAV_LINKS} />
       </div>
-      {open ? (
-        <div className="border-t border-white/8 bg-navy-950/95 px-5 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
-            {links.map(([label, href]) => (
-              <Link key={href} href={href} onClick={() => setOpen(false)} className="py-1 text-ink-dim">
-                {label}
-              </Link>
-            ))}
-            <Link href="/#book-demo" onClick={() => setOpen(false)} className="btn-glow mt-2 rounded-lg bg-power py-2.5 text-center text-sm font-medium text-white">
-              Book a demo
-            </Link>
-          </div>
-        </div>
-      ) : null}
     </header>
   );
 }
@@ -165,7 +141,7 @@ function SocialIcon({ name }: { name: SocialLink["icon"] }) {
 
 export function Footer() {
   const columns = [
-    { title: "Product", links: [["Modules", "/#modules"], ["Roles", "/#roles"], ["Pricing", "/#pricing"], ["Security", "/#security"]] },
+    { title: "Product", links: [["Features", "/features/"], ["Pricing", "/pricing/"], ["Roles", "/#roles"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"]] },
     { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Book a demo", "/#book-demo"]] },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },

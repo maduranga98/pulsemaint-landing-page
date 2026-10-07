@@ -27,7 +27,8 @@ export function GET(): Response {
     ),
     section("Key pages", [
       `- [Product overview](${SITE_URL}/): modules, role workspaces, pricing tiers, security model, and rollout steps.`,
-      `- [Pricing](${SITE_URL}/#pricing): four tiers scaled by fleet size and users.`,
+      `- [Pricing](${SITE_URL}/pricing/): four tiers scaled by fleet size and users, with a pricing FAQ.`,
+      `- [Features](${SITE_URL}/features/): the twelve core modules, each linked to the guide that explains it.`,
       `- [Guided Triage](${SITE_URL}/#triage): multilingual branching troubleshooting, the product's main differentiator.`,
       `- [FAQ](${SITE_URL}/#faq): direct answers to the most common product questions.`,
       `- [Maintenance glossary](${SITE_URL}/glossary/): ${GLOSSARY.length} defined terms (CMMS, MTTR, MTBF, OEE, PM compliance, permit to work, and more).`,

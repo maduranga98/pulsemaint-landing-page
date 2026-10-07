@@ -12,8 +12,8 @@ export const post: BlogPost = {
   excerpt:
     "External contractors need full accountability without an app install, a login, or a licence. Here is the lifecycle to support and the checklist to evaluate against.",
   metaDescription:
-    "Contractor work is the part of maintenance that escapes the system: assigned by phone, tracked on WhatsApp, invoiced against nothing. The fix.",
-  deck: "Contractor work is the part of maintenance that most often escapes the system entirely - assigned by phone, tracked on WhatsApp, invoiced against nothing. This is the workflow that fixes it.",
+    "Contractor work is the part of maintenance that escapes the system: assigned by phone, tracked in chat threads, invoiced against nothing. The fix.",
+  deck: "Contractor work is the part of maintenance that most often escapes the system entirely - assigned by phone, tracked in chat threads, invoiced against nothing. This is the workflow that fixes it.",
   figure: "Fig. 01 - The contractor lifecycle from registration through rating.",
   takeaways: [
     "Contractors need accountability without access: full job records, no app install, no login, no paid seat.",
@@ -115,7 +115,7 @@ export const post: BlogPost = {
         {
           type: "callout",
           label: "Firmicore note",
-          text: "The blocking behaviour is what turns document tracking from an archive into a control. If a vendor's document module cannot prevent an assignment, it is storage, not compliance.",
+          text: "The blocking behaviour is what turns document tracking from an archive into a control. If a vendor's document module cannot prevent an assignment, it is storage, not compliance. The [Firmicore contractor module](/features/#contractors) covers the registry, job tracking and performance rating.",
         },
       ],
     },
@@ -186,5 +186,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["contractors", "work-orders", "compliance"],
   related: ["work-order-software", "what-is-a-cmms", "cmms-for-regulated-manufacturing"],
 };

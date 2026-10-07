@@ -45,10 +45,22 @@ export function getPost(slug: string): BlogPost | undefined {
   return posts.find((post) => post.slug === slug);
 }
 
+/**
+ * Related reading, picked by tag overlap so every post links to its nearest
+ * neighbours without anyone curating the list. Shared tags weigh most, then a
+ * shared category, then the optional hand-picked `related` boost. Ties keep the
+ * newest-first order of `posts`, so the result is stable between builds.
+ */
 export function getRelated(post: BlogPost, limit = 3): BlogPost[] {
-  const picked = (post.related ?? [])
-    .map((slug) => posts.find((item) => item.slug === slug))
-    .filter((item): item is BlogPost => Boolean(item) && item!.slug !== post.slug);
-  const fallback = posts.filter((item) => item.slug !== post.slug && !picked.includes(item));
-  return [...picked, ...fallback].slice(0, limit);
+  const score = (item: BlogPost) =>
+    item.tags.filter((tag) => post.tags.includes(tag)).length * 3 +
+    (item.category === post.category ? 1 : 0) +
+    ((post.related ?? []).includes(item.slug) ? 2 : 0);
+
+  return posts
+    .filter((item) => item.slug !== post.slug)
+    .map((item, index) => ({ item, index, points: score(item) }))
+    .sort((a, b) => b.points - a.points || a.index - b.index)
+    .slice(0, limit)
+    .map(({ item }) => item);
 }

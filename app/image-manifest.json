@@ -1,0 +1,67 @@
+{
+  "logo": {
+    "aspect": 1,
+    "files": {
+      "avif": [
+        {
+          "width": 40,
+          "height": 40,
+          "path": "/img/logo-40.1b7cf67a84.avif",
+          "bytes": 868
+        },
+        {
+          "width": 80,
+          "height": 80,
+          "path": "/img/logo-80.8c5c0dc7f7.avif",
+          "bytes": 1497
+        },
+        {
+          "width": 120,
+          "height": 120,
+          "path": "/img/logo-120.d47871612c.avif",
+          "bytes": 1895
+        }
+      ],
+      "webp": [
+        {
+          "width": 40,
+          "height": 40,
+          "path": "/img/logo-40.170a73e0f2.webp",
+          "bytes": 724
+        },
+        {
+          "width": 80,
+          "height": 80,
+          "path": "/img/logo-80.bfc1dc620c.webp",
+          "bytes": 1628
+        },
+        {
+          "width": 120,
+          "height": 120,
+          "path": "/img/logo-120.14fa5a2259.webp",
+          "bytes": 2432
+        }
+      ],
+      "png": [
+        {
+          "width": 40,
+          "height": 40,
+          "path": "/img/logo-40.be77398d1f.png",
+          "bytes": 1429
+        },
+        {
+          "width": 80,
+          "height": 80,
+          "path": "/img/logo-80.eb8428c535.png",
+          "bytes": 3509
+        },
+        {
+          "width": 120,
+          "height": 120,
+          "path": "/img/logo-120.60c48b7808.png",
+          "bytes": 6800
+        }
+      ]
+    }
+  }
+}

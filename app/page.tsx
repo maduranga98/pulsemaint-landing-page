@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { posts } from "./blog-data";
-import { BookingForm } from "./booking-form";
+import { PricingCards } from "./pricing-cards";
+import { LazyBookingForm } from "./lazy-booking-form";
 import { Corners, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "./marketing-components";
 import {
   CONTACT_PHONE,
   CONTENT_LAST_REVIEWED,
   FAQS,
   GLOSSARY,
+  MODULES,
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,
   ONE_LINER,
-  PRICING_TIERS,
   QUICK_FACTS,
   SITE_NAME,
   SITE_URL,
@@ -37,21 +38,6 @@ const triageFeatures = [
   ["02", "Safe operator diagnosis", "Any operator can safely diagnose and react to a fault without waiting on a technician."],
   ["03", "Supervisor authoring", "Supervisors build and edit custom triage flows per machine, no engineering help needed."],
   ["04", "A real differentiator", "No other CMMS in this class ships guided, multilingual triage as a core workflow."],
-];
-
-const modules = [
-  ["01", "Machine Registry", "Full asset register, QR codes, documents, spare-parts links, and an automatic 0-100 health score."],
-  ["02", "Breakdown Management", "Kanban board, severity/type/root-cause tracking, push/SMS/email/in-app alerts, QR-triggered reporting."],
-  ["03", "Work Orders", "Full lifecycle from Draft to Closed, multi-technician checklists, time-segment tracking, parts requests, supervisor sign-off queue."],
-  ["04", "Preventive Maintenance", "Calendar- or meter-based schedules, PM calendar view, compliance dashboard with per-machine/technician trends."],
-  ["05", "Inventory & Parts", "Categorized catalog, multi-stage approval workflow, stock movement log, purchase orders, supplier management, Excel import."],
-  ["06", "Contractors", "Registry, job tracking, invoice comparison, four-dimension performance rating: speed, quality, professionalism, communication."],
-  ["07", "Shift Handovers", "Auto-compiled structured reports: pending work orders, ongoing breakdowns, low-stock alerts, watch-machine flags."],
-  ["08", "Training & Certification", "Module libraries, quizzes, assignment tracking, trainee onboarding programme, auto-issued certificates."],
-  ["09", "Guided Triage", "Multilingual (EN/SI/TA/BN) branching troubleshooting trees with a supervisor authoring tool."],
-  ["10", "Safety Workspace", "Incident/near-miss/hazard reporting, permit-to-work with precautions, safety training calendar, safety analytics."],
-  ["11", "Reports & Analytics", "One-click PDF/Excel/Google Sheets exports across 15+ report types, cross-module KPI dashboard."],
-  ["12", "MOE Dashboard", "Single composite Machine Overall Effectiveness score blending availability, maintenance compliance, reliability, and health, with critical-machine alerts."],
 ];
 
 const roles = [
@@ -162,8 +148,8 @@ function homeJsonLd() {
     "@type": "ItemList",
     "@id": `${SITE_URL}/#modules-list`,
     name: `${SITE_NAME} core modules`,
-    numberOfItems: modules.length,
-    itemListElement: modules.map(([, name, body], index) => ({
+    numberOfItems: MODULES.length,
+    itemListElement: MODULES.map(({ name, body }, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name,
@@ -220,9 +206,9 @@ function Hero() {
             Strength at the core <span className="text-pulse">of every machine.</span>
           </h1>
           <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-dim sm:text-lg">
-            Run maintenance like a modern operation. FirmiCore replaces WhatsApp messages, paper logbooks, and spreadsheets
-            with one connected system: machines, breakdowns, work orders, PM, spares, contractors, shift handovers,
-            training, safety, and reporting, so every role works from the same real-time picture.
+            Run maintenance like a modern operation. Firmicore replaces paper logbooks, spreadsheets and scattered messages
+            with one connected system. It covers machines, breakdowns, work orders, PM, spares, contractors, shift
+            handovers, training, safety, and reporting, so every role works from the same real-time picture.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="#book-demo" className="btn-glow rounded-lg bg-power px-5 py-3 font-medium text-white">
@@ -392,7 +378,11 @@ function Triage() {
         <p className="mt-5 max-w-2xl leading-relaxed text-ink-dim">
           Branching troubleshooting trees in English, Sinhala, Tamil and Bengali let any operator safely diagnose and
           react to a fault, no waiting for a technician to arrive before something happens. A supervisor-facing
-          authoring tool lets your team build custom triage flows per machine, without engineering help.
+          authoring tool lets your team build custom triage flows per machine, without engineering help.{" "}
+          <Link href="/blog/guided-triage-for-shared-tablets/" className="text-pulse hover:underline">
+            See how guided triage works on shared factory tablets
+          </Link>
+          .
         </p>
         <div className="mt-14 grid gap-px overflow-hidden rounded-xl border border-white/8 bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
           {triageFeatures.map(([num, title, body]) => (
@@ -418,7 +408,7 @@ function Modules() {
           Twenty-plus feature modules. <span className="text-pulse">One connected system.</span>
         </h2>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {modules.map(([num, name, body]) => (
+          {MODULES.map(({ num, name, body }) => (
             <div key={num} className="lift relative rounded-xl border border-white/8 bg-navy-800/40 p-6 hover:border-pulse/30">
               <Corners />
               <div className="font-mono text-[12px] font-bold tracking-wide text-pulse">{num}</div>
@@ -426,6 +416,11 @@ function Modules() {
               <p className="mt-2 text-sm leading-relaxed text-ink-dim">{body}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-8">
+          <Link href="/features/" className="text-sm font-medium text-pulse">
+            See all features →
+          </Link>
         </div>
       </div>
     </section>
@@ -489,6 +484,13 @@ function WhyFirmicore() {
             </div>
           ))}
         </div>
+        <p className="mt-10 max-w-2xl text-sm leading-relaxed text-ink-dim">
+          Already running SAP? Read how a dedicated CMMS compares in our{" "}
+          <Link href="/blog/sap-plant-maintenance-alternative/" className="text-pulse hover:underline">
+            SAP Plant Maintenance alternative
+          </Link>{" "}
+          guide.
+        </p>
       </div>
     </section>
   );
@@ -506,37 +508,13 @@ function Pricing() {
         <p className="mt-4 max-w-2xl text-ink-dim">
           All limits and prices are indicative: confirm exact figures with sales before quoting a customer.
         </p>
-        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {PRICING_TIERS.map((tier) => (
-            <div
-              key={tier.name}
-              className={`relative flex flex-col gap-3.5 rounded-2xl p-6 text-left lift ${
-                tier.popular ? "border-2 border-power bg-power/15 shadow-glow" : "border border-white/8 bg-navy-800/40"
-              }`}
-            >
-              {tier.popular ? (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-power px-3 py-1 font-mono text-[10px] text-white">MOST POPULAR</div>
-              ) : null}
-              <h3 className="font-sora text-xl font-semibold">{tier.name}</h3>
-              <div>
-                <span className="font-sora text-3xl font-bold">{tier.price}</span>
-                <span className="ml-1 text-sm text-ink-mute">{tier.period}</span>
-              </div>
-              {tier.annual ? <div className="text-xs text-ink-mute">{tier.annual}</div> : null}
-              <div className="text-sm font-semibold text-ink-dim">{tier.limits}</div>
-              <div className="flex flex-1 flex-col gap-1.5">
-                {tier.features.map((feature) => (
-                  <div key={feature} className="flex gap-2 text-[12.5px] text-ink-dim">
-                    <span className="text-pulse">✓</span>
-                    {feature}
-                  </div>
-                ))}
-              </div>
-              <Link href="#book-demo" className={`mt-2 block rounded-lg py-2.5 text-center text-sm font-medium ${tier.popular ? "btn-glow bg-power text-white" : "border border-white/15 text-ink hover:border-pulse/50"}`}>
-                {tier.name === "Enterprise" ? "Talk to sales" : "Start trial"}
-              </Link>
-            </div>
-          ))}
+        <div className="mt-10">
+          <PricingCards ctaHref="#book-demo" />
+        </div>
+        <div className="mt-8">
+          <Link href="/pricing/" className="text-sm font-medium text-pulse">
+            See full pricing →
+          </Link>
         </div>
       </div>
     </section>
@@ -677,7 +655,7 @@ function BookDemo() {
           </div>
         </div>
         <div className="lg:col-span-7">
-          <BookingForm />
+          <LazyBookingForm />
         </div>
       </div>
     </section>

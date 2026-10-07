@@ -152,10 +152,14 @@ export default function GlossaryPage() {
                         {entry.detail}
                       </p>
                     ) : null}
-                    {entry.readMore ? (
-                      <Link href={entry.readMore.href} className="mt-4 inline-block text-[13px] font-medium text-pulse">
-                        {entry.readMore.label} →
-                      </Link>
+                    {entry.readMore || entry.alsoRead ? (
+                      <div className="mt-4 flex flex-col gap-1.5">
+                        {[...(entry.readMore ? [entry.readMore] : []), ...(entry.alsoRead ?? [])].map((link) => (
+                          <Link key={link.href} href={link.href} className="text-[13px] font-medium text-pulse">
+                            {link.label} →
+                          </Link>
+                        ))}
+                      </div>
                     ) : null}
                   </article>
                 ))}

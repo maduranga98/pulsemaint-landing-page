@@ -97,5 +97,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["downtime", "metrics"],
   related: ["how-to-reduce-machine-downtime", "what-is-mttr", "how-to-report-a-machine-breakdown"],
 };

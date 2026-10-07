@@ -1,7 +1,7 @@
 import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
-  title: "Cryotos Alternative: WhatsApp Breakdown Reporting Without the Per-User Trade-off",
+  title: "Cryotos Alternative: Messaging-App Breakdown Reporting Without the Per-User Trade-off",
   seoTitle: "Cryotos Alternative for Factory Teams",
   slug: "cryotos-alternative",
   category: "Comparison",
@@ -10,26 +10,26 @@ export const post: BlogPost = {
   author: "Tharindu Jayasekara",
   role: "Founder, Lumora Ventures",
   excerpt:
-    "Cryotos gets something right that most Western CMMS vendors miss: factory floors in South Asia already run on WhatsApp. Here is how the two platforms compare on intake, triage, and pricing.",
+    "Cryotos gets something right that most Western CMMS vendors miss: factory floors in South Asia already run on messaging apps. Here is how the two platforms compare on intake, triage, and pricing.",
   metaDescription:
     "Cryotos compared with a per-machine CMMS on what decides floor adoption: breakdown intake channel, per-user limits, and rollout effort.",
   deck: "If you are evaluating Cryotos, you have probably already worked out that intake channel matters more than feature count. This compares the two platforms on the things that decide adoption on an actual factory floor.",
   figure: "Fig. 01 - Breakdown intake channels compared across mobile-permitted and mobile-restricted floors.",
   takeaways: [
-    "WhatsApp intake works because it requires no new app, no login, and no training - operators already use it every day.",
-    "Cryotos covers WhatsApp reporting and a broad CMMS feature set, and it is priced per user.",
-    "Firmicore matches the WhatsApp intake channel, adds QR and supervisor-mediated capture for mobile-restricted floors, and prices per machine.",
+    "Messaging-app intake works because it requires no new app, no login, and no training - operators already use it every day.",
+    "Cryotos covers messaging-app reporting and a broad CMMS feature set, and it is priced per user.",
+    "Firmicore matches the messaging-app intake channel, adds QR and supervisor-mediated capture for mobile-restricted floors, and prices per machine.",
     "The clearest functional gap we have found is guided operator triage - a structured safe-action flow for the minutes between breakdown and technician arrival.",
     "For plants with more machines than maintenance staff, the pricing model is usually the deciding factor rather than any single feature.",
   ],
   intro: [
     "Most maintenance software is designed on the assumption that a technician will open a purpose-built mobile app. On a lot of factory floors - especially across South Asia - that assumption breaks immediately. The app is not installed, the login is forgotten, and the breakdown gets reported by shouting down the line.",
-    "Cryotos understood this and built WhatsApp into the intake path. That is a genuinely good decision and it is worth saying so before comparing anything.",
+    "Cryotos understood this and built a messaging app into the intake path. That is a genuinely good decision and it is worth saying so before comparing anything.",
   ],
   sections: [
     {
-      id: "why-whatsapp-intake-matters",
-      heading: "Why WhatsApp intake matters for factory floors",
+      id: "why-messaging-app-intake-matters",
+      heading: "Why messaging-app intake matters for factory floors",
       blocks: [
         {
           type: "p",
@@ -39,14 +39,14 @@ export const post: BlogPost = {
           type: "ul",
           items: [
             "Zero install friction. The app is already on the phone and already logged in.",
-            "Zero training cost. Nobody needs to be taught how to send a photo on WhatsApp.",
+            "Zero training cost. Nobody needs to be taught how to send a photo in a messaging app.",
             "It survives shift churn. A new operator on their first night does not need an account provisioned before they can report a stopped machine.",
             "Photos come for free, and a photo of the failure taken before the machine is cleaned is often the most valuable field in the whole record.",
           ],
         },
         {
           type: "p",
-          text: "The counterweight is that many plants ban personal phones on the floor - for safety, for contamination control, or for quality reasons. A WhatsApp-only strategy fails completely in those plants, which is why intake needs more than one channel.",
+          text: "The counterweight is that many plants ban personal phones on the floor - for safety, for contamination control, or for quality reasons. A messaging-app-only strategy fails completely in those plants, which is why intake needs more than one channel.",
         },
       ],
     },
@@ -60,7 +60,7 @@ export const post: BlogPost = {
           headers: ["Dimension", "Cryotos", "Firmicore"],
           rows: [
             ["Pricing model", "Per user, per month", "Per machine, unlimited users"],
-            ["WhatsApp breakdown reporting", "Yes", "Yes"],
+            ["Messaging-app breakdown reporting", "Yes", "Yes"],
             ["QR-code reporting at the machine", "Supported", "Core intake path"],
             ["Supervisor-mediated capture for mobile-banned floors", "Not a documented workflow", "Built-in"],
             ["Guided operator safety triage", "No productised equivalent found", "Core workflow"],
@@ -84,14 +84,14 @@ export const post: BlogPost = {
           type: "ul",
           items: [
             "A broad, conventional CMMS feature set covering work orders, preventive maintenance, assets, and inventory.",
-            "WhatsApp intake, which puts it ahead of most global vendors on the specific problem of getting reports started.",
+            "Messaging-app intake, which puts it ahead of most global vendors on the specific problem of getting reports started.",
             "Regional presence and support in markets where many CMMS vendors have no local footprint at all.",
             "An established customer base, which means the product has been through real deployments rather than only demos.",
           ],
         },
         {
           type: "p",
-          text: "If your evaluation comes down to WhatsApp intake plus standard CMMS coverage, and your user count is small, Cryotos is a sensible shortlist entry.",
+          text: "If your evaluation comes down to messaging-app intake plus standard CMMS coverage, and your user count is small, Cryotos is a sensible shortlist entry.",
         },
       ],
     },
@@ -108,11 +108,11 @@ export const post: BlogPost = {
             },
             {
               title: "Intake that survives a phone ban",
-              text: "WhatsApp when phones are allowed, QR scan from a shared floor tablet when they are not, and supervisor-mediated capture where even shared devices are restricted to a station.",
+              text: "A messaging app when phones are allowed, QR scan from a [shared floor tablet](/blog/guided-triage-for-shared-tablets/) when they are not, and supervisor-mediated capture where even shared devices are restricted to a station.",
             },
             {
               title: "Per-machine pricing",
-              text: "If the point of WhatsApp intake is that anyone can report, then charging per user works against the reason you chose WhatsApp intake in the first place. Per-machine pricing keeps the two consistent.",
+              text: "If the point of messaging-app intake is that anyone can report, then charging per user works against the reason you chose that intake channel in the first place. Per-machine pricing keeps the two consistent.",
             },
           ],
         },
@@ -130,12 +130,12 @@ export const post: BlogPost = {
           type: "faq",
           items: [
             {
-              q: "Can you report a machine breakdown through WhatsApp?",
-              a: "Yes. Several maintenance platforms, including Cryotos and Firmicore, accept breakdown reports through a WhatsApp bot that captures the machine, a description, and a photo, then creates a work order in the CMMS automatically.",
+              q: "Can you report a machine breakdown through a messaging app?",
+              a: "Yes. Several maintenance platforms, including Cryotos and Firmicore, accept breakdown reports through a messaging-app bot that captures the machine, a description, and a photo, then creates a work order in the CMMS automatically.",
             },
             {
               q: "What happens if personal phones are banned on the factory floor?",
-              a: "WhatsApp intake alone will not work. You need a shared-device path - a wall-mounted or handheld tablet with QR scanning at each machine - or a supervisor-mediated flow where the operator reports verbally and the supervisor captures the structured record.",
+              a: "Messaging-app intake alone will not work. You need a shared-device path - a wall-mounted or handheld tablet with QR scanning at each machine - or a supervisor-mediated flow where the operator reports verbally and the supervisor captures the structured record.",
             },
             {
               q: "Is Cryotos or Firmicore cheaper?",
@@ -146,5 +146,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["alternatives", "pricing", "breakdown-reporting", "guided-triage"],
   related: ["guided-operator-safety-triage", "cmms-pricing-per-machine-vs-per-user", "how-to-report-a-machine-breakdown"],
 };

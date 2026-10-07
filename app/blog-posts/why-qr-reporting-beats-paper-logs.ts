@@ -61,12 +61,13 @@ export const post: BlogPost = {
           items: [
             { title: "Label one line first", text: "Print and mount durable labels on a single line. Placement matters more than the label - eye level, on the side the operator stands." },
             { title: "Keep the flow under a minute", text: "Six fields is the ceiling. Anything longer degrades during exactly the incidents you most want documented." },
-            { title: "Provide a fallback channel", text: "Where phones are banned, supervisor-mediated capture from a shared device keeps the structured record without a device in the operator's hand." },
+            { title: "Provide a fallback channel", text: "Where phones are banned, supervisor-mediated capture from a shared device keeps the structured record without a device in the operator's hand. How to design for those devices is covered in [guided triage on shared factory tablets](/blog/guided-triage-for-shared-tablets/)." },
             { title: "Review after ten reports", text: "Cut the fields nobody fills in, and add the one question the technician keeps asking on arrival." },
           ],
         },
       ],
     },
   ],
+  tags: ["qr-reporting", "breakdown-reporting", "guided-triage"],
   related: ["how-to-report-a-machine-breakdown", "guided-operator-safety-triage", "what-is-a-cmms"],
 };

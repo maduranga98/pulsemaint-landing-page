@@ -57,7 +57,7 @@ export const post: BlogPost = {
       blocks: [
         {
           type: "p",
-          text: "Every preventive task needs a trigger rule. There are two, and picking the wrong one is why schedules drift out of line with reality.",
+          text: "Every preventive task needs a trigger rule. There are two, and picking the wrong one is why schedules drift out of line with reality. Both schedule types are available in the [preventive maintenance module](/features/#preventive-maintenance).",
         },
         {
           type: "ul",
@@ -193,5 +193,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["preventive-maintenance", "cmms-basics"],
   related: ["what-is-a-cmms", "how-to-reduce-machine-downtime", "cmms-for-regulated-manufacturing"],
 };

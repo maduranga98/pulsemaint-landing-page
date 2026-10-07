@@ -156,5 +156,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["metrics", "downtime"],
   related: ["how-to-reduce-machine-downtime", "work-order-software", "what-is-a-cmms"],
 };

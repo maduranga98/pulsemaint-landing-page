@@ -43,7 +43,7 @@ export const post: BlogPost = {
         {
           type: "callout",
           label: "Check the current rate",
-          text: "Vendor pricing moves, and published rates are list prices before negotiation. Treat every figure in this post as a model you re-run with quotes you have actually received, not as a price quote.",
+          text: "Vendor pricing moves, and published rates are list prices before negotiation. Treat every figure in this post as a model you re-run with quotes you have actually received, not as a price quote. Firmicore's own tiers and machine limits are on the [Firmicore pricing page](/pricing/).",
         },
         {
           type: "p",
@@ -173,7 +173,7 @@ export const post: BlogPost = {
             },
             {
               title: "Integration and API limits",
-              text: "If you need ERP or inventory integration, confirm whether the API is included, rate-limited, or an add-on tier.",
+              text: "If you need ERP or inventory integration, confirm whether the API is included, rate-limited, or an add-on tier. For SAP specifically, see the [SAP Plant Maintenance alternative](/blog/sap-plant-maintenance-alternative/) comparison.",
             },
             {
               title: "Read-only and light users",
@@ -216,5 +216,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["pricing", "cmms-selection"],
   related: ["maintainx-alternative", "best-cmms-for-small-manufacturers", "what-is-a-cmms"],
 };

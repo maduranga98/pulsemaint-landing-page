@@ -193,5 +193,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["compliance", "safety", "contractors", "preventive-maintenance"],
   related: ["what-is-preventive-maintenance", "contractor-management-software-manufacturing", "what-is-a-cmms"],
 };

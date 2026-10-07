@@ -39,7 +39,12 @@ export type BlogPost = {
   /** Paragraphs rendered before the first H2. */
   intro?: string[];
   sections?: Section[];
-  /** Slugs of related posts shown in "Keep reading". */
+  /**
+   * Topic tags driving "Related reading". Posts that share tags are linked to
+   * each other automatically, so a new post needs tags and nothing else.
+   */
+  tags: string[];
+  /** Optional slugs that get a ranking boost in "Related reading". */
   related?: string[];
   /**
    * External sources backing the claims and figures in the post.
