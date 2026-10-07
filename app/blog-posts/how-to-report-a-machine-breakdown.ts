@@ -61,7 +61,7 @@ export const post: BlogPost = {
           headers: ["Channel", "Best for", "Main weakness"],
           rows: [
             ["QR scan at the machine", "Plants where a device is available at or near the machine", "Requires labels to be printed, mounted, and kept legible"],
-            ["WhatsApp bot", "Floors where personal phones are allowed and already used", "Fails entirely where phones are prohibited"],
+            ["Messaging-app bot", "Floors where personal phones are allowed and already used", "Fails entirely where phones are prohibited"],
             ["Browser form on a shared terminal", "Line-end stations and control rooms", "The walk to the terminal delays the report"],
             ["Supervisor-mediated capture", "Mobile-banned and contamination-controlled floors", "Depends on supervisor availability at the moment of failure"],
             ["Automated IoT or sensor trigger", "High-value assets with existing instrumentation", "Detects the stop, not the reason - a human still has to describe it"],
@@ -138,7 +138,7 @@ export const post: BlogPost = {
           type: "ol",
           items: [
             "The operator raises the breakdown verbally or with a physical signal, exactly as they do today. Nothing changes at the point of failure.",
-            "The supervisor captures the structured record at a shared floor station or handheld device, with the operator present and named as the reporter.",
+            "The supervisor captures the structured record at a shared floor station or handheld device (the constraints of those devices are covered in [guided triage on shared factory tablets](/blog/guided-triage-for-shared-tablets/)), with the operator present and named as the reporter.",
             "The report is timestamped at capture, and the delay between failure and capture is itself recorded rather than hidden - so you can see how much of your response time is intake lag.",
             "The photo is taken by the supervisor's shared device, which is permitted on the floor where personal phones are not.",
           ],
@@ -198,5 +198,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["breakdown-reporting", "qr-reporting", "guided-triage"],
   related: ["what-is-a-cmms", "how-to-reduce-machine-downtime", "guided-operator-safety-triage"],
 };

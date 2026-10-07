@@ -362,9 +362,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           </article>
         </section>
 
-        <section className="mx-auto max-w-5xl border-t border-white/8 px-5 py-16 sm:px-8">
+        <section aria-labelledby="related-reading" className="mx-auto max-w-5xl border-t border-white/8 px-5 py-16 sm:px-8">
           <div className="mb-8 flex items-center justify-between">
-            <h2 className="font-sora text-2xl font-semibold">Keep reading</h2>
+            <h2 id="related-reading" className="font-sora text-2xl font-semibold">Related reading</h2>
             <Link href="/blog/" className="text-sm text-pulse">All essays</Link>
           </div>
           <div className="grid gap-5 sm:grid-cols-3">

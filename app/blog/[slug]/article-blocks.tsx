@@ -1,10 +1,11 @@
 import type { Block } from "../../blog-data";
+import { RichText } from "../../rich-text";
 
 function Paragraph({ text, lead = false }: { text: string; lead?: boolean }) {
-  if (!lead) return <p>{text}</p>;
+  if (!lead) return <p><RichText text={text} /></p>;
   return (
     <p className="text-[19px] leading-[1.7] text-ink first-letter:float-left first-letter:mr-3 first-letter:font-sora first-letter:text-[56px] first-letter:font-bold first-letter:leading-[0.9] first-letter:text-pulse">
-      {text}
+      <RichText text={text} />
     </p>
   );
 }
@@ -13,7 +14,7 @@ function Callout({ label, text }: { label?: string; text: string }) {
   return (
     <div className="my-10 rounded-xl border border-pulse/35 bg-pulse/5 p-6">
       {label ? <div className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-pulse">{label}</div> : null}
-      <p className="mb-0 text-ink">{text}</p>
+      <p className="mb-0 text-ink"><RichText text={text} /></p>
     </div>
   );
 }
@@ -70,7 +71,7 @@ function Steps({ items }: { items: { title: string; text: string }[] }) {
         <div key={item.title} className="rounded-xl border border-white/8 bg-navy-800/30 p-5">
           <div className="font-mono text-xs text-pulse">{String(index + 1).padStart(2, "0")}</div>
           <div className="mt-2 font-sora font-semibold text-ink">{item.title}</div>
-          <p className="mb-0 mt-2 text-sm leading-relaxed text-ink-dim">{item.text}</p>
+          <p className="mb-0 mt-2 text-sm leading-relaxed text-ink-dim"><RichText text={item.text} /></p>
         </div>
       ))}
     </div>
@@ -127,7 +128,7 @@ export function ArticleBlock({ block, lead = false }: { block: Block; lead?: boo
       return (
         <ul>
           {block.items.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}><RichText text={item} /></li>
           ))}
         </ul>
       );
@@ -135,7 +136,7 @@ export function ArticleBlock({ block, lead = false }: { block: Block; lead?: boo
       return (
         <ol>
           {block.items.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}><RichText text={item} /></li>
           ))}
         </ol>
       );

@@ -7,7 +7,9 @@
     "build": "next build && node scripts/check-canonical-urls.mjs",
     "start": "next start",
     "lint": "eslint",
-    "check:urls": "node scripts/check-canonical-urls.mjs"
+    "check:urls": "node scripts/check-canonical-urls.mjs",
+    "check:links": "tsx scripts/check-links.ts",
+    "images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -21,7 +23,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

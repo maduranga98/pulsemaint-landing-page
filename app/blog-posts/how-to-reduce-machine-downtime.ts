@@ -88,7 +88,7 @@ export const post: BlogPost = {
           items: [
             {
               title: "1. Cut the reporting delay",
-              text: "The cheapest minutes available. QR-code or WhatsApp reporting at the machine removes the walk to the supervisor and the wait for someone to be free. This lever needs no new headcount and no new parts budget - it is the first one to pull.",
+              text: "The cheapest minutes available. QR-code or messaging-app reporting at the machine removes the walk to the supervisor and the wait for someone to be free. This lever needs no new headcount and no new parts budget - it is the first one to pull.",
             },
             {
               title: "2. Make acknowledgement explicit",
@@ -123,7 +123,7 @@ export const post: BlogPost = {
           caption: "Which capability addresses which segment of the clock.",
           headers: ["Segment", "What causes the delay", "What shortens it"],
           rows: [
-            ["Report", "Finding a supervisor, waiting for a form", "QR scan or WhatsApp intake at the machine"],
+            ["Report", "Finding a supervisor, waiting for a form", "QR scan or messaging-app intake at the machine"],
             ["Acknowledge", "No owner, no notification", "Push routing with an explicit acceptance step"],
             ["Assign", "Wrong trade dispatched, no context", "Symptom, photo, and machine history attached to the order"],
             ["Repair", "Parts wait, missing history, unclear cause", "Asset-linked spares data and searchable machine history"],
@@ -157,7 +157,7 @@ export const post: BlogPost = {
         {
           type: "callout",
           label: "Firmicore note",
-          text: "Set the baseline before you change anything, even if the baseline data is poor. A poor baseline you can improve on beats a clean baseline you started collecting after the improvement.",
+          text: "Set the baseline before you change anything, even if the baseline data is poor. A poor baseline you can improve on beats a clean baseline you started collecting after the improvement. See how [breakdown management](/features/#breakdown-management) and [shift handovers](/features/#shift-handovers) record that baseline in Firmicore.",
         },
       ],
     },
@@ -185,5 +185,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["downtime", "metrics", "breakdown-reporting"],
   related: ["what-is-mttr", "how-to-report-a-machine-breakdown", "work-order-software"],
 };

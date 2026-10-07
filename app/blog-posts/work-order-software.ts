@@ -150,7 +150,7 @@ export const post: BlogPost = {
       blocks: [
         {
           type: "p",
-          text: "A work order system that only shows open work is a task list. The value appears when closed orders accumulate against assets and start answering questions.",
+          text: "A work order system that only shows open work is a task list. The value appears when closed orders accumulate against assets and start answering questions. The [work order module in Firmicore](/features/#work-orders) is one worked example of these features.",
         },
         {
           type: "ul",
@@ -192,5 +192,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["work-orders", "cmms-basics"],
   related: ["what-is-a-cmms", "how-to-reduce-machine-downtime", "contractor-management-software-manufacturing"],
 };

@@ -70,5 +70,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["guided-triage", "qr-reporting", "breakdown-reporting", "safety"],
   related: ["guided-operator-safety-triage", "how-to-report-a-machine-breakdown", "cryotos-alternative"],
 };

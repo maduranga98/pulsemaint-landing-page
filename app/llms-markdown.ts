@@ -64,7 +64,9 @@ export function postToMarkdown(post: BlogPost): string {
     );
   }
 
-  return parts.join("\n\n");
+  // Inline internal links are written root-relative in the post data; an LLM
+  // fetching /llms-full.txt has no base URL to resolve them against.
+  return parts.join("\n\n").replace(/\]\((\/[^)\s]*)\)/g, `](${SITE_URL}$1)`);
 }
 
 /** Rough word count of the rendered article, used for schema `wordCount`. */

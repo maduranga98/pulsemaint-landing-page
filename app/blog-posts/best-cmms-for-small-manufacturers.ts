@@ -37,6 +37,7 @@ export const post: BlogPost = {
             "Configuration without tickets. Adding a machine, changing a checklist, or creating a user should take minutes and require no vendor involvement.",
             "Cost that scales with the plant, not the headcount. A seasonal hiring spike should not change the software bill.",
             "Mobile-first reporting, because there is no maintenance office with a desktop in it - the supervisor is on the floor.",
+            "A plant already running SAP is a special case. Read the [SAP Plant Maintenance alternative](/blog/sap-plant-maintenance-alternative/) comparison before deciding whether the ERP maintenance module is enough.",
             "Fast, visible payback. Enterprises can justify a two-year reliability programme; a small manufacturer needs the tool to be obviously useful in the first month or it gets abandoned.",
             "Genuinely no IT overhead: hosted, no server, no VPN, no on-premise database to back up.",
           ],
@@ -160,5 +161,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["cmms-selection", "pricing", "alternatives"],
   related: ["cmms-pricing-per-machine-vs-per-user", "what-is-a-cmms", "maintainx-alternative"],
 };

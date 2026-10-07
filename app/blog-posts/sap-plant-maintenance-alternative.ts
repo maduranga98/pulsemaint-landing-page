@@ -105,7 +105,7 @@ export const post: BlogPost = {
           items: [
             "No mobile-first technician experience by default. Mobile access typically requires additional SAP mobile products or a third-party front end - another project, another licence line.",
             "No guided operator triage. There is no built-in concept of walking a machine operator through safe actions while they wait for a technician.",
-            "No QR-code or WhatsApp intake out of the box. Reporting is designed around a notification created by trained users, not a scan at the machine.",
+            "No QR-code or messaging-app intake out of the box. Reporting is designed around a notification created by trained users, not a scan at the machine.",
             "Terminology and screens built for planners. Functional locations, order types, and task lists are precise and powerful, and they are not what a line operator on a night shift will navigate.",
             "Configuration speed. Adding a new machine type with its own checklist is a governed change, not a five-minute admin task.",
           ],
@@ -152,7 +152,7 @@ export const post: BlogPost = {
             ["Primary user", "Maintenance planner", "Operator, technician, supervisor"],
             ["Time to first productive use", "Months", "Days to weeks"],
             ["Pricing basis", "Enterprise ERP licensing", "Per machine or per user subscription"],
-            ["Breakdown intake", "Notification created by trained users", "QR scan, WhatsApp, browser, supervisor-mediated"],
+            ["Breakdown intake", "Notification created by trained users", "QR scan, messaging app, browser, supervisor-mediated"],
             ["Finance integration", "Native across modules", "Via export or API"],
             ["Change to a checklist", "Governed change request", "Admin edit"],
           ],
@@ -210,5 +210,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["alternatives", "cmms-selection", "cmms-basics", "enterprise"],
   related: ["what-is-a-cmms", "cmms-pricing-per-machine-vs-per-user", "work-order-software"],
 };

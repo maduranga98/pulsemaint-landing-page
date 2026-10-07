@@ -25,6 +25,7 @@ export const post: BlogPost = {
   intro: [
     "Maintenance software is built around two actors: the person who reports and the person who repairs. The design assumption is that nothing meaningful happens between them.",
     "Anyone who has spent time on a factory floor knows this is false. What happens in that gap is unrecorded, occasionally unsafe, and frequently determines how long the eventual repair takes.",
+    "Most plants run this on shared devices rather than personal phones, which changes the design. [Guided triage on shared factory tablets](/blog/guided-triage-for-shared-tablets/) covers that side: sessions, identity, and offline queuing.",
   ],
   sections: [
     {
@@ -202,5 +203,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["guided-triage", "safety", "breakdown-reporting"],
   related: ["how-to-report-a-machine-breakdown", "cryotos-alternative", "how-to-reduce-machine-downtime"],
 };

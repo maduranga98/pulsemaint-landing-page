@@ -9,12 +9,12 @@ import {
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,
   ONE_LINER,
-  PRICING_TIERS,
   SITE_NAME,
   SITE_URL,
   SOCIAL_LINKS,
   ogImageUrl,
 } from "./site-data";
+import { pricingOffers } from "./pricing-data";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -28,10 +28,13 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+// Mono is only used for small labels, so it must not compete with the two
+// heading/body faces for early bandwidth: no preload, swap on arrival.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -204,44 +207,11 @@ const softwareJsonLd = {
     "Reports and analytics with 15+ report types exporting to PDF, Excel and Google Sheets",
     "MOE dashboard: composite Machine Overall Effectiveness score per machine",
   ],
-  // The page advertises four tiers from $29/mo to $249/mo plus Contact Sales.
-  // A single Offer at $29 contradicts it; AggregateOffer states the real range,
-  // and `offers` names each tier so "what does the Workshop tier cost" is
-  // answerable from structured data rather than from parsed prose.
-  offers: {
-    "@type": "AggregateOffer",
-    priceCurrency: "USD",
-    lowPrice: "29",
-    highPrice: "249",
-    offerCount: PRICING_TIERS.length,
-    url: `${SITE_URL}/#pricing`,
-    offers: PRICING_TIERS.map((tier) => ({
-      "@type": "Offer",
-      "@id": `${SITE_URL}/#offer-${tier.name.toLowerCase().replace(/\s+/g, "-")}`,
-      name: `${SITE_NAME} ${tier.name}`,
-      description: tier.limits,
-      category: "SubscriptionPlan",
-      url: `${SITE_URL}/#pricing`,
-      // A quote-only tier has no price. Emitting 0, or omitting the currency
-      // while keeping a price, both read as free.
-      ...(tier.priceUSD === undefined
-        ? { availability: "https://schema.org/InStock", priceSpecification: { "@type": "PriceSpecification", valueAddedTaxIncluded: false } }
-        : {
-            price: String(tier.priceUSD),
-            priceCurrency: "USD",
-            availability: "https://schema.org/InStock",
-            priceSpecification: {
-              "@type": "UnitPriceSpecification",
-              price: String(tier.priceUSD),
-              priceCurrency: "USD",
-              unitCode: "MON",
-              billingDuration: 1,
-              billingIncrement: 1,
-            },
-          }),
-      itemOffered: { "@id": `${SITE_URL}/#software` },
-    })),
-  },
+  // AggregateOffer states the real range across the four tiers, and `offers`
+  // names each tier, so "what does the Workshop tier cost" is answerable from
+  // structured data rather than from parsed prose. Built from PRICING_TIERS,
+  // the same data the pricing cards render.
+  offers: pricingOffers(`${SITE_URL}/#pricing`, `${SITE_URL}/`),
 };
 
 /**

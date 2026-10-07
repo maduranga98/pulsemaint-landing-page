@@ -61,7 +61,7 @@ export const post: BlogPost = {
             ["Cost of adding a shop-floor reporter", "Another paid seat", "No incremental licence cost"],
             ["Free tier", "Yes, with feature limits", "Free trial rather than a permanent free tier"],
             ["Guided operator triage", "Not productised as a distinct workflow", "Core workflow with per-machine safe-action flows"],
-            ["Breakdown intake", "Mobile app and work request forms", "QR scan, WhatsApp, browser, and supervisor-mediated"],
+            ["Breakdown intake", "Mobile app and work request forms", "QR scan, messaging app, browser, and supervisor-mediated"],
             ["Contractor management", "Supported", "Supported, with document expiry and compliance blocking"],
             ["Localisation for floor staff", "Multi-language interface", "Multi-language including regional South Asian languages"],
             ["Integration ecosystem", "Broad and mature", "Narrower, growing"],
@@ -79,7 +79,7 @@ export const post: BlogPost = {
           type: "ul",
           items: [
             "Maturity. MaintainX has been deployed at scale across many industries for years. Edge cases have been found and fixed. A newer product has not had that many chances to be wrong in public.",
-            "Integrations. If your requirement includes connecting to a specific ERP, procurement system, or sensor platform, MaintainX is more likely to already have that connector built.",
+            "Integrations. If your requirement includes connecting to a specific ERP, procurement system, or sensor platform, MaintainX is more likely to already have that connector built. If the system in question is SAP, the [SAP Plant Maintenance alternative](/blog/sap-plant-maintenance-alternative/) comparison covers when keeping maintenance inside the ERP is the better call.",
             "The free tier. A permanently free plan with real functionality is an excellent way to start. If you are a two-person maintenance team getting off paper, that is a legitimate reason to start there.",
           ],
         },
@@ -110,7 +110,7 @@ export const post: BlogPost = {
             },
             {
               title: "Multiple intake channels including mobile-banned floors",
-              text: "QR scan at the machine, WhatsApp for plants where that is already the habit, browser for shared terminals, and supervisor-mediated capture where personal phones are prohibited on the floor.",
+              text: "QR scan at the machine, a messaging app for plants where that is already the habit, browser for shared terminals, and supervisor-mediated capture where personal phones are prohibited on the floor.",
             },
           ],
         },
@@ -165,5 +165,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["alternatives", "cmms-selection", "breakdown-reporting"],
   related: ["cmms-pricing-per-machine-vs-per-user", "guided-operator-safety-triage", "cryotos-alternative"],
 };

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { posts } from "./blog-data";
-import { SITE_URL as BASE_URL } from "./site-data";
+import { FEATURES_PAGE_UPDATED, PRICING_PAGE_UPDATED, SITE_URL as BASE_URL } from "./site-data";
 
 export const dynamic = "force-static";
 
@@ -28,6 +28,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // No lastModified on the homepage: `new Date()` would claim a fresh edit on
     // every deploy, and there is no build-time signal for when it actually changed.
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
+    { url: url("/features/"), lastModified: new Date(FEATURES_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/pricing/"), lastModified: new Date(PRICING_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/blog/"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.8 },
     // The glossary changes only when a term is added or reworded, and there is
     // no build-time signal for that, so it carries no lastModified either.

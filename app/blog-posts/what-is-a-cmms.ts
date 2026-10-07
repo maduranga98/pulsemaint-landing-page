@@ -98,7 +98,7 @@ export const post: BlogPost = {
         },
         {
           type: "p",
-          text: "If your company already runs SAP for finance and procurement, the ERP-module option deserves genuine consideration and the trade-offs are covered in detail in our SAP Plant Maintenance comparison. If your problem is that nobody records breakdowns properly, none of the three fixes that by itself - but a CMMS is the only one designed around trying.",
+          text: "If your company already runs SAP for finance and procurement, the ERP-module option deserves genuine consideration and the trade-offs are covered in detail in [our SAP Plant Maintenance comparison](/blog/sap-plant-maintenance-alternative/). If your problem is that nobody records breakdowns properly, none of the three fixes that by itself - but a CMMS is the only one designed around trying.",
         },
       ],
     },
@@ -174,7 +174,7 @@ export const post: BlogPost = {
         {
           type: "callout",
           label: "Firmicore note",
-          text: "Run the trial on your worst line, not your best one. The line that fails often will tell you in a week whether the tool fits; the well-behaved line will tell you nothing for a month.",
+          text: "Run the trial on your worst line, not your best one. The line that fails often will tell you in a week whether the tool fits; the well-behaved line will tell you nothing for a month. To see which modules a trial would cover, browse [all Firmicore features](/features/).",
         },
       ],
     },
@@ -206,5 +206,6 @@ export const post: BlogPost = {
       ],
     },
   ],
+  tags: ["cmms-basics", "cmms-selection"],
   related: ["cmms-pricing-per-machine-vs-per-user", "work-order-software", "what-is-preventive-maintenance"],
 };

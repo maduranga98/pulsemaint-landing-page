@@ -126,6 +126,48 @@ export const PRICING_TIERS: PricingTier[] = [
   },
 ];
 
+/** First segment of a tier's limits, e.g. "10 machines"; "Unlimited machines" for quote-only tiers. */
+export function machineLimit(tier: PricingTier): string {
+  const first = tier.limits.split(" \u00b7 ")[0];
+  return /^unlimited/i.test(first) ? "Unlimited machines" : first;
+}
+
+/**
+ * The twelve core modules. One list feeds the homepage grid, the homepage
+ * ItemList JSON-LD and /features/, so the three can never drift. `link` is the
+ * most relevant post or glossary term for the module.
+ */
+export type ModuleEntry = {
+  num: string;
+  slug: string;
+  name: string;
+  body: string;
+  link: { label: string; href: string };
+};
+
+export const MODULES: ModuleEntry[] = [
+  { num: "01", slug: "machine-registry", name: "Machine Registry", body: "Full asset register, QR codes, documents, spare-parts links, and an automatic 0-100 health score.", link: { label: "Asset registry, defined", href: "/glossary/#asset-registry" } },
+  { num: "02", slug: "breakdown-management", name: "Breakdown Management", body: "Kanban board, severity/type/root-cause tracking, push/SMS/email/in-app alerts, QR-triggered reporting.", link: { label: "How to report a machine breakdown", href: "/blog/how-to-report-a-machine-breakdown/" } },
+  { num: "03", slug: "work-orders", name: "Work Orders", body: "Full lifecycle from Draft to Closed, multi-technician checklists, time-segment tracking, parts requests, supervisor sign-off queue.", link: { label: "Work order software guide", href: "/blog/work-order-software/" } },
+  { num: "04", slug: "preventive-maintenance", name: "Preventive Maintenance", body: "Calendar- or meter-based schedules, PM calendar view, compliance dashboard with per-machine/technician trends.", link: { label: "What is preventive maintenance?", href: "/blog/what-is-preventive-maintenance/" } },
+  { num: "05", slug: "inventory-and-parts", name: "Inventory & Parts", body: "Categorized catalog, multi-stage approval workflow, stock movement log, purchase orders, supplier management, Excel import.", link: { label: "MRO inventory, defined", href: "/glossary/#mro-inventory" } },
+  { num: "06", slug: "contractors", name: "Contractors", body: "Registry, job tracking, invoice comparison, four-dimension performance rating: speed, quality, professionalism, communication.", link: { label: "Contractor management software for manufacturing", href: "/blog/contractor-management-software-manufacturing/" } },
+  { num: "07", slug: "shift-handovers", name: "Shift Handovers", body: "Auto-compiled structured reports: pending work orders, ongoing breakdowns, low-stock alerts, watch-machine flags.", link: { label: "Shift handover, defined", href: "/glossary/#shift-handover" } },
+  { num: "08", slug: "training-and-certification", name: "Training & Certification", body: "Module libraries, quizzes, assignment tracking, trainee onboarding programme, auto-issued certificates.", link: { label: "CMMS for regulated manufacturing", href: "/blog/cmms-for-regulated-manufacturing/" } },
+  { num: "09", slug: "guided-triage", name: "Guided Triage", body: "Multilingual (EN/SI/TA/BN) branching troubleshooting trees with a supervisor authoring tool.", link: { label: "Guided operator safety triage", href: "/blog/guided-operator-safety-triage/" } },
+  { num: "10", slug: "safety-workspace", name: "Safety Workspace", body: "Incident/near-miss/hazard reporting, permit-to-work with precautions, safety training calendar, safety analytics.", link: { label: "Permit to work, defined", href: "/glossary/#permit-to-work" } },
+  { num: "11", slug: "reports-and-analytics", name: "Reports & Analytics", body: "One-click PDF/Excel/Google Sheets exports across 15+ report types, cross-module KPI dashboard.", link: { label: "What is MTTR?", href: "/blog/what-is-mttr/" } },
+  { num: "12", slug: "moe-dashboard", name: "MOE Dashboard", body: "Single composite Machine Overall Effectiveness score blending availability, maintenance compliance, reliability, and health, with critical-machine alerts.", link: { label: "MOE, defined", href: "/glossary/#moe" } },
+];
+
+/**
+ * Hand-maintained last-modified dates for the standalone pages, for the same
+ * reason as CONTENT_LAST_REVIEWED: a build-time `new Date()` would claim a
+ * fresh edit on every deploy. Bump when the page's own content changes.
+ */
+export const PRICING_PAGE_UPDATED = "2026-10-07";
+export const FEATURES_PAGE_UPDATED = "2026-10-07";
+
 /**
  * The one-sentence definition. Answer engines lift the first declarative
  * sentence that starts with the entity name, so this leads with "Firmicore is".
@@ -195,7 +237,7 @@ export const FAQS: { q: string; a: string }[] = [
     a: "The standard path is a 30-minute discovery call, a guided demo tailored to the role that will use it most, a pilot on one line or one site, then full deployment across sites with roles pre-configured. Plants go live in days rather than months because there is no on-site infrastructure to rack, patch, or maintain.",
   },
   {
-    q: "Does Firmicore replace spreadsheets and WhatsApp groups?",
+    q: "Does Firmicore replace spreadsheets and messaging groups?",
     a: "That is the intended replacement. Firmicore consolidates the maintenance records that usually live in notebooks, Excel sheets, and messaging groups into one connected system, so machines, breakdowns, work orders, preventive maintenance, spares, contractors, handovers, training, and safety share the same real-time record and the same audit trail.",
   },
   {
@@ -223,6 +265,8 @@ export type GlossaryTerm = {
   detail?: string;
   /** Internal link to the post that covers the term in depth. */
   readMore?: { label: string; href: string };
+  /** Further internal links, rendered after `readMore`. */
+  alsoRead?: { label: string; href: string }[];
 };
 
 export const GLOSSARY: GlossaryTerm[] = [
@@ -235,6 +279,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     detail:
       "The test of whether a plant needs one is not headcount: it is whether questions like which machine failed most, what it cost, and whether PM was done can be answered without relying on someone's memory.",
     readMore: { label: "What is a CMMS?", href: "/blog/what-is-a-cmms/" },
+    alsoRead: [{ label: "SAP Plant Maintenance alternative", href: "/blog/sap-plant-maintenance-alternative/" }],
   },
   {
     term: "EAM",
@@ -243,6 +288,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     definition:
       "An EAM (enterprise asset management) system covers the full asset lifecycle, including acquisition, depreciation, and disposal, where a CMMS covers maintenance operations only.",
     detail: "EAM is typically bought by asset-intensive enterprises that need the finance side of the asset, not just its repair history.",
+    readMore: { label: "SAP Plant Maintenance alternative", href: "/blog/sap-plant-maintenance-alternative/" },
   },
   {
     term: "Work order",
@@ -361,6 +407,7 @@ export const GLOSSARY: GlossaryTerm[] = [
     detail:
       "On a plant floor it has to survive shared devices, gloves, poor light, and weak connectivity near the machines, so each step has to be a single screen that queues offline.",
     readMore: { label: "Guided operator safety triage", href: "/blog/guided-operator-safety-triage/" },
+    alsoRead: [{ label: "Guided triage for shared factory tablets", href: "/blog/guided-triage-for-shared-tablets/" }],
   },
   {
     term: "Shift handover",
@@ -424,6 +471,7 @@ export const GLOSSARY: GlossaryTerm[] = [
       "QR-triggered reporting attaches a fault report to the correct asset by scanning a code fixed to the machine, removing the step where an operator has to identify the asset by number.",
     detail: "Misattributed reports are the main reason paper and chat-based logs cannot produce per-machine history, so removing the typing step is what makes the history usable.",
     readMore: { label: "Why QR reporting beats paper logs", href: "/blog/why-qr-reporting-beats-paper-logs/" },
+    alsoRead: [{ label: "Guided triage for shared factory tablets", href: "/blog/guided-triage-for-shared-tablets/" }],
   },
   {
     term: "Multi-tenancy",
