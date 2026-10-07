@@ -23,7 +23,7 @@ export const post: BlogPost = {
     "PM compliance, not PM coverage, is the number that correlates with fewer breakdowns.",
   ],
   intro: [
-    "Preventive maintenance is one of the few areas of plant operations where the theory is genuinely simple and the practice genuinely difficult. Nobody disagrees that servicing a machine before it fails is better than after. Everybody has a preventive schedule. Very few plants complete it.",
+    "Preventive maintenance is one of the few areas of plant operations where the theory is genuinely simple and the practice genuinely difficult. Nobody disagrees that servicing a machine before it fails is better than after. Everybody has a preventive schedule. Very few plants complete it. Learn more about where schedules fit in a full system in the [maintenance management software guide](/maintenance-management-software/).",
   ],
   sections: [
     {

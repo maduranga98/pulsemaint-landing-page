@@ -39,7 +39,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Every machine in Firmicore carries a QR code, and scanning it opens breakdown reporting for that specific asset. It is designed for shared floor tablets, so floor staff can report a breakdown without logging in to a desktop.",
   relatedTerms: ["guided-triage", "asset-registry", "mtta", "reactive-maintenance", "work-order"],
-  relatedPosts: ["why-qr-reporting-beats-paper-logs", "how-to-report-a-machine-breakdown", "guided-triage-for-shared-tablets"],
+  relatedPosts: ["why-qr-reporting-beats-paper-logs", "how-to-report-a-machine-breakdown", "/work-order-software/", "guided-triage-for-shared-tablets"],
   faq: [
     {
       q: "Do operators need an account to report a fault?",

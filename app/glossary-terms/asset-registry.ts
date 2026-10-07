@@ -46,7 +46,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore's machine registry is the starting point of the system. It holds the asset register, QR codes, documents and spare-parts links, and calculates an automatic 0 to 100 health score for each machine.",
   relatedTerms: ["cmms", "mro-inventory", "qr-triggered-reporting", "machine-health-score", "asset-lifecycle-management"],
-  relatedPosts: ["what-is-a-cmms", "how-to-report-a-machine-breakdown", "best-cmms-for-small-manufacturers"],
+  relatedPosts: ["what-is-a-cmms", "how-to-report-a-machine-breakdown", "/cmms-software/", "best-cmms-for-small-manufacturers"],
   faq: [
     {
       q: "Is an asset registry the same as an asset register?",

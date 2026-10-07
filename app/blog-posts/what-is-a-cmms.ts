@@ -23,7 +23,7 @@ export const post: BlogPost = {
     "The strongest signal that you need one is not company size - it is that nobody can answer which machine cost you the most downtime last quarter.",
   ],
   intro: [
-    "This is the hub page for everything else we write about maintenance software. If you are new to the category, start here; the linked posts go deeper on each piece.",
+    "This is the hub page for everything else we write about maintenance software. If you are new to the category, start here; the linked posts go deeper on each piece. Learn more about choosing a system in the [CMMS software buyer's guide](/cmms-software/).",
   ],
   sections: [
     {

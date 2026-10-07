@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { posts } from "./blog-posts";
+import { PILLAR_PAGES } from "./pillar-pages";
 
 /**
  * Pillar pages that glossary terms point at.
@@ -10,11 +11,7 @@ import { posts } from "./blog-posts";
  * the next build; until then the term page simply shows one fewer reading link
  * and no broken URL ships.
  */
-const PILLARS: { path: string; label: string }[] = [
-  { path: "/cmms-software/", label: "CMMS software" },
-  { path: "/maintenance-management-software/", label: "Maintenance management software" },
-  { path: "/work-order-software/", label: "Work order software" },
-];
+const PILLARS: { path: string; label: string }[] = PILLAR_PAGES.map((pillar) => ({ path: pillar.path, label: pillar.label }));
 
 export type ReadingLink = { label: string; href: string };
 

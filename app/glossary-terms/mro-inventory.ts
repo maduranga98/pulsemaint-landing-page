@@ -44,7 +44,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore's parts inventory has a categorized catalog, a multi-stage approval workflow, a stock movement log, purchase orders, supplier management and Excel import. Low-stock alerts are carried into shift handover reports.",
   relatedTerms: ["mro", "asset-registry", "work-order", "shift-handover", "equipment-maintenance"],
-  relatedPosts: ["what-is-a-cmms", "how-to-reduce-machine-downtime", "best-cmms-for-small-manufacturers"],
+  relatedPosts: ["what-is-a-cmms", "how-to-reduce-machine-downtime", "/cmms-software/", "best-cmms-for-small-manufacturers"],
   faq: [
     {
       q: "What is the difference between MRO and MRO inventory?",

@@ -25,7 +25,7 @@ export const post: BlogPost = {
   intro: [
     "Almost every established CMMS on the market charges per user, per month. It is a familiar SaaS pattern borrowed from CRM and project management tools, and for those categories it makes sense: the person using the software is the person creating the value.",
     "Maintenance software does not work that way. The value sits in the machine history, and the people who produce the most valuable data - the operators standing next to the machine when it stops - are the least frequent users of the system. Per-user pricing charges you most for exactly the users you most want to add.",
-    "This post walks through what each model actually costs, using transparent assumptions you can re-run with your own numbers.",
+    "This post walks through what each model actually costs, using transparent assumptions you can re-run with your own numbers. Learn more about the other pricing models and how to shortlist in the [CMMS software guide](/cmms-software/#pricing-models).",
   ],
   sections: [
     {

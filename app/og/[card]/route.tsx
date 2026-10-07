@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getPost, posts } from "../../blog-posts";
+import { PILLAR_PAGES } from "../../pillar-pages";
 import { OG_CONTENT_TYPE, OG_SIZE, OG_TAGLINE, OgCard } from "../card";
 import { SITE_NAME } from "../../site-data";
 
@@ -15,7 +16,11 @@ const HOME_CARD = "home";
  * extensionless `opengraph-image` routes.
  */
 export function generateStaticParams() {
-  return [{ card: `${HOME_CARD}.png` }, ...posts.map((post) => ({ card: `${post.slug}.png` }))];
+  return [
+    { card: `${HOME_CARD}.png` },
+    ...PILLAR_PAGES.map((item) => ({ card: `${item.slug}.png` })),
+    ...posts.map((post) => ({ card: `${post.slug}.png` })),
+  ];
 }
 
 export const dynamic = "force-static";
@@ -36,6 +41,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ car
       ),
       { ...OG_SIZE, headers: { "Content-Type": OG_CONTENT_TYPE } },
     );
+  }
+
+  const pillar = PILLAR_PAGES.find((item) => item.slug === slug);
+  if (pillar) {
+    return new ImageResponse(<OgCard title={pillar.title} badge="Guide" footnote={SITE_NAME} />, {
+      ...OG_SIZE,
+      headers: { "Content-Type": OG_CONTENT_TYPE },
+    });
   }
 
   const post = getPost(slug);

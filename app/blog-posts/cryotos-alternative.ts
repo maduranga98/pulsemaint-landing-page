@@ -24,7 +24,7 @@ export const post: BlogPost = {
   ],
   intro: [
     "Most maintenance software is designed on the assumption that a technician will open a purpose-built mobile app. On a lot of factory floors - especially across South Asia - that assumption breaks immediately. The app is not installed, the login is forgotten, and the breakdown gets reported by shouting down the line.",
-    "Cryotos understood this and built a messaging app into the intake path. That is a genuinely good decision and it is worth saying so before comparing anything.",
+    "Cryotos understood this and built a messaging app into the intake path. That is a genuinely good decision and it is worth saying so before comparing anything. Learn more about the pricing models and selection criteria behind this comparison in the [CMMS software guide](/cmms-software/).",
   ],
   sections: [
     {

@@ -24,7 +24,7 @@ export const post: BlogPost = {
   ],
   intro: [
     "Comparison posts written by vendors are usually worthless, because they are written to reach a conclusion. This one tries to be useful instead: MaintainX is a capable product, we lose deals to it, and there are plants where it is the right answer.",
-    "What follows is the actual decision framework - what each tool is built around, and which constraint decides it.",
+    "What follows is the actual decision framework - what each tool is built around, and which constraint decides it. Learn more about how per-user and per-machine models compare in the [CMMS software guide](/cmms-software/#pricing-models).",
   ],
   sections: [
     {

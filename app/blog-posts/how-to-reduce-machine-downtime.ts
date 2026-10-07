@@ -24,7 +24,7 @@ export const post: BlogPost = {
   ],
   intro: [
     "Every plant manager has been asked to reduce downtime, and most respond by pressing the maintenance team to work faster. That is the wrong end of the problem, because the technician is usually not the bottleneck.",
-    "The productive approach is to break the stoppage into measurable segments, find out which one is long, and fix that. Usually the answer surprises people.",
+    "The productive approach is to break the stoppage into measurable segments, find out which one is long, and fix that. Usually the answer surprises people. Learn more about the system that holds these records in the [maintenance management software guide](/maintenance-management-software/).",
   ],
   sections: [
     {

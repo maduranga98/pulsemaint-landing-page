@@ -44,7 +44,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore preventive maintenance schedules run by calendar or by meter reading, with a PM calendar view and a compliance dashboard showing per-machine and per-technician trends. The [guide to preventive maintenance](/blog/what-is-preventive-maintenance/) goes deeper on setting up a program.",
   relatedTerms: ["scheduled-maintenance", "proactive-maintenance", "pm-compliance", "reactive-maintenance", "condition-based-maintenance"],
-  relatedPosts: ["what-is-preventive-maintenance", "how-to-reduce-machine-downtime", "cmms-for-regulated-manufacturing"],
+  relatedPosts: ["what-is-preventive-maintenance", "how-to-reduce-machine-downtime", "/maintenance-management-software/", "cmms-for-regulated-manufacturing"],
   faq: [
     {
       q: "What does PM stand for in maintenance?",

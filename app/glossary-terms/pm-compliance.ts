@@ -50,7 +50,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore has a PM compliance dashboard with per-machine and per-technician trends, on the Workshop plan and above. It works from the same preventive maintenance schedules and completions your team records, so the figure is not rebuilt by hand each month.",
   relatedTerms: ["preventive-maintenance", "scheduled-maintenance", "maintenance-backlog", "moe", "work-order"],
-  relatedPosts: ["what-is-preventive-maintenance", "cmms-for-regulated-manufacturing", "how-to-reduce-machine-downtime"],
+  relatedPosts: ["what-is-preventive-maintenance", "cmms-for-regulated-manufacturing", "/maintenance-management-software/", "how-to-reduce-machine-downtime"],
   faq: [
     {
       q: "What is a good PM compliance rate?",

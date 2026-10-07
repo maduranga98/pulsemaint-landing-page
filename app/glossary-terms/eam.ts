@@ -44,7 +44,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore is a CMMS, built around the machine registry, breakdown reporting, work orders, preventive maintenance and parts inventory. It is not an EAM system. The [SAP Plant Maintenance alternative](/blog/sap-plant-maintenance-alternative/) post explains where each approach fits.",
   relatedTerms: ["cmms", "asset-lifecycle-management", "asset-registry", "mro", "work-order"],
-  relatedPosts: ["sap-plant-maintenance-alternative", "what-is-a-cmms", "best-cmms-for-small-manufacturers"],
+  relatedPosts: ["sap-plant-maintenance-alternative", "what-is-a-cmms", "/cmms-software/"],
   faq: [
     {
       q: "Is EAM the same as CMMS?",

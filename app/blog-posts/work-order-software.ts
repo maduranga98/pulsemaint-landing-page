@@ -1,19 +1,20 @@
 import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
-  title: "Work Order Software: What It Is and How to Choose One",
-  seoTitle: "Work Order Software: How to Choose One",
+  title: "Work Order Types and How to Evaluate Work Order Tools",
+  seoTitle: "Work Order Types and Evaluation Checklist",
   slug: "work-order-software",
   category: "Guides",
   read: "9 min",
   date: "July 10, 2026",
+  updated: "October 7, 2026",
   author: "Tharindu Jayasekara",
   role: "Founder, Lumora Ventures",
   excerpt:
-    "A work order is a contract between the person who found the problem and the person who fixes it. Here are the eight types, the full lifecycle, and what to look for in software.",
+    "A work order is a contract between the person who found the problem and the person who fixes it. Here are the eight types and the features to test before you choose a tool.",
   metaDescription:
-    "The eight work order types every plant deals with, what a complete work order lifecycle looks like, and the features that decide technician adoption.",
-  deck: "Work order software is where maintenance intent becomes maintenance record. This covers the eight work order types every plant deals with, what a complete lifecycle looks like, and the features that decide whether technicians actually use the thing.",
+    "The eight work order types manufacturers deal with, and the features and tests that decide whether technicians adopt a work order tool.",
+  deck: "This is the evaluation companion to our work order software guide. It covers the eight work order types every plant deals with and the features and tests that decide whether technicians actually use the tool you buy.",
   figure: "Fig. 01 - The work order lifecycle from creation through sign-off and machine history.",
   takeaways: [
     "A work order is the record of a specific piece of maintenance work: what, where, who, when, and what was actually done.",
@@ -30,6 +31,11 @@ export const post: BlogPost = {
       id: "what-a-work-order-is",
       heading: "What a work order is and why paper tracking breaks down",
       blocks: [
+        {
+          type: "callout",
+          label: "Looking for the overview?",
+          text: "The [work order software guide](/work-order-software/) is the main reference: the full path from request to close out, QR request intake, reporting and what the software must handle. This post goes deeper on the eight work order types and on how to evaluate tools.",
+        },
         {
           type: "p",
           text: "A work order is an instruction plus a record. It says what needs doing, on which asset, by whom, by when - and then it captures what was actually done, how long it took, and what was consumed doing it.",
@@ -84,6 +90,10 @@ export const post: BlogPost = {
       id: "lifecycle",
       heading: "What a complete work order lifecycle looks like",
       blocks: [
+        {
+          type: "p",
+          text: "This is the short version. The [work order software guide](/work-order-software/#lifecycle) walks the full path, including triage and parts, with a diagram.",
+        },
         {
           type: "steps",
           items: [
@@ -176,8 +186,8 @@ export const post: BlogPost = {
           type: "faq",
           items: [
             {
-              q: "What is work order software?",
-              a: "Work order software creates, assigns, tracks, and closes maintenance jobs against specific assets. It records who did what, when, how long it took, and which parts were consumed, so that maintenance history and metrics build up automatically.",
+              q: "How should I evaluate work order tools?",
+              a: "Test offline behavior in the worst-covered part of your plant, check that work order types are reported separately, confirm parts are issued against the order, and make sure acknowledgement and sign-off are distinct states with their own timestamps. For a definition and the full lifecycle, see the work order software guide.",
             },
             {
               q: "What is the difference between a work order and a work request?",

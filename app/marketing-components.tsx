@@ -3,6 +3,7 @@ import { MobileMenu } from "./mobile-menu";
 import { Picture } from "./optimized-image";
 import { SOCIAL_LINKS, type SocialLink } from "./site-data";
 import type { BlogPost } from "./blog-data";
+import { PILLAR_PAGES } from "./pillar-pages";
 
 export type { BlogPost };
 
@@ -143,7 +144,16 @@ export function Footer() {
   const columns = [
     { title: "Product", links: [["Features", "/features/"], ["Pricing", "/pricing/"], ["Roles", "/#roles"], ["Security", "/#security"]] },
     { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"]] },
-    { title: "Resources", links: [["Blog", "/blog/"], ["Glossary", "/glossary/"], ["FAQ", "/#faq"], ["Book a demo", "/#book-demo"]] },
+    {
+      title: "Resources",
+      links: [
+        ...PILLAR_PAGES.map((pillar): [string, string] => [pillar.label, pillar.path]),
+        ["Blog", "/blog/"],
+        ["Glossary", "/glossary/"],
+        ["FAQ", "/#faq"],
+        ["Book a demo", "/#book-demo"],
+      ],
+    },
     { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 

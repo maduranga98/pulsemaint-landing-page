@@ -44,7 +44,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore turns reactive work into data. Operators report a breakdown by scanning the machine's QR code, which attaches the report to the right asset, and each breakdown is tracked with severity, type and root cause. That history shows which machines to move to a preventive schedule.",
   relatedTerms: ["preventive-maintenance", "proactive-maintenance", "unplanned-downtime", "root-cause", "mtbf"],
-  relatedPosts: ["how-to-report-a-machine-breakdown", "how-to-reduce-machine-downtime", "the-real-cost-of-unplanned-downtime"],
+  relatedPosts: ["how-to-report-a-machine-breakdown", "how-to-reduce-machine-downtime", "/maintenance-management-software/", "the-real-cost-of-unplanned-downtime"],
   faq: [
     {
       q: "Is reactive maintenance the same as corrective maintenance?",

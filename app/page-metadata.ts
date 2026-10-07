@@ -13,7 +13,18 @@ import { OG_IMAGE_ALT, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, SITE_NAME, SITE_URL, ogI
  *  - `title.absolute` skips the "| Firmicore" template, because these titles
  *    already lead with the brand name.
  */
-export function pageMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
+export function pageMetadata({
+  title,
+  description,
+  path,
+  ogCard = "home",
+}: {
+  title: string;
+  description: string;
+  path: string;
+  /** Social card name served from /og/<name>.png. Defaults to the site-wide card. */
+  ogCard?: string;
+}): Metadata {
   return {
     title: { absolute: title },
     description,
@@ -26,14 +37,14 @@ export function pageMetadata({ title, description, path }: { title: string; desc
       locale: "en_US",
       type: "website",
       images: [
-        { url: ogImageUrl("home"), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
+        { url: ogImageUrl(ogCard), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: OG_IMAGE_ALT, type: "image/png" },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
+      images: [{ url: ogImageUrl(ogCard), alt: OG_IMAGE_ALT }],
     },
   };
 }

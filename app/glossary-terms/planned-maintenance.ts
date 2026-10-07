@@ -45,7 +45,7 @@ export const term: GlossaryTerm = {
   firmicore:
     "Firmicore work orders carry the checklist, parts requests and time tracking for a job, and run through to supervisor sign-off. Preventive maintenance schedules and parts inventory sit in the same system, so a job can be prepared against known stock.",
   relatedTerms: ["scheduled-maintenance", "work-order", "preventive-maintenance", "downtime", "maintenance-backlog"],
-  relatedPosts: ["work-order-software", "what-is-preventive-maintenance", "how-to-reduce-machine-downtime"],
+  relatedPosts: ["work-order-software", "what-is-preventive-maintenance", "/maintenance-management-software/", "how-to-reduce-machine-downtime"],
   faq: [
     {
       q: "Is planned maintenance the same as preventive maintenance?",
