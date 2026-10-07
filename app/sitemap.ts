@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { posts } from "./blog-data";
+import { GLOSSARY, glossaryLastUpdated, termUrl } from "./glossary-data";
 import { FEATURES_PAGE_UPDATED, PRICING_PAGE_UPDATED, SITE_URL as BASE_URL } from "./site-data";
 
 export const dynamic = "force-static";
@@ -31,9 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: url("/features/"), lastModified: new Date(FEATURES_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/pricing/"), lastModified: new Date(PRICING_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/blog/"), lastModified: blogLastModified, changeFrequency: "weekly", priority: 0.8 },
-    // The glossary changes only when a term is added or reworded, and there is
-    // no build-time signal for that, so it carries no lastModified either.
-    { url: url("/glossary/"), changeFrequency: "monthly", priority: 0.7 },
+    // The hub's lastmod is the newest `updated` on any term, a hand-maintained
+    // date, so it moves only when a definition does.
+    { url: url("/glossary/"), lastModified: new Date(glossaryLastUpdated()), changeFrequency: "monthly", priority: 0.7 },
     // The llms.txt pair is regenerated from `posts` on every build, so it is
     // as fresh as the newest article. Listing it here is the second discovery
     // path after the <link rel="alternate"> tags in the document head.
@@ -48,5 +49,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...postRoutes];
+  const glossaryRoutes: MetadataRoute.Sitemap = GLOSSARY.map((entry) => ({
+    url: termUrl(entry.slug),
+    lastModified: new Date(entry.updated),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...glossaryRoutes];
 }

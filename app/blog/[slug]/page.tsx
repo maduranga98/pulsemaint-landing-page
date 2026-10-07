@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { autoLinkPost } from "../../glossary-autolink";
+import { GLOSSARY, getTerm, termPath, termUrl, termsRelatedToPost } from "../../glossary-data";
 import { getPost, getRelated, posts } from "../../blog-posts";
 import { wordCount } from "../../llms-markdown";
 import { ArticleThumb, CategoryBadge, ECGLine, Footer, Navbar, PostCard, SectionLabel, StatusPill } from "../../marketing-components";
 import {
-  GLOSSARY,
   OG_IMAGE_ALT,
   OG_IMAGE_HEIGHT,
   OG_IMAGE_WIDTH,
@@ -30,15 +31,20 @@ function readingTimeISO(read: string): string | undefined {
 /**
  * Glossary terms the post actually mentions, emitted as `about`/`mentions`.
  * Entity links are what let an answer engine connect this article to the
- * definitional query that brought the reader in.
+ * definitional query that brought the reader in. Terms named in the title,
+ * deck or a heading come first, then the ones linked in the body.
  */
-function mentionedTerms(haystack: string) {
-  return GLOSSARY.filter((entry) => haystack.toLowerCase().includes(entry.term.toLowerCase())).map((entry) => ({
-    "@type": "DefinedTerm",
-    "@id": `${SITE_URL}/glossary/#${entry.slug}`,
-    name: entry.term,
-    url: `${SITE_URL}/glossary/#${entry.slug}`,
-  }));
+function mentionedTerms(haystack: string, linked: string[]) {
+  // Whole-word match: a bare substring test finds "EAM" inside "team".
+  const named = GLOSSARY.filter((entry) => new RegExp(`\\b${entry.term.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}\\b`, "i").test(haystack)).map(
+    (entry) => entry.slug,
+  );
+  return [...new Set([...named, ...linked])].flatMap((slug) => {
+    const entry = getTerm(slug);
+    return entry
+      ? [{ "@type": "DefinedTerm", "@id": `${termUrl(slug)}#term`, name: entry.term, url: termUrl(slug) }]
+      : [];
+  });
 }
 
 export async function generateStaticParams() {
@@ -105,8 +111,14 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = getPost(slug);
   if (!post) notFound();
 
-  const sections = post.sections ?? [];
+  // Same post with the first mention of each glossary term linked. Only the
+  // rendered body comes from `article`; metadata and schema read `post`.
+  const { post: article, linked } = autoLinkPost(post);
+  const sections = article.sections ?? [];
   const related = getRelated(post);
+  const glossaryTerms = [...new Set([...linked, ...termsRelatedToPost(post.slug).map((entry) => entry.slug)])]
+    .slice(0, 8)
+    .flatMap((termSlug) => getTerm(termSlug) ?? []);
   const publishedISO = new Date(post.date).toISOString();
   const modifiedISO = post.updated ? new Date(post.updated).toISOString() : publishedISO;
   const postUrl = `${SITE_URL}/blog/${post.slug}/`;
@@ -123,7 +135,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   // Section headings double as the article's answerable sub-questions, so they
   // are indexed as page anchors an assistant can deep-link into.
   const searchableText = [post.title, post.deck ?? "", post.excerpt, ...sections.map((section) => section.heading)].join(" ");
-  const terms = mentionedTerms(searchableText);
+  const terms = mentionedTerms(searchableText, linked);
   const timeRequired = readingTimeISO(post.read);
 
   const jsonLd: Record<string, unknown>[] = [
@@ -308,7 +320,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             ) : null}
 
-            {post.intro?.map((text, index) => (
+            {article.intro?.map((text, index) => (
               <ArticleBlock key={text} block={{ type: "p", text }} lead={index === 0} />
             ))}
 
@@ -361,6 +373,24 @@ export default async function BlogPostPage({ params }: PageProps) {
             </section>
           </article>
         </section>
+
+        {glossaryTerms.length > 0 ? (
+          <section aria-labelledby="related-terms" className="mx-auto max-w-5xl border-t border-white/8 px-5 pt-12 sm:px-8">
+            <h2 id="related-terms" className="font-sora text-2xl font-semibold">Related glossary terms</h2>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {glossaryTerms.map((entry) => (
+                <li key={entry.slug}>
+                  <Link
+                    href={termPath(entry.slug)}
+                    className="inline-block rounded-full border border-white/12 px-3 py-1.5 text-[13px] text-ink-dim transition hover:border-pulse/50 hover:text-pulse"
+                  >
+                    {entry.term}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section aria-labelledby="related-reading" className="mx-auto max-w-5xl border-t border-white/8 px-5 py-16 sm:px-8">
           <div className="mb-8 flex items-center justify-between">

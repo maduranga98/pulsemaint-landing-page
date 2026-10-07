@@ -9,6 +9,7 @@
     "lint": "eslint",
     "check:urls": "node scripts/check-canonical-urls.mjs",
     "check:links": "tsx scripts/check-links.ts",
+    "check:glossary": "tsx scripts/check-glossary.ts",
     "images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
