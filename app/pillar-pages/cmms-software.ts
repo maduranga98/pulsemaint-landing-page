@@ -234,6 +234,7 @@ export const page: PillarPageData = {
   keepReading: [
     { label: "Maintenance management software", href: "/maintenance-management-software/" },
     { label: "Work order software", href: "/work-order-software/" },
+    { label: "MaintainX alternative: per-machine CMMS", href: "/blog/maintainx-alternative/" },
     { label: "What Is a CMMS?", href: "/blog/what-is-a-cmms/" },
     { label: "Per-machine versus per-user pricing", href: "/blog/cmms-pricing-per-machine-vs-per-user/" },
     { label: "CMMS for regulated manufacturing", href: "/blog/cmms-for-regulated-manufacturing/" },

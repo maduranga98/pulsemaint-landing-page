@@ -208,6 +208,7 @@ export const page: PillarPageData = {
   keepReading: [
     { label: "CMMS software", href: "/cmms-software/" },
     { label: "Work order software", href: "/work-order-software/" },
+    { label: "MaintainX alternative: per-machine CMMS", href: "/blog/maintainx-alternative/" },
     { label: "SAP Plant Maintenance alternative", href: "/blog/sap-plant-maintenance-alternative/" },
     { label: "How to reduce machine downtime", href: "/blog/how-to-reduce-machine-downtime/" },
     { label: "Why QR reporting beats paper logs", href: "/blog/why-qr-reporting-beats-paper-logs/" },
