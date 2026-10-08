@@ -202,10 +202,11 @@ function Hero() {
           <div className="inline-flex items-center rounded-full border border-pulse/40 px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.1em] text-pulse">
             Multi-tenant CMMS for process plants
           </div>
-          <h1 className="mt-6 font-sora text-[44px] font-bold leading-[1.05] text-ink sm:text-[58px] lg:text-[62px]">
-            Strength at the core <span className="text-pulse">of every machine.</span>
+          <h1 className="mt-6 font-sora text-[38px] font-bold leading-[1.08] text-ink sm:text-[50px] lg:text-[54px]">
+            Mobile-first CMMS for <span className="text-pulse">factory maintenance.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-ink-dim sm:text-lg">
+          <p className="mt-4 font-sora text-xl font-semibold text-ink sm:text-2xl">Strength at the core of every machine.</p>
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-ink-dim sm:text-lg">
             Run maintenance like a modern operation. Firmicore replaces paper logbooks, spreadsheets and scattered messages
             with one connected system. It covers machines, breakdowns, work orders, PM, spares, contractors, shift
             handovers, training, safety, and reporting, so every role works from the same real-time picture.
@@ -577,6 +578,22 @@ function Blog() {
             <PostCard key={post.slug} post={post} />
           ))}
         </div>
+        {/* Pinned: the card grid above is "newest three", so a comparison post drops out of it as soon as
+            newer posts ship. These links keep the high-intent pages one click from the homepage. */}
+        <p className="mt-8 text-sm text-ink-dim">
+          Comparing vendors?{" "}
+          <Link href="/blog/maintainx-alternative/" className="text-pulse hover:underline">
+            MaintainX alternative
+          </Link>
+          {" · "}
+          <Link href="/blog/cryotos-alternative/" className="text-pulse hover:underline">
+            Cryotos alternative
+          </Link>
+          {" · "}
+          <Link href="/blog/sap-plant-maintenance-alternative/" className="text-pulse hover:underline">
+            SAP Plant Maintenance alternative
+          </Link>
+        </p>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MobileMenu } from "./mobile-menu";
 import { Picture } from "./optimized-image";
-import { SOCIAL_LINKS, type SocialLink } from "./site-data";
+import { CONTACT_EMAIL, SOCIAL_LINKS, type SocialLink } from "./site-data";
 import type { BlogPost } from "./blog-data";
 import { PILLAR_PAGES } from "./pillar-pages";
 
@@ -140,10 +140,19 @@ function SocialIcon({ name }: { name: SocialLink["icon"] }) {
   );
 }
 
+/**
+ * Footer links whose pages are not built yet. They are deliberately NOT rendered:
+ * a `href="#"` is a dead link that crawlers read as a broken internal link and
+ * visitors read as a broken site. Privacy and Terms must exist before the
+ * product takes paying customers; move each entry into `columns` in Footer()
+ * the moment its page ships.
+ */
+export const FOOTER_LINKS_PENDING_PAGES = ["About", "Careers", "Privacy", "Terms", "GDPR"] as const;
+
 export function Footer() {
   const columns = [
     { title: "Product", links: [["Features", "/features/"], ["Pricing", "/pricing/"], ["Roles", "/#roles"], ["Security", "/#security"]] },
-    { title: "Company", links: [["About", "#"], ["Contact", "#"], ["Careers", "#"]] },
+    { title: "Company", links: [["Contact", `mailto:${CONTACT_EMAIL}`]] },
     {
       title: "Resources",
       links: [
@@ -154,7 +163,6 @@ export function Footer() {
         ["Book a demo", "/#book-demo"],
       ],
     },
-    { title: "Legal", links: [["Privacy", "#"], ["Terms", "#"], ["Security", "#"], ["GDPR", "#"]] },
   ];
 
   return (
@@ -189,7 +197,7 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-8">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:col-span-8">
           {columns.map((column) => (
             <div key={column.title}>
               <div className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{column.title}</div>

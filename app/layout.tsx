@@ -39,7 +39,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Firmicore - Strength at the core of every machine.",
+    default: "Firmicore - Mobile-First CMMS for Factory Maintenance",
     template: "%s | Firmicore",
   },
   description:
@@ -59,18 +59,6 @@ export const metadata: Metadata = {
   },
   applicationName: SITE_NAME,
   category: "Business Software",
-  keywords: [
-    "CMMS",
-    "maintenance management software",
-    "factory maintenance software",
-    "breakdown tracking",
-    "work order software",
-    "preventive maintenance software",
-    "guided operator triage",
-    "machine downtime",
-    "plant maintenance",
-    "MOE",
-  ],
   // AI Overviews and assistant answer panes are capped by the snippet
   // directives, not by the meta description. Uncapping them is what allows a
   // full answer to be quoted instead of a truncated fragment.
@@ -99,7 +87,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "Firmicore - Strength at the core of every machine.",
+    title: "Firmicore - Mobile-First CMMS for Factory Maintenance",
     description:
       "Real-time breakdown tracking, guided operator triage, and maintenance history for manufacturing factories.",
     url: "https://firmicore.com/",
@@ -116,7 +104,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Firmicore - Strength at the core of every machine.",
+    title: "Firmicore - Mobile-First CMMS for Factory Maintenance",
     description:
       "Firmicore is a mobile-first maintenance platform for factory floors, with breakdown tracking, guided triage, work orders, and repair history.",
     images: [{ url: ogImageUrl("home"), alt: OG_IMAGE_ALT }],
