@@ -196,7 +196,7 @@ const softwareJsonLd = {
     "MOE dashboard: composite Machine Overall Effectiveness score per machine",
   ],
   // AggregateOffer states the real range across the four tiers, and `offers`
-  // names each tier, so "what does the Workshop tier cost" is answerable from
+  // names each tier, so "what does the Growth tier cost" is answerable from
   // structured data rather than from parsed prose. Built from PRICING_TIERS,
   // the same data the pricing cards render.
   offers: pricingOffers(`${SITE_URL}/#pricing`, `${SITE_URL}/`),

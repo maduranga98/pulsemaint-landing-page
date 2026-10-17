@@ -32,7 +32,7 @@ const pricingFaqs: { q: string; a: string }[] = [
   },
   {
     q: "How does the trial start?",
-    a: "Basic, Workshop, and Factory Pro start with a trial that you begin from the Start trial button on the tier. Enterprise is quoted and provisioned through sales because it includes multi-site management, SSO/SAML, custom integrations, and an SLA.",
+    a: "Starter, Growth, and Factory start with a 14-day free trial, no card, that you begin from the Start trial button on the tier. Enterprise is quoted and provisioned through sales because it includes multi-plant management and limits set in the contract.",
   },
 ];
 
