@@ -37,7 +37,7 @@ export const term: GlossaryTerm = {
     },
   ],
   firmicore:
-    "MOE is part of Firmicore. The MOE dashboard shows the composite score with critical-machine alerts, and the Factory Pro plan adds MOE trend analytics and machine comparison. It sits next to the preventive maintenance compliance dashboard.",
+    "MOE is part of Firmicore. The MOE dashboard shows the composite score with critical-machine alerts, and the Factory plan adds MOE analytics, audits, Kaizen and evaluations. It sits next to the preventive maintenance compliance dashboard.",
   relatedTerms: ["oee", "machine-health-score", "pm-compliance", "mtbf", "asset-registry"],
   relatedPosts: ["what-is-mttr", "how-to-reduce-machine-downtime", "what-is-preventive-maintenance"],
   faq: [

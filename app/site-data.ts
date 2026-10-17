@@ -58,16 +58,16 @@ export const SOCIAL_LINKS: SocialLink[] = [
  * would claim a fresh edit on every deploy, and a `dateModified` that is always
  * "today" is a freshness signal answer engines learn to discount.
  */
-export const CONTENT_LAST_REVIEWED = "2026-09-16";
+export const CONTENT_LAST_REVIEWED = "2026-10-17";
 
 /**
  * Pricing tiers. Rendered as the pricing cards on the homepage AND emitted as
- * individual schema.org `Offer` nodes, so "what does the Workshop tier cost"
+ * individual schema.org `Offer` nodes, so "what does the Growth tier cost"
  * can be answered from structured data instead of parsed out of prose.
  */
 export type PricingTier = {
   name: string;
-  /** Display price, e.g. "$29" or "Contact Sales". */
+  /** Display price, e.g. "$25" or "Custom". */
   price: string;
   /** Numeric monthly price in USD. Omitted for quote-only tiers. */
   priceUSD?: number;
@@ -80,47 +80,62 @@ export type PricingTier = {
 
 export const PRICING_TIERS: PricingTier[] = [
   {
-    name: "Basic",
-    price: "$29",
-    priceUSD: 29,
+    name: "Starter",
+    price: "$25",
+    priceUSD: 25,
     period: "/mo",
-    annual: "$278/year, 20% off monthly",
-    limits: "10 machines \u00b7 10 inventory items \u00b7 10 PM schedules \u00b7 5 users",
-    features: ["Core maintenance only"],
+    annual: "$250/year, pay 10 months and get 12",
+    limits: "15 machines \u00b7 100 inventory parts \u00b7 30 PM schedules \u00b7 3 full users \u00b7 10 light users",
+    features: [
+      "Machines & QR, breakdowns, work orders, PM, reports",
+      "Small inventory, suppliers & purchase orders",
+      "20 AI credits per month",
+      "12 months of analytics history",
+    ],
     popular: false,
   },
   {
-    name: "Workshop",
-    price: "$59",
-    priceUSD: 59,
+    name: "Growth",
+    price: "$89",
+    priceUSD: 89,
     period: "/mo",
-    annual: "$566/year, 20% off monthly",
-    limits: "100 machines \u00b7 10,000 items \u00b7 unlimited PM \u00b7 20 users",
-    features: ["Contractor management", "Shift handover, training & safety", "PM compliance dashboard", "Basic analytics"],
-    popular: false,
-  },
-  {
-    name: "Factory Pro",
-    price: "$249",
-    priceUSD: 249,
-    period: "/mo",
-    annual: "$2,390/year, 20% off monthly",
-    limits: "1,500 machines \u00b7 unlimited inventory & PM \u00b7 100 users",
-    features: ["Everything in Workshop", "MOE trend analytics", "Machine comparison"],
+    annual: "$890/year, pay 10 months and get 12",
+    limits: "75 machines \u00b7 2,000 inventory parts \u00b7 400 PM schedules \u00b7 10 full users \u00b7 50 light users",
+    features: [
+      "Everything in Starter",
+      "Automatic PO emails & low-stock alerts",
+      "Contractors, shift handover, training & safety",
+      "150 AI credits per month",
+      "36 months of analytics history",
+    ],
     popular: true,
   },
   {
-    name: "Enterprise",
-    price: "Contact Sales",
-    period: "",
-    annual: "",
-    limits: "Unlimited machines, inventory, PM, users",
+    name: "Factory",
+    price: "$379",
+    priceUSD: 379,
+    period: "/mo",
+    annual: "$3,790/year, pay 10 months and get 12",
+    limits: "400 machines \u00b7 10,000 inventory parts \u00b7 3,000 PM schedules \u00b7 40 full users \u00b7 250 light users",
     features: [
-      "TPM maturity roadmap & 5S scorecard",
-      "Multi-site management",
-      "Advanced reports hub",
-      "SSO/SAML, custom integrations & API",
-      "Dedicated support & SLA",
+      "Everything in Growth",
+      "MOE analytics, audits, Kaizen & evaluations",
+      "800 AI credits per month",
+      "Full analytics history",
+    ],
+    popular: false,
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    period: "",
+    annual: "From $1,000/month, annual contract",
+    limits: "Every limit set in your contract",
+    features: [
+      "Everything in Factory",
+      "Multi-plant management",
+      "Limits sized to your headcount, machines and volumes",
+      "Yearly prepay and multi-year discounts",
     ],
     popular: false,
   },
@@ -165,7 +180,7 @@ export const MODULES: ModuleEntry[] = [
  * reason as CONTENT_LAST_REVIEWED: a build-time `new Date()` would claim a
  * fresh edit on every deploy. Bump when the page's own content changes.
  */
-export const PRICING_PAGE_UPDATED = "2026-10-07";
+export const PRICING_PAGE_UPDATED = "2026-10-17";
 export const FEATURES_PAGE_UPDATED = "2026-10-07";
 
 /**
@@ -185,7 +200,7 @@ export const QUICK_FACTS: [string, string][] = [
   ["Made by", `${LEGAL_NAME}, Kuliyapitiya, Sri Lanka`],
   ["Deployment", "Cloud-hosted on Firebase; no on-site servers"],
   ["Platform", "Web and mobile browsers, including shared floor tablets"],
-  ["Pricing", "4 tiers: $29, $59 and $249 per month, plus Enterprise (contact sales); 20% off annual"],
+  ["Pricing", "4 tiers: $25, $89 and $379 per month, plus Enterprise (custom, from $1,000 per month); yearly billing is pay 10 months, get 12; 14-day free trial"],
   ["Feature modules", "20+, including 12 core modules"],
   ["Role workspaces", "9, from plant manager to trainee"],
   ["Triage languages", "English, Sinhala, Tamil, Bengali"],
@@ -206,7 +221,7 @@ export const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How much does Firmicore cost?",
-    a: "Firmicore has four tiers. Basic is $29/month for 10 machines and 5 users, Workshop is $59/month for 100 machines and 20 users, Factory Pro is $249/month for 1,500 machines and 100 users, and Enterprise is quoted by sales for unlimited machines and users. Annual billing takes 20% off the monthly rate. Prices are indicative; confirm exact figures with sales before quoting a customer.",
+    a: "Firmicore has four tiers. Starter is $25/month for 15 machines, 3 full users and 10 light users, Growth is $89/month for 75 machines, 10 full users and 50 light users, Factory is $379/month for 400 machines, 40 full users and 250 light users, and Enterprise is custom-quoted from $1,000/month with every limit set in the contract. Yearly billing is pay 10 months, get 12. Every paid plan starts with a 14-day free trial with no card. Prices are in USD per company per month and are indicative; confirm exact figures with sales before quoting a customer.",
   },
   {
     q: "Is Firmicore priced per machine or per user?",
@@ -246,6 +261,6 @@ export const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is there a free trial?",
-    a: "Basic, Workshop, and Factory Pro start with a trial you can begin from the pricing section. Enterprise is quoted and provisioned through sales because it includes multi-site management, SSO/SAML, custom integrations, and an SLA.",
+    a: "Starter, Growth, and Factory start with a 14-day free trial, no card, that you can begin from the pricing section. Enterprise is quoted and provisioned through sales because it includes multi-plant management and limits set in the contract.",
   },
 ];

@@ -6,8 +6,8 @@ import { PRICING_TIERS, machineLimit } from "../site-data";
  * this page without an edit here. Nothing below types a price or a limit.
  */
 const entryTier = PRICING_TIERS.find((tier) => tier.priceUSD !== undefined) ?? PRICING_TIERS[0];
-// Shift handover and the PM compliance dashboard are not on every tier, and the tier that adds them is read from the data too.
-const gatedTier = PRICING_TIERS.find((tier) => tier.features.some((feature) => /PM compliance dashboard/i.test(feature)));
+// Contractor management and shift handover are not on every tier, and the tier that adds them is read from the data too.
+const gatedTier = PRICING_TIERS.find((tier) => tier.features.some((feature) => /shift handover/i.test(feature)));
 const tierLimits = PRICING_TIERS.map((tier) => `${tier.name} (${machineLimit(tier).toLowerCase()})`).join(", ");
 
 export const page: PillarPageData = {
@@ -114,7 +114,7 @@ export const page: PillarPageData = {
         { type: "h3", text: "Where Firmicore's pricing fits" },
         {
           type: "p",
-          text: `Firmicore sizes plans by the machines you register. Each tier has a flat monthly price and states its machine limit with inventory, preventive maintenance and user limits alongside it, so the price is not a per-head charge. The current tiers, by machine limit, are ${tierLimits}. Plans start from ${entryTier.price}${entryTier.period} on ${entryTier.name}, and annual billing is discounted.${gatedTier ? ` Some modules, including shift handover and the PM compliance dashboard, start at the ${gatedTier.name} tier.` : ""} Figures are indicative, so check the [pricing page](/pricing/) and confirm with sales before you budget. If you have few machines and a very small team, per-user pricing from another vendor may cost less, and it is worth running both numbers.`,
+          text: `Firmicore sizes plans by the machines you register. Each tier has a flat monthly price and states its machine limit with inventory, preventive maintenance and user limits alongside it, so the price is not a per-head charge. The current tiers, by machine limit, are ${tierLimits}. Plans start from ${entryTier.price}${entryTier.period} on ${entryTier.name}, and yearly billing gives two months free.${gatedTier ? ` Some modules, including contractor management and shift handover, start at the ${gatedTier.name} tier.` : ""} Figures are indicative, so check the [pricing page](/pricing/) and confirm with sales before you budget. If you have few machines and a very small team, per-user pricing from another vendor may cost less, and it is worth running both numbers.`,
         },
       ],
     },
