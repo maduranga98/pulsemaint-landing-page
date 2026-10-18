@@ -271,7 +271,7 @@ export function confirmationMail(data: BookingRequest) {
             <p style="margin:18px 0 0;color:#6A7790;font-size:13px;">Reply to this email if you need to reschedule.</p>
           </td></tr>
           <tr><td style="padding:16px 24px;background:#F4F7FB;font:400 12px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:#6A7790;">
-            Firmicore &middot; a product of Lumora Ventures Pvt Ltd &middot; Kuliyapitiya, Sri Lanka
+            Firmicore &middot; a product of Lumora Ventures Pvt Ltd
           </td></tr>
         </table>
       </div>`,

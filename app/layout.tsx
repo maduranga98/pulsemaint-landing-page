@@ -139,13 +139,6 @@ const organizationJsonLd = {
     "Plant reliability metrics (MTTR, MTBF, OEE)",
     "Industrial safety workflows and permit to work",
   ],
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Kurunegala Road",
-    addressLocality: "Kuliyapitiya",
-    postalCode: "60200",
-    addressCountry: "LK",
-  },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",
@@ -190,7 +183,7 @@ const softwareJsonLd = {
     "Contractor registry with four-dimension performance rating",
     "Auto-compiled shift handover reports",
     "Training and certification with quizzes and auto-issued certificates",
-    "Guided Triage: multilingual branching troubleshooting trees (EN/SI/TA/BN)",
+    "Guided Triage: multilingual branching troubleshooting trees (any language on request)",
     "Safety workspace with incident reporting and permit to work",
     "Reports and analytics with 15+ report types exporting to PDF, Excel and Google Sheets",
     "MOE dashboard: composite Machine Overall Effectiveness score per machine",

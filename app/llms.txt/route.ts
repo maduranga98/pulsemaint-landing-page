@@ -22,7 +22,7 @@ export function GET(): Response {
   const body = [
     `# ${SITE_NAME}`,
     `> ${ONE_LINER}`,
-    `Firmicore is built by Lumora Ventures Pvt Ltd (Kuliyapitiya, Sri Lanka). Canonical site: ${SITE_URL}/. Full text of every page: ${SITE_URL}/llms-full.txt`,
+    `Firmicore is built by Lumora Ventures Pvt Ltd. Canonical site: ${SITE_URL}/. Full text of every page: ${SITE_URL}/llms-full.txt`,
     section(
       "At a glance",
       QUICK_FACTS.map(([label, value]) => `- **${label}:** ${value}`),
@@ -55,7 +55,6 @@ export function GET(): Response {
     section("Contact", [
       "- Email: info@lumoraventures.com",
       "- Phone: +94 71 999 8500",
-      "- Address: Kurunegala Road, Kuliyapitiya 60200, Sri Lanka",
       ...SOCIAL_LINKS.map((link) => `- ${link.label}: ${link.url}`),
     ]),
     `---\nContent may be quoted with attribution to ${SITE_NAME} (${SITE_URL}/). Pricing figures are indicative; confirm with sales before quoting a customer.`,

@@ -63,7 +63,7 @@ export const post: BlogPost = {
             ["Guided operator triage", "Not productised as a distinct workflow", "Core workflow with per-machine safe-action flows"],
             ["Breakdown intake", "Mobile app and work request forms", "QR scan, messaging app, browser, and supervisor-mediated"],
             ["Contractor management", "Supported", "Supported, with document expiry and compliance blocking"],
-            ["Localisation for floor staff", "Multi-language interface", "Multi-language including regional South Asian languages"],
+            ["Localisation for floor staff", "Multi-language interface", "Multi-language, any language on request"],
             ["Integration ecosystem", "Broad and mature", "Narrower, growing"],
             ["Brand maturity", "Established, large customer base", "Newer entrant"],
           ],
@@ -106,7 +106,7 @@ export const post: BlogPost = {
             },
             {
               title: "Multilingual floor interfaces, not just multilingual admin",
-              text: "Reporting works in the language the operator speaks, including regional South Asian languages, while supervisors and managers work in English. This matters in plants where floor staff and management do not share a first language.",
+              text: "Reporting works in the language the operator speaks, including any language you request, while supervisors and managers work in English. This matters in plants where floor staff and management do not share a first language.",
             },
             {
               title: "Multiple intake channels including mobile-banned floors",

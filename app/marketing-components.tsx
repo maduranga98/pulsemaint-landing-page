@@ -171,11 +171,10 @@ export function Footer() {
         <div className="lg:col-span-4">
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-dim">
-            FirmiCore, a product of Lumora Ventures Pvt Ltd, Kuliyapitiya, Sri Lanka. Multi-tenant CMMS for process plants.
+            FirmiCore, a product of Lumora Ventures Pvt Ltd. Multi-tenant CMMS for process plants.
           </p>
           <div className="mt-5 space-y-1 font-mono text-xs text-ink-mute">
             <div>info@lumoraventures.com · +94 71 999 8500</div>
-            <div>Kurunegala Road, Kuliyapitiya 60200, Sri Lanka</div>
           </div>
           <div className="mt-6 flex items-center gap-3">
             {SOCIAL_LINKS.map((social) => (

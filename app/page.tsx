@@ -34,7 +34,7 @@ const painPoints = [
 ];
 
 const triageFeatures = [
-  ["01", "Multilingual trees", "Branching troubleshooting flows in English, Sinhala, Tamil, and Bengali."],
+  ["01", "Multilingual trees", "Branching troubleshooting flows in English, plus any language you request."],
   ["02", "Safe operator diagnosis", "Any operator can safely diagnose and react to a fault without waiting on a technician."],
   ["03", "Supervisor authoring", "Supervisors build and edit custom triage flows per machine, no engineering help needed."],
   ["04", "A real differentiator", "No other CMMS in this class ships guided, multilingual triage as a core workflow."],
@@ -377,7 +377,7 @@ function Triage() {
           Guided Triage: multilingual, branching, <span className="text-pulse">built by your own supervisors.</span>
         </h2>
         <p className="mt-5 max-w-2xl leading-relaxed text-ink-dim">
-          Branching troubleshooting trees in English, Sinhala, Tamil and Bengali let any operator safely diagnose and
+          Branching troubleshooting trees in English, or any language you request, let any operator safely diagnose and
           react to a fault, no waiting for a technician to arrive before something happens. A supervisor-facing
           authoring tool lets your team build custom triage flows per machine, without engineering help.{" "}
           <Link href="/blog/guided-triage-for-shared-tablets/" className="text-pulse hover:underline">
@@ -703,8 +703,6 @@ function FinalCTA() {
         </div>
         <div className="mt-8 font-mono text-[13px] leading-relaxed text-ink-mute">
           info@lumoraventures.com &nbsp;·&nbsp; +94 71 999 8500 &nbsp;·&nbsp; lumoraventures.com
-          <br />
-          Kurunegala Road, Kuliyapitiya 60200, Sri Lanka
         </div>
       </div>
     </section>
