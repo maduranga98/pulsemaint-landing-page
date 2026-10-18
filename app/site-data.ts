@@ -169,7 +169,7 @@ export const MODULES: ModuleEntry[] = [
   { num: "06", slug: "contractors", name: "Contractors", body: "Registry, job tracking, invoice comparison, four-dimension performance rating: speed, quality, professionalism, communication.", link: { label: "Contractor management software for manufacturing", href: "/blog/contractor-management-software-manufacturing/" } },
   { num: "07", slug: "shift-handovers", name: "Shift Handovers", body: "Auto-compiled structured reports: pending work orders, ongoing breakdowns, low-stock alerts, watch-machine flags.", link: { label: "Shift handover, defined", href: "/glossary/shift-handover/" } },
   { num: "08", slug: "training-and-certification", name: "Training & Certification", body: "Module libraries, quizzes, assignment tracking, trainee onboarding programme, auto-issued certificates.", link: { label: "CMMS for regulated manufacturing", href: "/blog/cmms-for-regulated-manufacturing/" } },
-  { num: "09", slug: "guided-triage", name: "Guided Triage", body: "Multilingual (EN/SI/TA/BN) branching troubleshooting trees with a supervisor authoring tool.", link: { label: "Guided operator safety triage", href: "/blog/guided-operator-safety-triage/" } },
+  { num: "09", slug: "guided-triage", name: "Guided Triage", body: "Multilingual branching troubleshooting trees with a supervisor authoring tool.", link: { label: "Guided operator safety triage", href: "/blog/guided-operator-safety-triage/" } },
   { num: "10", slug: "safety-workspace", name: "Safety Workspace", body: "Incident/near-miss/hazard reporting, permit-to-work with precautions, safety training calendar, safety analytics.", link: { label: "Permit to work, defined", href: "/glossary/permit-to-work/" } },
   { num: "11", slug: "reports-and-analytics", name: "Reports & Analytics", body: "One-click PDF/Excel/Google Sheets exports across 15+ report types, cross-module KPI dashboard.", link: { label: "What is MTTR?", href: "/blog/what-is-mttr/" } },
   { num: "12", slug: "moe-dashboard", name: "MOE Dashboard", body: "Single composite Machine Overall Effectiveness score blending availability, maintenance compliance, reliability, and health, with critical-machine alerts.", link: { label: "MOE, defined", href: "/glossary/moe/" } },
@@ -197,13 +197,13 @@ export const ONE_LINER =
 export const QUICK_FACTS: [string, string][] = [
   ["Product", "Firmicore, a multi-tenant CMMS for manufacturing and process plants"],
   ["Category", "Computerised maintenance management system (CMMS)"],
-  ["Made by", `${LEGAL_NAME}, Kuliyapitiya, Sri Lanka`],
+  ["Made by", LEGAL_NAME],
   ["Deployment", "Cloud-hosted on Firebase; no on-site servers"],
   ["Platform", "Web and mobile browsers, including shared floor tablets"],
   ["Pricing", "4 tiers: $25, $89 and $379 per month, plus Enterprise (custom, from $1,000 per month); yearly billing is pay 10 months, get 12; 14-day free trial"],
   ["Feature modules", "20+, including 12 core modules"],
   ["Role workspaces", "9, from plant manager to trainee"],
-  ["Triage languages", "English, Sinhala, Tamil, Bengali"],
+  ["Triage languages", "English, plus any other language on request"],
   ["Typical industries", "Food & beverage, dairy, pharmaceuticals, packaging, textiles, chemicals"],
   ["Reporting", "15+ report types, exportable to PDF, Excel, and Google Sheets"],
   ["Time to first value", "Pilot on one line or site, then scale across sites"],
@@ -233,7 +233,7 @@ export const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What languages does Firmicore support?",
-    a: "Guided Triage flows run in English, Sinhala, Tamil, and Bengali, which covers the operator languages common on South Asian and Southeast Asian plant floors.",
+    a: "Guided Triage flows run in English, and you can request any other language your operators speak.",
   },
   {
     q: "Who uses Firmicore?",
