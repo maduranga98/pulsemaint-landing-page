@@ -139,13 +139,6 @@ const organizationJsonLd = {
     "Plant reliability metrics (MTTR, MTBF, OEE)",
     "Industrial safety workflows and permit to work",
   ],
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Kurunegala Road",
-    addressLocality: "Kuliyapitiya",
-    postalCode: "60200",
-    addressCountry: "LK",
-  },
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",

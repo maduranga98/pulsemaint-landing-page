@@ -64,7 +64,7 @@ export const post: BlogPost = {
             ["QR-code reporting at the machine", "Supported", "Core intake path"],
             ["Supervisor-mediated capture for mobile-banned floors", "Not a documented workflow", "Built-in"],
             ["Guided operator safety triage", "No productised equivalent found", "Core workflow"],
-            ["Regional language support", "Multi-language", "Multi-language including regional South Asian languages"],
+            ["Regional language support", "Multi-language", "Multi-language, any language on request"],
             ["Preventive maintenance scheduling", "Yes", "Yes"],
             ["Contractor management", "Yes", "Yes, with document expiry blocking"],
           ],

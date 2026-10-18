@@ -703,8 +703,6 @@ function FinalCTA() {
         </div>
         <div className="mt-8 font-mono text-[13px] leading-relaxed text-ink-mute">
           info@lumoraventures.com &nbsp;·&nbsp; +94 71 999 8500 &nbsp;·&nbsp; lumoraventures.com
-          <br />
-          Kurunegala Road, Kuliyapitiya 60200, Sri Lanka
         </div>
       </div>
     </section>
