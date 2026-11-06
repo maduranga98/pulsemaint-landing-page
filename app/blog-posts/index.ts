@@ -17,11 +17,31 @@ import { post as whatIsMttr } from "./what-is-mttr";
 import { post as unplannedDowntime } from "./the-real-cost-of-unplanned-downtime";
 import { post as qrReporting } from "./why-qr-reporting-beats-paper-logs";
 import { post as sharedTablets } from "./guided-triage-for-shared-tablets";
+import { post as whyMachinesBreak } from "./why-machines-keep-breaking-down-root-cause-analysis";
+import { post as oee } from "./oee-calculation-manufacturing";
+import { post as fmea } from "./fmea-maintenance-guide";
+import { post as conditionMonitoring } from "./condition-monitoring-program-manufacturing";
+import { post as spareParts } from "./spare-parts-inventory-management";
+import { post as maintenanceBacklog } from "./maintenance-backlog-calculation-reduction";
+import { post as assetCriticality } from "./asset-criticality-analysis-manufacturing";
+import { post as maintenanceChecklist } from "./machine-maintenance-checklist-daily-weekly-monthly";
+import { post as maintenanceKpis } from "./maintenance-kpis-manufacturing";
+import { post as workOrderPriority } from "./maintenance-work-order-prioritization";
 
 /**
  * Ordered newest first. The first entry is used as the featured post on /blog.
  */
 export const posts: BlogPost[] = [
+  whyMachinesBreak,
+  oee,
+  fmea,
+  conditionMonitoring,
+  spareParts,
+  maintenanceBacklog,
+  assetCriticality,
+  maintenanceChecklist,
+  maintenanceKpis,
+  workOrderPriority,
   cmmsPricing,
   maintainxAlternative,
   cryotosAlternative,
