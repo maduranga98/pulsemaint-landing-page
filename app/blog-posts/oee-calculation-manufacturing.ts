@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "What Is OEE in Manufacturing? Formula, Example, and Ways to Improve It",
-  seoTitle: "What Is OEE in Manufacturing? Formula and Example",
+  seoTitle: "What Is OEE? Formula and Manufacturing Example",
   slug: "oee-calculation-manufacturing",
   category: "Operations",
   read: "8 min",

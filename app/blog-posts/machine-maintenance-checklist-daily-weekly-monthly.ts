@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Machine Maintenance Checklist: Daily, Weekly, and Monthly Inspection Guide",
-  seoTitle: "Machine Maintenance Checklist: Daily, Weekly, Monthly",
+  seoTitle: "Machine Maintenance Checklist: Daily to Monthly",
   slug: "machine-maintenance-checklist-daily-weekly-monthly",
   category: "Guides",
   read: "8 min",

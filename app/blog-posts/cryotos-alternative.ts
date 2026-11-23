@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "Cryotos Alternative: Messaging-App Breakdown Reporting Without the Per-User Trade-off",
-  seoTitle: "Cryotos Alternatives: CMMS Compared for Factories",
+  seoTitle: "Cryotos Alternatives for Factory CMMS",
   slug: "cryotos-alternative",
   category: "Comparison",
   read: "7 min",
