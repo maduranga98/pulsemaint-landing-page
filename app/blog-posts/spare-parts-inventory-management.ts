@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "How to Manage Spare Parts Inventory in a Manufacturing Plant",
-  seoTitle: "Spare Parts Inventory Management for Plants",
+  seoTitle: "Spare Parts Inventory Management: A Plant Guide",
   slug: "spare-parts-inventory-management",
   category: "Operations",
   read: "9 min",
@@ -12,7 +12,7 @@ export const post: BlogPost = {
   excerpt:
     "A missing bearing turns a small repair into a long stoppage. How to identify critical spares, run ABC analysis, and calculate reorder points and safety stock.",
   metaDescription:
-    "Learn how to manage spare parts inventory, calculate reorder points, identify critical components, and prevent costly stockouts in manufacturing plants.",
+    "How to manage spare parts inventory in a plant: build the catalog, link parts to machines, set min and max levels, and cut stockouts without overstocking.",
   deck: "The technician is ready, the work area is ready and production is waiting, but the bearing is not in the store. Spare-parts management balances availability against inventory cost.",
   takeaways: [
     "Not all spares are equal: criticality, failure likelihood, lead time, alternatives and cost all matter.",

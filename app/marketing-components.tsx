@@ -4,6 +4,7 @@ import { Picture } from "./optimized-image";
 import { CONTACT_EMAIL, SOCIAL_LINKS, type SocialLink } from "./site-data";
 import type { BlogPost } from "./blog-data";
 import { PILLAR_PAGES } from "./pillar-pages";
+import { LANGUAGE_LINKS } from "./i18n";
 
 export type { BlogPost };
 
@@ -153,12 +154,14 @@ export function Footer() {
   const columns = [
     { title: "Product", links: [["Features", "/features/"], ["Pricing", "/pricing/"], ["Roles", "/#roles"], ["Security", "/#security"]] },
     { title: "Company", links: [["Contact", `mailto:${CONTACT_EMAIL}`]] },
+    { title: "Language", links: LANGUAGE_LINKS.map((link): [string, string] => [link.label, link.href]) },
     {
       title: "Resources",
       links: [
         ...PILLAR_PAGES.map((pillar): [string, string] => [pillar.label, pillar.path]),
         ["Blog", "/blog/"],
         ["Glossary", "/glossary/"],
+        ["CMMS in Africa", "/cmms-software-africa/"],
         ["FAQ", "/#faq"],
         ["Book a demo", "/#book-demo"],
       ],
@@ -196,7 +199,7 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:col-span-8">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-8">
           {columns.map((column) => (
             <div key={column.title}>
               <div className="mb-4 font-mono text-[11px] uppercase tracking-wider text-ink-mute">{column.title}</div>

@@ -12,7 +12,7 @@ export const post: BlogPost = {
   excerpt:
     "A practical starting template for daily, weekly and monthly machine inspections, plus how to write tasks that are specific, owned and acted on.",
   metaDescription:
-    "Use this practical machine maintenance checklist to plan daily, weekly, and monthly inspections, improve equipment reliability, and identify maintenance issues early.",
+    "A machine maintenance checklist with daily, weekly and monthly inspection tasks you can copy, plus how to adapt it to your equipment and track completion.",
   deck: "Small problems become major failures when they go unnoticed. A checklist turns inspection from an informal habit into a repeatable process.",
   takeaways: [
     "This is a general planning template, not a substitute for manufacturer instructions, approved procedures or safety requirements.",

@@ -182,6 +182,7 @@ export const MODULES: ModuleEntry[] = [
  */
 export const PRICING_PAGE_UPDATED = "2026-10-17";
 export const FEATURES_PAGE_UPDATED = "2026-10-07";
+export const AFRICA_PAGE_UPDATED = "2026-11-23";
 
 /**
  * The one-sentence definition. Answer engines lift the first declarative

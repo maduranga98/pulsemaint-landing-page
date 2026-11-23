@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "How to Prioritize Maintenance Work Orders: A Practical Priority Matrix",
-  seoTitle: "How to Prioritize Maintenance Work Orders",
+  seoTitle: "Work Order Prioritization: A Priority Matrix",
   slug: "maintenance-work-order-prioritization",
   category: "Guides",
   read: "9 min",

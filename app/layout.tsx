@@ -131,7 +131,15 @@ const organizationJsonLd = {
   // is worse than none, because a wrong reconciliation is hard to undo.
   sameAs: ["https://lumoraventures.com/", ...SOCIAL_LINKS.map((link) => link.url)],
   parentOrganization: { "@type": "Organization", name: LEGAL_NAME, url: "https://lumoraventures.com/" },
-  areaServed: ["LK", "IN", "BD", "SG", "MY", "AE"],
+  // Sold online with the same plans worldwide. The named markets are the ones
+  // with dedicated landing pages (/ja/, /ko/, /cmms-software-africa/) plus the
+  // existing English-speaking markets.
+  areaServed: [
+    { "@type": "Place", name: "Worldwide" },
+    "US", "GB", "AU", "CA", "IE", "NZ", "SG", "MY", "AE", "SA", "IN", "LK", "BD",
+    "JP", "KR",
+    "ZA", "NG", "KE", "GH", "EG", "ET", "TZ", "UG", "MA", "RW", "ZM", "BW",
+  ],
   knowsAbout: [
     "Computerised maintenance management systems",
     "Preventive maintenance scheduling",

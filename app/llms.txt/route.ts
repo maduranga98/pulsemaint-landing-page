@@ -1,3 +1,4 @@
+import { LOCALES } from "../i18n";
 import { posts } from "../blog-posts";
 import { GLOSSARY, termUrl } from "../glossary-data";
 import { PILLAR_PAGES } from "../pillar-pages";
@@ -36,6 +37,8 @@ export function GET(): Response {
       `- [FAQ](${SITE_URL}/#faq): direct answers to the most common product questions.`,
       `- [Maintenance glossary](${SITE_URL}/glossary/): ${GLOSSARY.length} defined terms, each on its own page (CMMS, OEE, MTBF, MTTR, EAM, PM compliance, and more).`,
       `- [Blog](${SITE_URL}/blog/): ${posts.length} long-form articles on CMMS selection, downtime, and plant reliability.`,
+      `- [CMMS software in Africa](${SITE_URL}/cmms-software-africa/): how Firmicore fits plants in South Africa, Nigeria, Kenya, Ghana, Egypt and across Africa, with a regional FAQ.`,
+      ...LOCALES.map((locale) => `- [${locale.nativeName}](${SITE_URL}${locale.path}): ${locale.lang === "ja" ? "Japanese" : "Korean"} overview of Firmicore (hreflang="${locale.lang}"), with modules, pricing and FAQ.`),
     ]),
     section(
       "Frequently asked questions",

@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { homeLanguageAlternates, LANGUAGE_LINKS } from "./i18n";
 import { posts } from "./blog-data";
 import { GLOSSARY } from "./glossary-data";
 import { PricingCards } from "./pricing-cards";
@@ -17,6 +19,25 @@ import {
   SITE_URL,
   ogImageUrl,
 } from "./site-data";
+
+/**
+ * Homepage-only metadata: the hreflang cluster for the English, Japanese and
+ * Korean landing pages. A page-level `alternates` replaces the layout's
+ * wholesale, so the canonical and the alternate-type links are restated.
+ */
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    languages: homeLanguageAlternates(),
+    types: {
+      "text/plain": [
+        { url: "/llms.txt", title: `${SITE_NAME} - site map for language models` },
+        { url: "/llms-full.txt", title: `${SITE_NAME} - full site text` },
+      ],
+      "application/rss+xml": [{ url: "/feed.xml", title: `${SITE_NAME} blog` }],
+    },
+  },
+};
 
 const heroStats = [
   ["9", "Role-based workspaces"],
@@ -199,8 +220,15 @@ function Hero() {
       </div>
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-12">
         <div className="lg:col-span-6">
-          <div className="inline-flex items-center rounded-full border border-pulse/40 px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.1em] text-pulse">
-            Multi-tenant CMMS for process plants
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="inline-flex items-center rounded-full border border-pulse/40 px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.1em] text-pulse">
+              Multi-tenant CMMS for process plants
+            </div>
+            {LANGUAGE_LINKS.filter((link) => link.lang !== "en").map((link) => (
+              <Link key={link.lang} href={link.href} lang={link.lang} hrefLang={link.lang} className="text-[13px] text-ink-mute transition hover:text-pulse">
+                {link.label}
+              </Link>
+            ))}
           </div>
           <h1 className="mt-6 font-sora text-[38px] font-bold leading-[1.08] text-ink sm:text-[50px] lg:text-[54px]">
             Mobile-first CMMS for <span className="text-pulse">factory maintenance.</span>

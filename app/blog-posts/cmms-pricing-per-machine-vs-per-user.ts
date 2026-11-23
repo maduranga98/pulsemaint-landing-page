@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "CMMS Pricing Explained: Per-Machine vs Per-User Models Compared",
-  seoTitle: "CMMS Pricing: Per-Machine vs Per-User",
+  seoTitle: "How Much Does CMMS Software Cost? Pricing Models",
   slug: "cmms-pricing-per-machine-vs-per-user",
   category: "Pricing",
   read: "9 min",
@@ -12,7 +12,7 @@ export const post: BlogPost = {
   excerpt:
     "Most CMMS vendors charge per user. That makes the software more expensive exactly when you want more of the plant using it. Here is what both models cost at 20, 50 and 100 machines.",
   metaDescription:
-    "Per-user pricing caps how many people you let into your CMMS; per-machine ties cost to the asset. The arithmetic for both, plus the hidden costs.",
+    "How much CMMS software costs and why: per-user vs per-machine pricing compared with worked examples, plus the hidden costs to check before you buy.",
   deck: "Per-user pricing quietly caps how many people you let into your maintenance system. Per-machine pricing ties cost to the thing you are actually maintaining. Here is the arithmetic for both, plus the hidden costs that neither pricing page mentions.",
   figure: "Fig. 01 - Modelled annual cost of per-user vs per-machine CMMS licensing across three factory sizes.",
   takeaways: [
