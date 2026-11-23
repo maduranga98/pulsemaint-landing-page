@@ -229,3 +229,31 @@ h4 {
   background: var(--navy-900);
   color: var(--ink);
 }
+
+/*
+ * Localized pages (/ja/, /ko/). Sora and DM Sans ship Latin glyphs only, so
+ * CJK text falls through to a system face. Naming the platform faces keeps
+ * that fallback consistent instead of landing on a serif default; Latin
+ * characters still render in the brand fonts listed first.
+ */
+:lang(ja),
+:lang(ja) .font-sora,
+:lang(ja) h1,
+:lang(ja) h2,
+:lang(ja) h3 {
+  font-family: var(--font-sora), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans JP", sans-serif;
+}
+
+:lang(ko),
+:lang(ko) .font-sora,
+:lang(ko) h1,
+:lang(ko) h2,
+:lang(ko) h3 {
+  font-family: var(--font-sora), "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  word-break: keep-all;
+}
+
+:lang(ja) p,
+:lang(ko) p {
+  font-family: var(--font-dm-sans), "Hiragino Sans", "Yu Gothic UI", Meiryo, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans JP", "Noto Sans KR", sans-serif;
+}

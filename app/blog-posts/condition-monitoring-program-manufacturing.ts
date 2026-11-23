@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "How to Build a Condition Monitoring Program in a Manufacturing Plant",
-  seoTitle: "Condition Monitoring in Manufacturing: A Guide",
+  seoTitle: "How to Set Up a Condition Monitoring Program",
   slug: "condition-monitoring-program-manufacturing",
   category: "Engineering",
   read: "9 min",
@@ -12,7 +12,7 @@ export const post: BlogPost = {
   excerpt:
     "Machines rarely fail without warning. How to pick the right assets, techniques, baselines and response process, without buying sensors for everything first.",
   metaDescription:
-    "Learn how to build a condition monitoring program, choose equipment, monitor vibration and temperature, and identify early warning signs of machine failure.",
+    "Set up a condition monitoring program step by step: pick critical equipment, choose vibration, thermal and oil checks, set baselines, and act on warnings.",
   deck: "Equipment usually shows changes long before it stops. A condition monitoring programme turns those changes into maintenance decisions.",
   takeaways: [
     "Condition monitoring measures and observes equipment condition to spot deterioration and decide when action is needed.",

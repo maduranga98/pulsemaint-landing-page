@@ -2,7 +2,7 @@ import type { BlogPost } from "../blog-data";
 
 export const post: BlogPost = {
   title: "SAP Plant Maintenance Alternative for Factories That Don't Need a Full ERP",
-  seoTitle: "SAP Plant Maintenance Alternative",
+  seoTitle: "SAP Plant Maintenance Alternatives for Factories",
   slug: "sap-plant-maintenance-alternative",
   category: "Comparison",
   read: "9 min",
@@ -12,7 +12,7 @@ export const post: BlogPost = {
   excerpt:
     "SAP PM is rarely chosen because it is the best maintenance tool. It is chosen because the company already runs SAP. Here is when that logic holds, and when it does not.",
   metaDescription:
-    "SAP PM is an ERP module; a CMMS is a floor-operations tool. Where the two differ, and when a factory needs three weeks instead of nine months.",
+    "Looking for an SAP PM alternative? Compare SAP Plant Maintenance with a standalone CMMS on cost, rollout time and floor adoption, and when to keep SAP.",
   deck: "SAP Plant Maintenance is a module inside an ERP system of record. A CMMS is a floor-operations tool. They solve different problems, and confusing the two is how factories end up with a nine-month implementation for a job that needed three weeks.",
   figure: "Fig. 01 - Typical implementation timeline: SAP PM rollout versus a mobile-first CMMS pilot.",
   takeaways: [

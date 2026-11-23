@@ -2,7 +2,8 @@ import type { MetadataRoute } from "next";
 import { posts } from "./blog-data";
 import { GLOSSARY, glossaryLastUpdated, termUrl } from "./glossary-data";
 import { PILLAR_PAGES } from "./pillar-pages";
-import { FEATURES_PAGE_UPDATED, PRICING_PAGE_UPDATED, SITE_URL as BASE_URL } from "./site-data";
+import { homeLanguageAlternatesAbsolute, LOCALES } from "./i18n";
+import { AFRICA_PAGE_UPDATED, CONTENT_LAST_REVIEWED, FEATURES_PAGE_UPDATED, PRICING_PAGE_UPDATED, SITE_URL as BASE_URL } from "./site-data";
 
 export const dynamic = "force-static";
 
@@ -29,7 +30,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     // No lastModified on the homepage: `new Date()` would claim a fresh edit on
     // every deploy, and there is no build-time signal for when it actually changed.
-    { url: url("/"), changeFrequency: "weekly", priority: 1 },
+    // The homepage and its translations form one hreflang cluster; each entry
+    // repeats the full set, as Google requires for sitemap annotations.
+    { url: url("/"), changeFrequency: "weekly", priority: 1, alternates: { languages: homeLanguageAlternatesAbsolute() } },
+    ...LOCALES.map((locale) => ({
+      url: url(locale.path),
+      lastModified: new Date(CONTENT_LAST_REVIEWED),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      alternates: { languages: homeLanguageAlternatesAbsolute() },
+    })),
+    { url: url("/cmms-software-africa/"), lastModified: new Date(AFRICA_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.8 },
     { url: url("/features/"), lastModified: new Date(FEATURES_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/pricing/"), lastModified: new Date(PRICING_PAGE_UPDATED), changeFrequency: "monthly", priority: 0.9 },
     // The three pillar pages sit just under pricing and features: they are the
